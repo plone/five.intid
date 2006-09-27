@@ -5,6 +5,7 @@ from zope.component import adapter, adapts
 from zope.interface import implements, implementer
 from zope.app.keyreference.interfaces import IKeyReference, NotYet
 from zope.app.keyreference.persistent import KeyReferenceToPersistent
+from site import get_root
 
 @adapter(IPersistent)
 @implementer(IConnection)
@@ -30,11 +31,37 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     implements(IKeyReference)
     adapts(IPersistent)
 
-    def __init__(self, object):
+    key_type_id = 'five.intid.keyreference'
+
+    def __init__(self, wrapped_obj):
+        self.root = get_root(wrapped_obj)
+        self.path = '/'.join(wrapped_obj.getPhysicalPath())
+        self.object = aq_base(wrapped_obj)
         if not getattr(object, '_p_oid', None):
-            connection = IConnection(object, None)
+            connection = IConnection(wrapped_obj, None)
             if connection is None:
-                raise NotYet(object)
-            connection.add(object)
-        object = aq_base(object)
-        self.object = object
+                raise NotYet(wrapped_object)
+            connection.add(self.object)
+        self.oid = self.object._p_oid
+        del wrapped_obj
+
+    @property
+    def wrapped_object(self):
+        return self.root.restrictedTraverse(self.path)
+
+    def __call__(self):
+        return self.wrapped_object
+        
+    def __hash__(self):
+        return hash((self.object._p_jar.db().database_name,
+                     self.object._p_oid,
+                     ))
+
+    def __cmp__(self, other):
+        if self.key_type_id == other.key_type_id:
+            return cmp(
+                (self.object._p_jar.db().database_name,  self.object._p_oid),
+                (other.object._p_jar.db().database_name, other.object._p_oid),
+                )
+
+        return cmp(self.key_type_id, other.key_type_id)

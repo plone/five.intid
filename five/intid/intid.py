@@ -2,10 +2,19 @@ from zope.app.intid import IntIds
 from OFS.SimpleItem import SimpleItem
 from zope.app.intid.interfaces import IIntIds
 from zope.interface import implements
+from zope.app.keyreference.interfaces import IKeyReference
 
-class OFSIntIds(IntIds, SimpleItem):
+class OFSIntIds(SimpleItem, IntIds):
     """ zope2ish intid utility """
     implements(IIntIds)
+
+    meta_type="IntId Utility"
+    
+    def getId(*args):
+        # sweet compatibility
+        if len(args) == 1:
+            return SimpleItem.getId(args[0])
+        return IntIds.getId(*args)
     
     def register(self, ob):
         key = IKeyReference(ob)
