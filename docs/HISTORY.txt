@@ -1,0 +1,9 @@
+Changelog for five.intid
+
+    (name of developer listed in brackets)
+
+five.intid - 0.1 Unreleased
+
+    - Initial package structure.
+      [zopeskel]
+

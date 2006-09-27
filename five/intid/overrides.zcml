@@ -1,0 +1,8 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+	   xmlns:five="http://namespaces.zope.org/five">
+  <adapter factory=".keyreference.KeyReferenceToPersistent"
+	   trusted="y"
+	   />
+  <adapter factory=".keyreference.connectionOfPersistent" />
+</configure>

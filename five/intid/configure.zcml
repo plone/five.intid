@@ -1,0 +1,22 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+	   xmlns:five="http://namespaces.zope.org/five">
+  <include package="zope.app.keyreference" />
+  <five:registerPackage package="five.intid"/>
+
+  <browser:page
+      name="index.html"
+      for="zope.app.intid.interfaces.IIntIds"
+      permission="five.ManageSite"
+      class=".browser.IntIdsView"
+      template="registrations.pt"
+   />
+  <browser:page
+      name="populate"
+      for="zope.app.intid.interfaces.IIntIds"
+      permission="five.ManageSite"
+      class=".browser.IntIdsView"
+      attribute="populate"
+   />
+
+</configure>
