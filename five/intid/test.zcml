@@ -1,0 +1,13 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:five="http://namespaces.zope.org/five">
+    <subscriber
+        for="Products.Five.tests.testing.simplecontent.ISimpleContent
+             zope.app.intid.interfaces.IIntIdAddedEvent"
+        handler=".tests.setNotified"
+        />
+    <subscriber
+        for="Products.Five.tests.testing.simplecontent.ISimpleContent
+             zope.app.intid.interfaces.IIntIdRemovedEvent"
+        handler=".tests.setNotified"
+        />
+</configure>
