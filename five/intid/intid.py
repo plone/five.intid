@@ -9,7 +9,11 @@ class OFSIntIds(SimpleItem, IntIds):
     implements(IIntIds)
 
     meta_type="IntId Utility"
-    
+
+    def __init__(self, id_=IIntIds.__name__):
+        self.id = id_
+        super(OFSIntIds, self).__init__()
+
     def getId(*args):
         # sweet compatibility
         if len(args) == 1:
