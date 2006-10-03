@@ -1,4 +1,4 @@
-from Acquisition import IAcquirer, aq_base
+from Acquisition import IAcquirer, aq_base, ImplicitAcquisitionWrapper
 from ZODB.interfaces import IConnection
 from persistent import IPersistent
 from zope.component import adapter, adapts
@@ -34,26 +34,32 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     key_type_id = 'five.intid.keyreference'
 
     def __init__(self, wrapped_obj):
-        self.root = get_root(wrapped_obj)
         self.path = '/'.join(wrapped_obj.getPhysicalPath())
         self.object = aq_base(wrapped_obj)
-        if not getattr(object, '_p_oid', None):
+        if not getattr(self.object, '_p_oid', None):
             connection = IConnection(wrapped_obj, None)
             if connection is None:
                 raise NotYet(wrapped_object)
             connection.add(self.object)
+        self.root_oid = get_root(wrapped_obj)._p_oid            
+        del wrapped_obj            
+
         self.oid = self.object._p_oid
-        del wrapped_obj
+        self.dbname = self.object._p_jar.db().database_name
+
+    @property
+    def root(self):
+        return self.object._p_jar[self.root_oid]
 
     @property
     def wrapped_object(self):
         return self.root.restrictedTraverse(self.path)
-
+    
     def __call__(self):
         return self.wrapped_object
         
     def __hash__(self):
-        return hash((self.object._p_jar.db().database_name,
+        return hash((self.dbname,
                      self.object._p_oid,
                      ))
 
