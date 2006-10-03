@@ -4,6 +4,8 @@
   <include package="zope.app.keyreference" />
   <five:registerPackage package="five.intid"/>
   <five:traversable class="OFS.Application.Application" /> 
+  <five:localsite class="OFS.Folder.Folder" />
+
   <browser:page
       name="index.html"
       for="zope.app.intid.interfaces.IIntIds"
@@ -38,16 +40,24 @@
 
   <subscriber
       handler="zope.app.intid.removeIntIdSubscriber"
-      for="OFS.interfaces.IItem
+      for="persistent.IPersistent
            zope.app.container.interfaces.IObjectRemovedEvent"
       />
 
   <subscriber
       handler="zope.app.intid.addIntIdSubscriber"
-      for="OFS.interfaces.IItem
+      for="persistent.IPersistent
            zope.app.container.interfaces.IObjectAddedEvent"
       />
 
-  <include package="collective.testing" file="printevent.zcml" />
+  <subscriber
+     for="zope.app.intid.interfaces.IIntIdAddedEvent" 
+     handler="zope.app.event.objectevent.objectEventNotify"
+     />
+
+  <subscriber
+     for="zope.app.intid.interfaces.IIntIdRemovedEvent" 
+     handler="zope.app.event.objectevent.objectEventNotify"
+     />
 
 </configure>
