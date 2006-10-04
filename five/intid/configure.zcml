@@ -58,5 +58,5 @@
      for="zope.app.intid.interfaces.IIntIdRemovedEvent" 
      handler="zope.app.event.objectevent.objectEventNotify"
      />
-
+  <includeOverrides file="overrides.zcml" package="five.intid"/>
 </configure>
