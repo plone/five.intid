@@ -3,6 +3,7 @@ from OFS.SimpleItem import SimpleItem
 from zope.app.intid.interfaces import IIntIds
 from zope.interface import implements
 from zope.app.keyreference.interfaces import IKeyReference
+from Globals import InitializeClass
 
 class OFSIntIds(SimpleItem, IntIds):
     """ zope2ish intid utility """
@@ -37,3 +38,5 @@ class OFSIntIds(SimpleItem, IntIds):
         uid = self.ids[key]
         del self.refs[uid]
         del self.ids[key]
+
+InitializeClass(OFSIntIds)
