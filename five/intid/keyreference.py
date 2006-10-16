@@ -39,7 +39,7 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
         if not getattr(self.object, '_p_oid', None):
             connection = IConnection(wrapped_obj, None)
             if connection is None:
-                raise NotYet(wrapped_object)
+                raise NotYet(wrapped_obj)
             connection.add(self.object)
         self.root_oid = get_root(wrapped_obj)._p_oid            
         del wrapped_obj            
