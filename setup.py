@@ -18,9 +18,7 @@ setup(name='five.intid',
       namespace_packages=['five'],
       include_package_data=True,
       zip_safe=False,
-      install_requires=[
-          # -*- Extra requirements: -*-
-      ],
+      install_requires=['collective.testing',],
       entry_points="""
       # -*- Entry points: -*-
       """,

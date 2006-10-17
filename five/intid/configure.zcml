@@ -1,6 +1,8 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:browser="http://namespaces.zope.org/browser"
-	   xmlns:five="http://namespaces.zope.org/five">
+	   xmlns:five="http://namespaces.zope.org/five"
+	   xmlns:zcml="http://namespaces.zope.org/zcml"
+	   >	   
   <include package="zope.app.keyreference" />
   <five:traversable class="OFS.Application.Application" /> 
   <five:localsite class="OFS.Folder.Folder" />
@@ -38,15 +40,9 @@
      />
 
   <subscriber
-      handler="zope.app.intid.removeIntIdSubscriber"
+      handler=".intid.removeIntIdSubscriber"
       for="persistent.IPersistent
            zope.app.container.interfaces.IObjectRemovedEvent"
-      />
-
-  <subscriber
-      handler="zope.app.intid.addIntIdSubscriber"
-      for="persistent.IPersistent
-           zope.app.container.interfaces.IObjectAddedEvent"
       />
 
   <subscriber
@@ -58,5 +54,12 @@
      for="zope.app.intid.interfaces.IIntIdRemovedEvent" 
      handler="zope.app.event.objectevent.objectEventNotify"
      />
+
+  <subscriber
+     handler=".intid.addIntIdSubscriber"
+     for="persistent.IPersistent
+          zope.app.container.interfaces.IObjectAddedEvent"
+      />  
+
   <includeOverrides file="overrides.zcml" package="five.intid"/>
 </configure>
