@@ -27,6 +27,8 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     that have Acquisition wrappers
 
     These references compare by _p_oids of the objects they reference.
+
+    @@ cache IConnection as a property and volative attr?
     """
     implements(IKeyReference)
     adapts(IPersistent)
@@ -36,23 +38,20 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     def __init__(self, wrapped_obj):
         self.path = '/'.join(wrapped_obj.getPhysicalPath())
         self.object = aq_base(wrapped_obj)
+        connection = IConnection(wrapped_obj) 
         if not getattr(self.object, '_p_oid', None):
-            connection = self.connection
             if connection is None:
                 raise NotYet(wrapped_obj)
             connection.add(self.object)
-        else:
-            connection = self.connection
             
         self.root_oid = get_root(wrapped_obj)._p_oid            
-        del wrapped_obj            
 
         self.oid = self.object._p_oid
         self.dbname = connection.db().database_name
 
     @property
     def root(self):
-        return self.connection[self.root_oid]
+        return IConnection(self.object)[self.root_oid]
 
     @property
     def wrapped_object(self):
@@ -66,14 +65,10 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
                      self.object._p_oid,
                      ))
 
-    @property 
-    def connection(self):
-        return IConnection(self.object, None)
-
     def __cmp__(self, other):
         if self.key_type_id == other.key_type_id:
             return cmp(
-                (self.connection.db().database_name,  self.object._p_oid),
+                (IConnection(self.object).db().database_name,  self.object._p_oid),
                 (IConnection(other.object).db().database_name, other.object._p_oid),
                 )
 
