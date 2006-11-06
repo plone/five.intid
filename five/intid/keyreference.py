@@ -53,8 +53,6 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
         if not getattr(self.object, '_p_oid', None):
             if connection is None:
                 raise NotYet(wrapped_obj)
-            if not test_settable(self.object, '_p_oid'):
-                raise UnsettableAttributeError("_p_oid not settable: %s" %wrapped_obj)
             connection.add(self.object)
 
         self.root_oid = get_root(wrapped_obj)._p_oid            
