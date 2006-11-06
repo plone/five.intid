@@ -49,11 +49,13 @@ class FiveIntIdEventLayer(ZCMLLayer):
 
 def test_suite():
     from Testing.ZopeTestCase import FunctionalDocFileSuite
-    testsuite = FunctionalDocFileSuite(
+    from zope.testing.doctest import DocTestSuite
+    integration = FunctionalDocFileSuite(
         'README.txt',
         optionflags=optionflags,
         package='five.intid',
         globs=test_ns,
         )
-    testsuite.layer = FiveIntIdEventLayer
+    integration.layer = FiveIntIdEventLayer
+    utils = DocTestSuite("five.intid.utils")
     return testsuite

@@ -6,6 +6,9 @@ from zope.interface import implements, implementer
 from zope.app.keyreference.interfaces import IKeyReference, NotYet
 from zope.app.keyreference.persistent import KeyReferenceToPersistent
 from site import get_root
+from utils import test_settable
+from interfaces import UnsettableAttributeError
+from zope.app.container.interfaces import IObjectAddedEvent
 
 @adapter(IPersistent)
 @implementer(IConnection)
@@ -20,6 +23,13 @@ def connectionOfPersistent(obj):
         return cur._p_jar
     else:
         raise TypeError("%s not acquisition wrapped" %obj)
+
+@adapter(IPersistent, IObjectAddedEvent)
+def add_object_to_connection(ob, event):
+    """ a salve for screwy CMF behavior """
+    connection = IConnection(ob, None)
+    if None is not connection:
+        connection.add(aq_base(ob))
 
 
 class KeyReferenceToPersistent(KeyReferenceToPersistent):
@@ -38,14 +48,16 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     def __init__(self, wrapped_obj):
         self.path = '/'.join(wrapped_obj.getPhysicalPath())
         self.object = aq_base(wrapped_obj)
-        connection = IConnection(wrapped_obj) 
+        connection = IConnection(wrapped_obj, None)
+        
         if not getattr(self.object, '_p_oid', None):
             if connection is None:
                 raise NotYet(wrapped_obj)
+            if not test_settable(self.object, '_p_oid'):
+                raise UnsettableAttributeError("_p_oid not settable: %s" %wrapped_obj)
             connection.add(self.object)
-            
-        self.root_oid = get_root(wrapped_obj)._p_oid            
 
+        self.root_oid = get_root(wrapped_obj)._p_oid            
         self.oid = self.object._p_oid
         self.dbname = connection.db().database_name
 
@@ -67,9 +79,13 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
 
     def __cmp__(self, other):
         if self.key_type_id == other.key_type_id:
+            try:
+                other = (IConnection(other.object).db().database_name, other.object._p_oid)
+            except TypeError:
+                other = None
             return cmp(
                 (IConnection(self.object).db().database_name,  self.object._p_oid),
-                (IConnection(other.object).db().database_name, other.object._p_oid),
+                other,
                 )
 
         return cmp(self.key_type_id, other.key_type_id)

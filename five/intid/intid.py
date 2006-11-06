@@ -7,6 +7,7 @@ from zope.app.intid.interfaces import IntIdAddedEvent, IntIdRemovedEvent
 from zope.app.keyreference.interfaces import IKeyReference, NotYet
 from zope.event import notify
 from zope.interface import implements
+from five.intid.interfaces import UnsettableAttributeError
 
 class OFSIntIds(SimpleItem, IntIds):
     """ zope2ish intid utility """
@@ -44,7 +45,6 @@ class OFSIntIds(SimpleItem, IntIds):
 
 InitializeClass(OFSIntIds)
 
-
 # @@ these are "sloppy" subscribers that let objects that have not
 # been properly added to the db by
 def addIntIdSubscriber(ob, event):
@@ -56,10 +56,13 @@ def addIntIdSubscriber(ob, event):
 
     utilities = tuple(zapi.getAllUtilitiesRegisteredFor(IIntIds))
     if utilities: # assert that there are any utilites
+        key = None
         try:
             key = IKeyReference(ob, None)
-        except NotYet:
-            key = None
+        except NotYet:  
+            pass
+        except UnsettableAttributeError:
+            pass
             
         # Register only objects that adapt to key reference
         if key is not None:
@@ -77,10 +80,13 @@ def removeIntIdSubscriber(ob, event):
 
     utilities = tuple(zapi.getAllUtilitiesRegisteredFor(IIntIds))
     if utilities:
+        key = None
         try:
             key = IKeyReference(ob, None)
-        except NotYet:
-            key = None
+        except NotYet: # @@ temporary fix
+            pass
+        except UnsettableAttributeError:
+            pass
             
         # Register only objects that adapt to key reference
         if key is not None:

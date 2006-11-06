@@ -40,12 +40,6 @@
      />
 
   <subscriber
-      handler=".intid.removeIntIdSubscriber"
-      for="persistent.IPersistent
-           zope.app.container.interfaces.IObjectRemovedEvent"
-      />
-
-  <subscriber
      for="zope.app.intid.interfaces.IIntIdAddedEvent" 
      handler="zope.app.event.objectevent.objectEventNotify"
      />
@@ -54,12 +48,6 @@
      for="zope.app.intid.interfaces.IIntIdRemovedEvent" 
      handler="zope.app.event.objectevent.objectEventNotify"
      />
-
-  <subscriber
-     handler=".intid.addIntIdSubscriber"
-     for="persistent.IPersistent
-          zope.app.container.interfaces.IObjectAddedEvent"
-      />  
 
   <includeOverrides file="overrides.zcml" package="five.intid"/>
 </configure>
