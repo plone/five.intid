@@ -24,14 +24,19 @@ def test_settable(obj, attr):
     True
 
     >>> writeable._p_oid=='xxxxxx'
-
+    True
     """
 
     settable = False
     orig = marker
     if hasattr(obj, attr):
         orig = getattr(obj, attr, None)
-    setattr(obj, attr, marker)
+
+    try:
+        setattr(obj, attr, marker)
+    except AttributeError:
+        return False
+    
     if getattr(obj, attr, None) is marker:
         settable = True
         if orig is marker:

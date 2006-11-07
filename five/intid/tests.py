@@ -48,6 +48,7 @@ class FiveIntIdEventLayer(ZCMLLayer):
         setHooks()
 
 def test_suite():
+    import unittest
     from Testing.ZopeTestCase import FunctionalDocFileSuite
     from zope.testing.doctest import DocTestSuite
     integration = FunctionalDocFileSuite(
@@ -58,4 +59,4 @@ def test_suite():
         )
     integration.layer = FiveIntIdEventLayer
     utils = DocTestSuite("five.intid.utils")
-    return testsuite
+    return unittest.TestSuite((integration, utils))
