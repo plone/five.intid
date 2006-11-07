@@ -49,10 +49,15 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
         self.path = '/'.join(wrapped_obj.getPhysicalPath())
         self.object = aq_base(wrapped_obj)
         connection = IConnection(wrapped_obj, None)
-        
+
         if not getattr(self.object, '_p_oid', None):
             if connection is None:
                 raise NotYet(wrapped_obj)
+
+            # DirectoryViews do not allow setting of _p_oid
+            # will cause transaction errors
+            if not test_settable(self.object, '_p_oid'):
+                raise UnsettableAttributeError(wrapped_obj)
             connection.add(self.object)
 
         self.root_oid = get_root(wrapped_obj)._p_oid            
