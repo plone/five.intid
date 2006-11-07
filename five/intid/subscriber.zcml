@@ -1,0 +1,12 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+  <subscriber
+     handler=".intid.addIntIdSubscriber"
+     for="persistent.IPersistent
+          zope.app.container.interfaces.IObjectAddedEvent"
+      />  
+  <subscriber
+      handler=".intid.removeIntIdSubscriber"
+      for="persistent.IPersistent
+           zope.app.container.interfaces.IObjectRemovedEvent"
+      />
+</configure>
