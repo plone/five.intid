@@ -1,13 +1,12 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.1'
+version = '0.1.4'
 
 setup(name='five.intid',
       version=version,
       description="Overrides and zope2 classes to allow intid and keyreferences to work in Five",
-      long_description="""\
-""",
+      long_description="""\ """,
       classifiers=[], # Get strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       keywords="'zope2 Five zope3 UID'",
       author='whit',

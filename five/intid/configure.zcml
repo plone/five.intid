@@ -5,8 +5,6 @@
 	   >	   
   <include package="zope.app.keyreference" />
   <five:traversable class="OFS.Application.Application" /> 
-  <five:localsite class="OFS.Folder.Folder" />
-
   <browser:page
       name="index.html"
       for="zope.app.intid.interfaces.IIntIds"
@@ -40,7 +38,7 @@
      />
 
   <subscriber
-     for="zope.app.intid.interfaces.IIntIdAddedEvent" 
+     for="zope.app.intid.interfaces.IIntIdAddedEvent"
      handler="zope.app.event.objectevent.objectEventNotify"
      />
 
