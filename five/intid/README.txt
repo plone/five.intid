@@ -5,7 +5,7 @@
 This is a compatibility layer for zope.app.intid(and consequentually,
 zope.app.keyreferences)
 
-First, let make sure the ofs utility is provides the interface::
+First, let make sure the ofs utility provides the interface::
 
     >>> from zope.app.intid.interfaces import IIntIds
     >>> from five.intid.intid import OFSIntIds
