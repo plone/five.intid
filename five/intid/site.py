@@ -43,7 +43,7 @@ def initializeSite(site, sethook=False, **kw):
 def get_root(app):
     # adapted from alecm's 'listen'
     while app is not None and not IApplication.providedBy(app):
-            app = aq_parent(app)
+            app = getattr(app, 'aq_parent', getattr(app, '__parent__', None))
     return app
 
 def addUtility(site, interface, klass, name='', findroot=True):

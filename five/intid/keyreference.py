@@ -15,9 +15,9 @@ from zope.app.container.interfaces import IObjectAddedEvent
 def connectionOfPersistent(obj):
     """ zope2 cxn fetcher for wrapped items """
     cur = obj
-    if IAcquirer.providedBy(obj):
+    if IAcquirer.providedBy(obj) or not hasattr(obj, '__parent__'):
         while not getattr(cur, '_p_jar', None):
-            cur = getattr(cur, 'aq_parent', None)
+            cur = getattr(cur, 'aq_parent', getattr(cur, '__parent__', None))
             if cur is None:
                 return None
         return cur._p_jar
