@@ -53,7 +53,6 @@ def test_suite():
     from zope.testing.doctest import DocTestSuite
     integration = FunctionalDocFileSuite(
         'README.txt',
-        optionflags=optionflags,
         package='five.intid',
         globs=test_ns,
         )

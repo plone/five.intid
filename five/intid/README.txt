@@ -97,6 +97,21 @@ these objects are aquisition wrapped on retrieval::
     >>> type(intid.getObject(ob_id))
     <type 'ImplicitAcquirerWrapper'>
 
+We can even turn an unwrapped object into a wrapped object by
+resolving it from it's intid, also the intid utility should work
+even if it is unwrapped::
+
+    >>> from Acquisition import aq_base
+    >>> resolved = intid.getObject(intid.getId(aq_base(content2)))
+    >>> type(resolved)
+    <type 'ImplicitAcquirerWrapper'>
+    >>> unwrapped = aq_base(intid)
+    >>> unwrapped.getObject(ob_id) == resolved
+    True
+    >>> unwrapped.getId(content2) == ob_id
+    True
+
+
 When an object is added or removed, subscribers add it to the intid
 utility, and fire an event is fired
 (zope.app.intid.interfaces.IIntIdAddedEvent,

@@ -53,17 +53,16 @@ def addIntIdSubscriber(ob, event):
     Registers the object added in all unique id utilities and fires
     an event for the catalogs.
     """
-
     utilities = tuple(zapi.getAllUtilitiesRegisteredFor(IIntIds))
     if utilities: # assert that there are any utilites
         key = None
         try:
             key = IKeyReference(ob, None)
-        except NotYet:  
+        except NotYet:
             pass
         except UnsettableAttributeError:
             pass
-            
+
         # Register only objects that adapt to key reference
         if key is not None:
             for utility in utilities:

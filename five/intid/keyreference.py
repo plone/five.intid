@@ -2,6 +2,7 @@ from Acquisition import IAcquirer, aq_base, ImplicitAcquisitionWrapper
 from ZODB.interfaces import IConnection
 from persistent import IPersistent
 from zope.component import adapter, adapts
+from zope.app.component.hooks import getSite
 from zope.interface import implements, implementer
 from zope.app.keyreference.interfaces import IKeyReference, NotYet
 from zope.app.keyreference.persistent import KeyReferenceToPersistent
@@ -60,7 +61,12 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
                 raise UnsettableAttributeError(wrapped_obj)
             connection.add(self.object)
 
-        self.root_oid = get_root(wrapped_obj)._p_oid            
+        try:
+            self.root_oid = get_root(wrapped_obj)._p_oid
+        except AttributeError:
+            # If the object is unwrapped we can use the Site from the
+            # threadlocal as our acquisition context.
+            self.root_oid = get_root(getSite())._p_oid
         self.oid = self.object._p_oid
         self.dbname = connection.db().database_name
 

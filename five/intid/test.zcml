@@ -1,15 +1,18 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:five="http://namespaces.zope.org/five">
-    <include file="subscriber.zcml" />
-    <five:localsite class="OFS.Folder.Folder" />
-    <subscriber
-        for="Products.Five.tests.testing.simplecontent.ISimpleContent
-             zope.app.intid.interfaces.IIntIdAddedEvent"
-        handler=".tests.setNotified"
-        />
-    <subscriber
-        for="Products.Five.tests.testing.simplecontent.ISimpleContent
-             zope.app.intid.interfaces.IIntIdRemovedEvent"
-        handler=".tests.setNotified"
-        />
+  <include file="subscriber.zcml" />
+  <include package="zope.app.keyreference" />
+  <five:localsite class="OFS.Folder.Folder" />
+  <subscriber
+      handler=".tests.setNotified"
+      for="Products.Five.tests.testing.simplecontent.ISimpleContent
+           zope.app.intid.interfaces.IIntIdAddedEvent"
+      />
+  <subscriber
+      handler=".tests.setNotified"
+      for="Products.Five.tests.testing.simplecontent.ISimpleContent
+           zope.app.intid.interfaces.IIntIdRemovedEvent"
+      />
+  
+  <includeOverrides file="overrides.zcml" package="five.intid"/>
 </configure>
