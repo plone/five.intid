@@ -5,13 +5,11 @@
   <five:localsite class="OFS.Folder.Folder" />
   <subscriber
       handler=".tests.setNotified"
-      for="Products.Five.tests.testing.simplecontent.ISimpleContent
-           zope.app.intid.interfaces.IIntIdAddedEvent"
+      for="zope.app.intid.interfaces.IIntIdAddedEvent"
       />
   <subscriber
       handler=".tests.setNotified"
-      for="Products.Five.tests.testing.simplecontent.ISimpleContent
-           zope.app.intid.interfaces.IIntIdRemovedEvent"
+      for="zope.app.intid.interfaces.IIntIdRemovedEvent"
       />
   
   <includeOverrides file="overrides.zcml" package="five.intid"/>

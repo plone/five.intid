@@ -36,8 +36,8 @@ setFilter()
 
 NOTIFIED=[None]
 
-def setNotified(obj, event):
-    NOTIFIED[0] = "%s %s" %(obj, event)
+def setNotified(event):
+    NOTIFIED[0] = "%s %s" %(event.object, event)
 
 from five import intid
 class FiveIntIdEventLayer(ZCMLLayer):
