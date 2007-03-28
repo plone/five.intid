@@ -9,8 +9,9 @@ First, let make sure the ofs utility provides the interface::
 
     >>> from zope.app.intid.interfaces import IIntIds
     >>> from five.intid.intid import OFSIntIds
-    
-    #>>> zope.interface.verifyObject(IIntIds, OFSIntIds()) # verifyObject broken?
+
+    >>> zope.interface.verify.verifyObject(IIntIds, OFSIntIds())
+    True
 
 Content added before the utility won't be registered(until explicitly
 called to). We'll set some up now for later

@@ -10,7 +10,9 @@ from zope.event import notify
 from zope.interface import implements
 from five.intid.interfaces import UnsettableAttributeError
 
-class OFSIntIds(SimpleItem, IntIds):
+_marker = []
+
+class OFSIntIds(IntIds, SimpleItem):
     """ zope2ish intid utility """
     implements(IIntIds)
 
@@ -20,12 +22,12 @@ class OFSIntIds(SimpleItem, IntIds):
         self.id = id_
         super(OFSIntIds, self).__init__()
 
-    def getId(*args):
-        # sweet compatibility
-        if len(args) == 1:
-            return SimpleItem.getId(args[0])
-        return IntIds.getId(*args)
-    
+    def getId(self, ob=_marker):
+        # Compatibility with SimpleItem
+        if ob is _marker:
+            return SimpleItem.getId(self)
+        return IntIds.getId(self, ob)
+
     def register(self, ob):
         key = IKeyReference(ob)
         if key in self.ids:
