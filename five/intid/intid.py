@@ -4,6 +4,7 @@ from zope.app import zapi
 from zope.app.intid import IntIds
 from zope.app.intid.interfaces import IIntIds
 from zope.app.intid.interfaces import IntIdAddedEvent, IntIdRemovedEvent
+from zope.app.container.interfaces import IObjectAddedEvent, IObjectRemovedEvent
 from zope.app.keyreference.interfaces import IKeyReference, NotYet
 from zope.event import notify
 from zope.interface import implements
@@ -86,7 +87,7 @@ def removeIntIdSubscriber(ob, event):
             pass
         except UnsettableAttributeError:
             pass
-            
+
         # Register only objects that adapt to key reference
         if key is not None:
             # Notify the catalogs that this object is about to be removed.
@@ -94,5 +95,35 @@ def removeIntIdSubscriber(ob, event):
             for utility in utilities:
                 try:
                     utility.unregister(key)
+                except KeyError:
+                    pass
+
+
+def moveIntIdSubscriber(ob, event):
+    """A subscriber to ObjectMovedEvent
+
+    Updates the stored path for the object in all the unique
+    id utilities.
+    """
+    if IObjectRemovedEvent.providedBy(event) or \
+           IObjectAddedEvent.providedBy(event):
+        return
+    utilities = tuple(zapi.getAllUtilitiesRegisteredFor(IIntIds))
+    if utilities:
+        key = None
+        try:
+            key = IKeyReference(ob, None)
+        except NotYet: # @@ temporary fix
+            pass
+        except UnsettableAttributeError:
+            pass
+
+        # Update objects that adapt to key reference
+        if key is not None:
+            for utility in utilities:
+                try:
+                    uid = utility.getId(ob)
+                    utility.refs[uid] = key
+                    utility.ids[key] = uid
                 except KeyError:
                     pass

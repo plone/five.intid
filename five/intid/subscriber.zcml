@@ -9,4 +9,9 @@
       for="persistent.IPersistent
            zope.app.container.interfaces.IObjectRemovedEvent"
       />
+  <subscriber
+      handler=".intid.moveIntIdSubscriber"
+      for="persistent.IPersistent
+           zope.app.container.interfaces.IObjectMovedEvent"
+      />
 </configure>

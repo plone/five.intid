@@ -144,6 +144,33 @@ Registering and unregistering objects does not fire these events::
     >>> tests.NOTIFIED[0]
     'No change'
 
+Renaming an object should not break the rewrapping of the object:
+
+    >>> self.setRoles(['Manager'])
+    >>> folder.mycont2.meta_type = 'Folder' # We need a metatype to move
+    >>> folder.manage_renameObject('mycont2','mycont_new')
+    >>> moved = intid.getObject(ob_id)
+    >>> moved
+    <SimpleContent at /test_folder_1_/mycont_new>
+
+Nor shopuld moving it:
+
+    >>> from OFS.Folder import manage_addFolder
+    >>> manage_addFolder(self.folder, 'folder2', "folder 2")
+    >>> cut = folder.manage_cutObjects(['mycont_new'])
+    >>> ignore = folder.folder2.manage_pasteObjects(cut)
+    >>> moved = intid.getObject(ob_id)
+    >>> moved
+    <SimpleContent at /test_folder_1_/folder2/mycont_new>
+    >>> moved.aq_parent
+    <Folder at /test_folder_1_/folder2>
+
+Let's move it back:
+
+    >>> cut = folder.folder2.manage_cutObjects(['mycont_new'])
+    >>> ignore = folder.manage_pasteObjects(cut)
+    >>> folder.manage_renameObject('mycont_new','mycont2')
+
 This is a good time to take a look at keyreferences, the core part of
 this system.
 
