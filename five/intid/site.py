@@ -42,8 +42,16 @@ def initializeSite(site, sethook=False, **kw):
 
 def get_root(app):
     # adapted from alecm's 'listen'
+    seen = {}
     while app is not None and not IApplication.providedBy(app):
-            app = getattr(app, 'aq_parent', getattr(app, '__parent__', None))
+        seen[id(app)] = 1
+        app = getattr(app, 'aq_parent', getattr(app, '__parent__', None))
+        if id(app) in seen:
+            # avoid loops resulting from acquisition-less views
+            # whose __parent__ points to
+            # the context whose aq_parent points to the view
+            app = None
+            break
     return app
 
 def addUtility(site, interface, klass, name='', findroot=True):

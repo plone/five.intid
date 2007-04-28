@@ -67,6 +67,9 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
             # If the object is unwrapped we can use the Site from the
             # threadlocal as our acquisition context.
             self.root_oid = get_root(getSite())._p_oid
+        # The get_root loop may have never found the root
+        if self.root_oid is None:
+            self.root_oid = get_root(getSite())._p_oid
         self.oid = self.object._p_oid
         self.dbname = connection.db().database_name
 
