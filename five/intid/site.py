@@ -1,4 +1,4 @@
-from Acquisition import aq_parent
+from Acquisition import aq_parent, aq_base
 from Products.Five import BrowserView
 from Products.Five.site.localsite import enableLocalSiteHook, disableLocalSiteHook
 from zope.app.component.hooks import setSite, setHooks
@@ -44,14 +44,15 @@ def get_root(app):
     # adapted from alecm's 'listen'
     seen = {}
     while app is not None and not IApplication.providedBy(app):
-        seen[id(app)] = 1
+        seen[id(aq_base(app))] = 1
         app = getattr(app, 'aq_parent', getattr(app, '__parent__', None))
-        if id(app) in seen:
+        if id(aq_base(app)) in seen:
             # avoid loops resulting from acquisition-less views
             # whose __parent__ points to
             # the context whose aq_parent points to the view
-            app = None
-            break
+            raise AttributeError, '__parent__ loop found'
+    if app is None:
+        raise AttributeError, 'No application found'
     return app
 
 def addUtility(site, interface, klass, name='', findroot=True):
