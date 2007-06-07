@@ -77,7 +77,7 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     @property
     def wrapped_object(self):
         return self.root.restrictedTraverse(self.path)
-    
+
     def __call__(self):
         return self.wrapped_object
         

@@ -1,4 +1,4 @@
-from Acquisition import aq_parent, aq_base
+from Acquisition import aq_parent, aq_base, aq_inner
 from Products.Five import BrowserView
 from Products.Five.site.localsite import enableLocalSiteHook, disableLocalSiteHook
 from zope.app.component.hooks import setSite, setHooks
@@ -43,6 +43,9 @@ def initializeSite(site, sethook=False, **kw):
 def get_root(app):
     # adapted from alecm's 'listen'
     seen = {}
+    # get the inner-most wrapper (maybe save some cycles, and prevent
+    # bogus loop detection)
+    app = aq_inner(app)
     while app is not None and not IApplication.providedBy(app):
         seen[id(aq_base(app))] = 1
         app = getattr(app, 'aq_parent', getattr(app, '__parent__', None))

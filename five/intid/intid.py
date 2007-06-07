@@ -79,7 +79,6 @@ def removeIntIdSubscriber(ob, event):
     Removes the unique ids registered for the object in all the unique
     id utilities.
     """
-
     utilities = tuple(zapi.getAllUtilitiesRegisteredFor(IIntIds))
     if utilities:
         key = None

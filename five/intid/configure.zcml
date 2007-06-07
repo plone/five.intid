@@ -4,6 +4,7 @@
 	   xmlns:zcml="http://namespaces.zope.org/zcml"
 	   >	   
   <include package="zope.app.keyreference" />
+  <include file="subscriber.zcml" package="five.intid" />
   <five:traversable class="OFS.Application.Application" /> 
   <browser:page
       name="index.html"
