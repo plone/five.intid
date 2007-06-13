@@ -1,4 +1,4 @@
-from Acquisition import IAcquirer, aq_base, ImplicitAcquisitionWrapper
+from Acquisition import IAcquirer, aq_base, aq_inner, ImplicitAcquisitionWrapper
 from ZODB.interfaces import IConnection
 from persistent import IPersistent
 from zope.component import adapter, adapts
@@ -47,6 +47,8 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     key_type_id = 'five.intid.keyreference'
 
     def __init__(self, wrapped_obj):
+        # make sure our object is wrapped by containment only
+        wrapped_obj = aq_inner(wrapped_obj)
         self.path = '/'.join(wrapped_obj.getPhysicalPath())
         self.object = aq_base(wrapped_obj)
         connection = IConnection(wrapped_obj, None)
