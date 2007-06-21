@@ -221,6 +221,15 @@ created)::
     >>> type(ref())
     <type 'ImplicitAcquirerWrapper'>
 
+
+The resolution mechanism tries its best to end up with the current
+request at the end of the acquisition chain, just as it would be
+under noraml circumstances::
+
+    >>> ref.wrapped_object.aq_chain[-1]
+    <ZPublisher.BaseRequest.RequestContainer object at ...>
+
+    
 The hash calculation is a combination of the database name and the
 object's persistent object id(oid)::
 

@@ -1,5 +1,7 @@
-from Acquisition import IAcquirer, aq_base, aq_inner, ImplicitAcquisitionWrapper
+from Acquisition import IAcquirer, aq_base, aq_inner, \
+                        ImplicitAcquisitionWrapper, aq_chain
 from ZODB.interfaces import IConnection
+from ZPublisher.BaseRequest import RequestContainer
 from persistent import IPersistent
 from zope.component import adapter, adapts
 from zope.app.component.hooks import getSite
@@ -66,8 +68,9 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
         try:
             self.root_oid = get_root(wrapped_obj)._p_oid
         except AttributeError:
-            # If the object is unwrapped we can use the Site from the
-            # threadlocal as our acquisition context.
+            # If the object is unwrapped we can try to use the Site from the
+            # threadlocal as our acquisition context, hopefully it's not
+            # something odd.
             self.root_oid = get_root(getSite())._p_oid
         self.oid = self.object._p_oid
         self.dbname = connection.db().database_name
@@ -78,11 +81,25 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
 
     @property
     def wrapped_object(self):
-        return self.root.restrictedTraverse(self.path)
+        obj = self.root.restrictedTraverse(self.path)
+        chain = aq_chain(obj)
+        # Try to ensure we have a request at the acquisition root
+        # by using the one from getSite
+        if not len(chain) or not isinstance(chain[-1], RequestContainer):
+            site = getSite()
+            site_chain = aq_chain(site)
+            if len(site_chain) and isinstance(site_chain[-1], RequestContainer):
+                req = site_chain[-1]
+                new_obj = req
+                # rebuld the chain with the request at the bottom
+                for item in reversed(chain):
+                    new_obj = item.__of__(new_obj)
+                obj = new_obj
+        return obj
 
     def __call__(self):
         return self.wrapped_object
-        
+
     def __hash__(self):
         return hash((self.dbname,
                      self.object._p_oid,
