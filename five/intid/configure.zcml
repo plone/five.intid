@@ -3,50 +3,11 @@
 	   xmlns:five="http://namespaces.zope.org/five"
 	   xmlns:zcml="http://namespaces.zope.org/zcml"
 	   >	   
-  <include package="zope.app.keyreference" />
+
+  <!-- All Core Configuration -->
+  <include file="base.zcml" package="five.intid" />
+
+  <!-- Event Subscribers -->
   <include file="subscriber.zcml" package="five.intid" />
-  <five:traversable class="OFS.Application.Application" /> 
-  <browser:page
-      name="index.html"
-      for="zope.app.intid.interfaces.IIntIds"
-      permission="five.ManageSite"
-      class=".browser.IntIdsView"
-      template="registrations.pt"
-     />
 
-  <browser:page
-      name="populate"
-      for="zope.app.intid.interfaces.IIntIds"
-      permission="five.ManageSite"
-      class=".browser.IntIdsView"
-      attribute="populate"
-     />
-
-  <browser:page
-     for="OFS.interfaces.IFolder"
-     class=".site.FiveIntIdsInstall"
-     permission="five.ManageSite"
-     template="install.pt"
-     name="install-intids.html"
-     />
-
-  <browser:page
-     for="OFS.interfaces.IApplication"
-     class=".site.FiveIntIdsInstall"
-     permission="five.ManageSite"
-     template="install.pt"
-     name="install-intids.html"
-     />
-
-  <subscriber
-     for="zope.app.intid.interfaces.IIntIdAddedEvent"
-     handler="zope.app.event.objectevent.objectEventNotify"
-     />
-
-  <subscriber
-     for="zope.app.intid.interfaces.IIntIdRemovedEvent" 
-     handler="zope.app.event.objectevent.objectEventNotify"
-     />
-
-  <includeOverrides file="overrides.zcml" package="five.intid"/>
 </configure>
