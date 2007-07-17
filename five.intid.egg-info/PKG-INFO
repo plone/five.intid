@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: five.intid
-Version: 0.1.4dev-r32891
+Version: 0.1.4dev-r45625
 Summary: Overrides and zope2 classes to allow intid and keyreferences to work in Five
 Home-page: http://openplans.org/projects/opencore/five-intid
 Author: whit

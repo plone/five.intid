@@ -18,6 +18,7 @@ five.intid.egg-info/requires.txt
 five.intid.egg-info/top_level.txt
 five/intid/README.txt
 five/intid/__init__.py
+five/intid/base.zcml
 five/intid/browser.py
 five/intid/configure.zcml
 five/intid/ftests.py
@@ -28,7 +29,6 @@ five/intid/keyreference.py
 five/intid/overrides.zcml
 five/intid/registrations.pt
 five/intid/site.py
-five/intid/subscriber.py
 five/intid/subscriber.zcml
 five/intid/test.zcml
 five/intid/tests.py
