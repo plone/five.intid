@@ -93,7 +93,7 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
                 new_obj = req
                 # rebuld the chain with the request at the bottom
                 for item in reversed(chain):
-                    new_obj = item.__of__(new_obj)
+                    new_obj = aq_base(item).__of__(new_obj)
                 obj = new_obj
         return obj
 
