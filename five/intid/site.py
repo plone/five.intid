@@ -1,12 +1,13 @@
 from Acquisition import aq_parent, aq_base, aq_inner
 from Products.Five import BrowserView
 from Products.Five.site.localsite import enableLocalSiteHook, disableLocalSiteHook
+from zope.app.intid.interfaces import IIntIds
 from zope.app.component.hooks import setSite, setHooks
 from zope.app.component.interfaces import ISite
 from zope.component.interfaces import ComponentLookupError
 from zope.component import getUtility, getSiteManager
 from OFS.interfaces import IApplication
-from intid import IIntIds, IntIds, OFSIntIds
+from intid import IntIds, OFSIntIds
 from lsm import make_site, USE_LSM
 
 class FiveIntIdsInstall(BrowserView):
@@ -59,14 +60,10 @@ def get_root(app):
         raise AttributeError, 'No application found'
     return app
 
-def addUtility(site, interface, name='', findroot=True):
+def addUtility(site, interface, klass, name='', findroot=True):
     """
     add local utility in zope2
     """
-    if USE_LSM:
-        klass = IntIds
-    else:
-        klass = OFSIntIds
     app = site
     if findroot:
         app = get_root(site)
@@ -95,7 +92,11 @@ from intid import IIntIds, OFSIntIds
 from zope.component import getUtility
 
 def add_intids(site, findroot=False):
-    addUtility(site, IIntIds, findroot=findroot)
+    if USE_LSM:
+        klass = IntIds
+    else:
+        klass = OFSIntIds
+    addUtility(site, IIntIds, klass, findroot=findroot)
 
 def get_intids(context=None):
     return getUtility(IIntIds, context=context)
