@@ -50,8 +50,11 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
 
     def __init__(self, wrapped_obj):
         # make sure our object is wrapped by containment only
-        wrapped_obj = aq_inner(wrapped_obj)
-        self.path = '/'.join(wrapped_obj.getPhysicalPath())
+        try:
+            wrapped_obj = aq_inner(wrapped_obj)
+            self.path = '/'.join(wrapped_obj.getPhysicalPath())
+        except AttributeError:
+            self.path = None
         self.object = aq_base(wrapped_obj)
         connection = IConnection(wrapped_obj, None)
 
@@ -81,6 +84,8 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
 
     @property
     def wrapped_object(self):
+        if self.path is None:
+            return self.object
         obj = self.root.restrictedTraverse(self.path)
         chain = aq_chain(obj)
         # Try to ensure we have a request at the acquisition root

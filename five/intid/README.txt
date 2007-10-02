@@ -8,46 +8,44 @@ zope.app.keyreferences)
 First, let make sure the ofs utility provides the interface::
 
     >>> from zope.app.intid.interfaces import IIntIds
-    >>> from five.intid.intid import OFSIntIds
-
-    >>> zope.interface.verify.verifyObject(IIntIds, OFSIntIds())
-    True
+    >>> from five.intid import site
+    >>> import five.intid.tests as tests
+    >>> import zope
+    >>> from zope.app.component.hooks import setSite
 
 Content added before the utility won't be registered(until explicitly
 called to). We'll set some up now for later
 
-    >>> manage_addSimpleContent(self.folder, 'mycont1', "My Content")
+    >>> tests.manage_addSimpleContent(self.folder, 'mycont1', "My Content")
     >>> content1 = self.folder.mycont1
 
 `five.intid.site` has convenience functions for adding, get and
 removing an IntId utility: `add_intid`, `get_intid`, `del_intid`.
 
-Adding::
+You can install the utility in a specific location::
 
-    >>> from five.intid.site import add_intids, get_intids, del_intids
-    >>> add_intids(self.folder)
-    >>> self.folder.utilities.IIntIds
-    <OFSIntIds at /test_folder_1_/utilities/IIntIds>
+    >>> site.add_intids(self.folder)
+    >>> folder_intids = site.get_intids(self.folder)
+    >>> zope.interface.verify.verifyObject(IIntIds, folder_intids)
+    True
 
-You can also tell `add_intids` to find the site root, and install there::
+You can tell `add_intids` to find the site root, and install there.
+It will be available everywhere::
 
-    >>> add_intids(self.folder, findroot=True)
-    >>> self.app.utilities.IIntIds
-    <OFSIntIds at /utilities/IIntIds>
-
-To get a local intid utility::
-
-    >>> site.get_intids(self.folder)
-    <OFSIntIds at /test_folder_1_/utilities/IIntIds>
-    
-    >>> site.get_intids(self.app)
-    <OFSIntIds at /utilities/IIntIds>
+    >>> site.add_intids(self.folder, findroot=True)
+    >>> root_intids = site.get_intids(self.app)
+    >>> root_intids
+    <...IntIds ...>
+    >>> folder_intids is root_intids
+    False
 
 And finally, do a remove::
 
     >>> site.del_intids(self.folder, findroot=True)
-    >>> self.app.utilities.objectIds()
-    []
+    >>> site.get_intids(self.app)
+    Traceback (most recent call last):
+    ...
+    ComponentLookupError: (<InterfaceClass zope.app.intid.interfaces.IIntIds>, '')
 
 Before we look at intid events, we need to set the traversal
 hook. Once we have done this, when we ask for all registered Intids,
@@ -55,18 +53,22 @@ we will get the utility from test folder::
 
     >>> setSite(self.folder)
     >>> tuple(zope.component.getAllUtilitiesRegisteredFor(IIntIds))
-    (<OFSIntIds at /test_folder_1_/utilities/IIntIds>,)
+    (<...IntIds ...>,)
 
 
 When we add content, event will be fired to add keyreference for said
 objects the utilities (currently, our content and the utility are
 registered)::
 
-    >>> manage_addSimpleContent(self.folder, 'mycont2', "My Content")
+    >>> from five.intid.lsm import USE_LSM
+    >>> tests.manage_addSimpleContent(self.folder, 'mycont2', "My Content")
     >>> content2 = self.folder.mycont2
     >>> intid = site.get_intids(self.folder)
-    >>> len(intid.items())
-    2
+    >>> if USE_LSM:
+    ...     len(intid.items()) == 1
+    ... else:
+    ...     len(intid.items()) == 2
+    True
 
 Pre-existing content will raise a keyerror if passed to the intid
 utility::
@@ -78,10 +80,10 @@ utility::
 
 We can call the keyreferences, and get the objects back::
 
-    >>> intid.items()[0][1]()
-    <OFSIntIds at /test_folder_1_/utilities/IIntIds>
-
-    >>> intid.items()[1][1]()
+    >>> if USE_LSM:
+    ...     intid.items()[0][1]()
+    ... else:
+    ...     intid.items()[1][1]()
     <SimpleContent at /test_folder_1_/mycont2>
 
 we can get an object's `intid` from the utility like so::
@@ -113,6 +115,8 @@ even if it is unwrapped::
     True
 
 
+
+
 When an object is added or removed, subscribers add it to the intid
 utility, and fire an event is fired
 (zope.app.intid.interfaces.IIntIdAddedEvent,
@@ -122,7 +126,6 @@ zope.app.intid.interfaces.IIntIdRemovedEvent respectively).
 tests hook up a simple subscriber to verify that the intid object
 events are fired (these events are useful for catalogish tasks). 
 
-    >>> import five.intid.tests as tests
     >>> tests.NOTIFIED[0]
     '<SimpleContent at mycont2> <...IntIdAddedEvent instance at ...'
 
@@ -171,6 +174,20 @@ Let's move it back:
     >>> cut = folder.folder2.manage_cutObjects(['mycont_new'])
     >>> ignore = folder.manage_pasteObjects(cut)
     >>> folder.manage_renameObject('mycont_new','mycont2')
+
+We can create an object without acquisition so we can be able to
+add intid to it :
+
+    
+    >>> from five.intid.tests import DemoPersistent
+    >>> demo1 = DemoPersistent()
+    >>> demo1.__parent__ = self.app
+    >>> from zope.event import notify
+    >>> from zope.app.container.contained import ObjectAddedEvent
+    >>> notify(ObjectAddedEvent(demo1))
+    >>> nowrappid = intid.getId(demo1)
+    >>> demo1 == intid.getObject(nowrappid)
+    True
 
 This is a good time to take a look at keyreferences, the core part of
 this system.

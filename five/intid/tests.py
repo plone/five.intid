@@ -1,10 +1,10 @@
 import doctest
-# monkeypatch app as site
-from collective.testing.utils import monkeyAppAsSite
-monkeyAppAsSite()
+
+from lsm import USE_LSM
 
 from collective.testing.layer import ZCMLLayer
-from collective.testing.subscribers import setBuffer, setFilter
+from persistent import Persistent
+
 
 optionflags = doctest.REPORT_ONLY_FIRST_FAILURE | doctest.ELLIPSIS
 from Products.Five.tests.testing.simplecontent import SimpleContent, ISimpleContent, manage_addSimpleContent
@@ -14,25 +14,14 @@ from Products.Five import zcml
 from zope.app.component.hooks import setSite, getSite, setHooks
 from cStringIO import StringIO
 
+class DemoPersistent(Persistent):
+    """ Demo persistent object """
+    test = 'test object'
+    __name__ = 'Test Object'
+
 class zope(object):
     import zope.interface as interface
     import zope.component as component
-
-# create test namespace
-test_ns = dict(manage_addSimpleContent=manage_addSimpleContent,
-               SimpleContent=SimpleContent,
-               site=site,
-               setEventBuffer=setBuffer,
-               StringIO=StringIO,
-               getSite=getSite,
-               setSite=setSite,
-               zope = zope
-               )
-
-from zope.app.intid.interfaces import IIntIdRemovedEvent
-from zope.app.intid.interfaces import IIntIdAddedEvent
-
-setFilter()
 
 NOTIFIED=[None]
 
@@ -44,6 +33,10 @@ class FiveIntIdEventLayer(ZCMLLayer):
     import Zope2
     @classmethod
     def setUp(cls):
+        if not USE_LSM:
+            # monkeypatch app as site
+            from collective.testing.utils import monkeyAppAsSite
+            monkeyAppAsSite()
         zcml.load_config('test.zcml', intid)
         setHooks()
 
@@ -54,7 +47,7 @@ def test_suite():
     integration = FunctionalDocFileSuite(
         'README.txt',
         package='five.intid',
-        globs=test_ns,
+        optionflags=optionflags
         )
     integration.layer = FiveIntIdEventLayer
     utils = DocTestSuite("five.intid.utils")

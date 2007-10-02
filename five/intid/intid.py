@@ -1,7 +1,8 @@
 from Globals import InitializeClass
-from OFS.SimpleItem import SimpleItem
+from persistent import Persistent
+from Acquisition import Explicit
 from zope.app import zapi
-from zope.app.intid import IntIds
+from zope.app.intid import IntIds as z3IntIds
 from zope.app.intid.interfaces import IIntIds
 from zope.app.intid.interfaces import IntIdAddedEvent, IntIdRemovedEvent
 from zope.app.container.interfaces import IObjectAddedEvent, IObjectRemovedEvent
@@ -18,21 +19,21 @@ except ImportError:
 
 _marker = []
 
-class OFSIntIds(IntIds, SimpleItem):
+class IntIds(z3IntIds):
     """ zope2ish intid utility """
     implements(IIntIds)
 
     meta_type="IntId Utility"
 
     def __init__(self, id_=IIntIds.__name__):
-        self.id = id_
-        super(OFSIntIds, self).__init__()
+        self.id = self.__name__ = id_
+        super(IntIds, self).__init__()
 
     def getId(self, ob=_marker):
         # Compatibility with SimpleItem
         if ob is _marker:
-            return SimpleItem.getId(self)
-        return IntIds.getId(self, ob)
+            return self.__name__
+        return z3IntIds.getId(self, ob)
 
     def register(self, ob):
         key = IKeyReference(ob)
@@ -51,6 +52,16 @@ class OFSIntIds(IntIds, SimpleItem):
         uid = self.ids[key]
         del self.refs[uid]
         del self.ids[key]
+
+InitializeClass(IntIds)
+
+class OFSIntIds(IntIds, Explicit):
+    """Mixin acquisition for non-lsm sites"""
+
+    def manage_fixupOwnershipAfterAdd(self):
+        pass
+    def wl_isLocked(self):
+        return False
 
 InitializeClass(OFSIntIds)
 

@@ -4,15 +4,16 @@ from Products.Five.site.localsite import enableLocalSiteHook, disableLocalSiteHo
 from zope.app.component.hooks import setSite, setHooks
 from zope.app.component.interfaces import ISite
 from zope.component.interfaces import ComponentLookupError
-from zope.component import getUtility
+from zope.component import getUtility, getSiteManager
 from OFS.interfaces import IApplication
-from intid import IIntIds, OFSIntIds
+from intid import IIntIds, IntIds, OFSIntIds
+from lsm import make_site, USE_LSM
 
 class FiveIntIdsInstall(BrowserView):
     @property
     def context(self):
         return self._context[0]
-    
+
     def __init__(self, context, request):
         self._context = context,
         self.request = request
@@ -21,7 +22,7 @@ class FiveIntIdsInstall(BrowserView):
             self.install()
 
     def install(self):
-        addUtility(self.context, IIntIds, OFSIntIds, findroot=False)
+        addUtility(self.context, IIntIds, findroot=False)
 
     @property
     def installed(self):
@@ -35,7 +36,7 @@ class FiveIntIdsInstall(BrowserView):
         return installed
 
 def initializeSite(site, sethook=False, **kw):
-    enableLocalSiteHook(site)
+    make_site(site)
     if sethook:
          setHooks()
     setSite(site)
@@ -58,10 +59,14 @@ def get_root(app):
         raise AttributeError, 'No application found'
     return app
 
-def addUtility(site, interface, klass, name='', findroot=True):
+def addUtility(site, interface, name='', findroot=True):
     """
     add local utility in zope2
     """
+    if USE_LSM:
+        klass = IntIds
+    else:
+        klass = OFSIntIds
     app = site
     if findroot:
         app = get_root(site)
@@ -72,7 +77,7 @@ def addUtility(site, interface, klass, name='', findroot=True):
 
     if not ISite.providedBy(app):
         initializeSite(app, sethook=False)
-        
+
     sm = app.getSiteManager()
     if sm.queryUtility(interface,
                        name=name,
@@ -80,13 +85,17 @@ def addUtility(site, interface, klass, name='', findroot=True):
 
         if name: obj = klass(name)
         else: obj = klass()
-        sm.registerUtility(interface, obj, name=name)  #2.9
+        if USE_LSM:
+            sm.registerUtility(provided=interface, component=obj,
+                               name=name)
+        else:
+            sm.registerUtility(interface, obj, name=name)
 
 from intid import IIntIds, OFSIntIds
 from zope.component import getUtility
 
 def add_intids(site, findroot=False):
-    addUtility(site, IIntIds, OFSIntIds, findroot=findroot)
+    addUtility(site, IIntIds, findroot=findroot)
 
 def get_intids(context=None):
     return getUtility(IIntIds, context=context)
@@ -95,6 +104,9 @@ def del_intids(context=None, findroot=False):
     if findroot:
         context = get_root(context)
     utility = get_intids(context)
-    parent = utility.aq_parent
-    parent.manage_delObjects([utility.getId()])
-    
+    if USE_LSM:
+        getSiteManager(context).unregisterUtility(component=utility,
+                                                  provided=IIntIds)
+    else:
+        parent = utility.aq_parent
+        parent.manage_delObjects([utility.__name__])

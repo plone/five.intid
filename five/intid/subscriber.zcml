@@ -2,17 +2,17 @@
 	
   <subscriber
      handler=".intid.addIntIdSubscriber"
-     for="OFS.interfaces.ITraversable
+     for="persistent.IPersistent
           zope.app.container.interfaces.IObjectAddedEvent"
       />
   <subscriber
       handler=".intid.removeIntIdSubscriber"
-      for="OFS.interfaces.ITraversable
+      for="persistent.IPersistent
            zope.app.container.interfaces.IObjectRemovedEvent"
       />
   <subscriber
       handler=".intid.moveIntIdSubscriber"
-      for="OFS.interfaces.ITraversable
+      for="persistent.IPersistent
            zope.app.container.interfaces.IObjectMovedEvent"
       />
 </configure>
