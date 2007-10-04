@@ -10,8 +10,10 @@ First, let make sure the ofs utility provides the interface::
     >>> from zope.app.intid.interfaces import IIntIds
     >>> from five.intid import site
     >>> import five.intid.tests as tests
-    >>> import zope
+    >>> from zope.interface.verify import verifyObject
+    >>> from zope.component import getAllUtilitiesRegisteredFor
     >>> from zope.app.component.hooks import setSite
+    >>> tests.setUp(self.app)
 
 Content added before the utility won't be registered(until explicitly
 called to). We'll set some up now for later
@@ -26,7 +28,7 @@ You can install the utility in a specific location::
 
     >>> site.add_intids(self.folder)
     >>> folder_intids = site.get_intids(self.folder)
-    >>> zope.interface.verify.verifyObject(IIntIds, folder_intids)
+    >>> verifyObject(IIntIds, folder_intids)
     True
 
 You can tell `add_intids` to find the site root, and install there.
@@ -52,7 +54,7 @@ hook. Once we have done this, when we ask for all registered Intids,
 we will get the utility from test folder::
 
     >>> setSite(self.folder)
-    >>> tuple(zope.component.getAllUtilitiesRegisteredFor(IIntIds))
+    >>> tuple(getAllUtilitiesRegisteredFor(IIntIds))
     (<...IntIds ...>,)
 
 
@@ -256,3 +258,4 @@ object's persistent object id(oid)::
     >>> hash((ref.dbname, ref.object._p_oid)) == hash(ref)
     True
 
+    >>> tests.tearDown()

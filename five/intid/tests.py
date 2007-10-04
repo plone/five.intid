@@ -1,44 +1,52 @@
 import doctest
-
-from lsm import USE_LSM
-
-from collective.testing.layer import ZCMLLayer
+from zope.app.testing import placelesssetup
 from persistent import Persistent
+from zope.app.component.hooks import setHooks, setSite
+
+from Products.Five.tests.testing.simplecontent import (
+    SimpleContent,
+    ISimpleContent,
+    manage_addSimpleContent,
+    )
+from Products.Five import zcml
+from five.intid.lsm import USE_LSM
+from five.intid import site
 
 
 optionflags = doctest.REPORT_ONLY_FIRST_FAILURE | doctest.ELLIPSIS
-from Products.Five.tests.testing.simplecontent import SimpleContent, ISimpleContent, manage_addSimpleContent
-from five.intid import site
-
-from Products.Five import zcml
-from zope.app.component.hooks import setSite, getSite, setHooks
-from cStringIO import StringIO
 
 class DemoPersistent(Persistent):
     """ Demo persistent object """
     test = 'test object'
     __name__ = 'Test Object'
 
-class zope(object):
-    import zope.interface as interface
-    import zope.component as component
-
 NOTIFIED=[None]
 
 def setNotified(event):
     NOTIFIED[0] = "%s %s" %(event.object, event)
 
-from five import intid
-class FiveIntIdEventLayer(ZCMLLayer):
-    import Zope2
-    @classmethod
-    def setUp(cls):
-        if not USE_LSM:
-            # monkeypatch app as site
-            from collective.testing.utils import monkeyAppAsSite
-            monkeyAppAsSite()
-        zcml.load_config('test.zcml', intid)
-        setHooks()
+
+def setUp(app):
+    # enable zcml and site hooks
+    placelesssetup.setUp()
+    import Products.Five
+    from five import intid
+    zcml.load_config('meta.zcml', Products.Five)
+    zcml.load_config('configure.zcml', Products.Five)
+    zcml.load_config('test.zcml', intid)
+    if not USE_LSM:
+        # monkey in our hooks
+        from Products.Five.site.metaconfigure import classSiteHook
+        from Products.Five.site.localsite import FiveSite
+        from zope.interface import classImplements
+        from zope.app.component.interfaces import IPossibleSite
+        klass = app.__class__
+        classSiteHook(klass, FiveSite)
+        classImplements(klass, IPossibleSite)
+    setHooks()
+
+def tearDown():
+    placelesssetup.tearDown()
 
 def test_suite():
     import unittest
@@ -49,6 +57,5 @@ def test_suite():
         package='five.intid',
         optionflags=optionflags
         )
-    integration.layer = FiveIntIdEventLayer
     utils = DocTestSuite("five.intid.utils")
     return unittest.TestSuite((integration, utils))
