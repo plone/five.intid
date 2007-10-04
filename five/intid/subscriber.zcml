@@ -12,7 +12,7 @@
       />
   <subscriber
       handler=".intid.moveIntIdSubscriber"
-      for="persistent.IPersistent
+      for="OFS.interfaces.ITraversable
            zope.app.container.interfaces.IObjectMovedEvent"
       />
 </configure>
