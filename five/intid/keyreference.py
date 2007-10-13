@@ -51,7 +51,6 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     def __init__(self, wrapped_obj):
         # make sure our object is wrapped by containment only
         try:
-            wrapped_obj = aq_inner(wrapped_obj)
             self.path = '/'.join(wrapped_obj.getPhysicalPath())
         except AttributeError:
             self.path = None
