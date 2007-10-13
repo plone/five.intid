@@ -2,6 +2,7 @@ from Acquisition import IAcquirer, aq_base, aq_inner, \
                         ImplicitAcquisitionWrapper, aq_chain
 from ZODB.interfaces import IConnection
 from ZPublisher.BaseRequest import RequestContainer
+from zExceptions import NotFound
 from persistent import IPersistent
 from zope.component import adapter, adapts
 from zope.app.component.hooks import getSite
@@ -85,7 +86,10 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     def wrapped_object(self):
         if self.path is None:
             return self.object
-        obj = self.root.restrictedTraverse(self.path)
+        try:
+            obj = self.root.restrictedTraverse(self.path)
+        except NotFound:
+            return self.object
         chain = aq_chain(obj)
         # Try to ensure we have a request at the acquisition root
         # by using the one from getSite
