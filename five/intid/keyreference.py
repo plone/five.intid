@@ -20,7 +20,7 @@ def connectionOfPersistent(obj):
     """ zope2 cxn fetcher for wrapped items """
     cur = obj
     if IAcquirer.providedBy(obj) or hasattr(obj, '__parent__'):
-        while not getattr(cur, '_p_jar', None):
+        while getattr(cur, '_p_jar', None) is None:
             cur = getattr(cur, 'aq_parent', getattr(cur, '__parent__', None))
             if cur is None:
                 return None
