@@ -70,7 +70,7 @@ def addUtility(site, interface, klass, name='', findroot=True):
 
     # If we have the zope Application and the utility is not yet
     # registered, then register it.
-    assert app, TypeError("app is None")
+    assert app is not None, TypeError("app is None")
 
     if not ISite.providedBy(app):
         initializeSite(app, sethook=False)
