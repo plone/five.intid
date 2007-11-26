@@ -1,4 +1,3 @@
-from Acquisition import aq_parent, aq_base, aq_inner
 from Products.Five import BrowserView
 from Products.Five.site.localsite import enableLocalSiteHook, disableLocalSiteHook
 from zope.app.intid.interfaces import IIntIds
@@ -9,6 +8,7 @@ from zope.component import getUtility, getSiteManager
 from OFS.interfaces import IApplication
 from intid import IntIds, OFSIntIds
 from lsm import make_site, USE_LSM
+from utils import aq_iter
 
 class FiveIntIdsInstall(BrowserView):
     @property
@@ -43,22 +43,10 @@ def initializeSite(site, sethook=False, **kw):
     setSite(site)
 
 def get_root(app):
-    # adapted from alecm's 'listen'
-    seen = {}
-    # get the inner-most wrapper (maybe save some cycles, and prevent
-    # bogus loop detection)
-    app = aq_inner(app)
-    while app is not None and not IApplication.providedBy(app):
-        seen[id(aq_base(app))] = 1
-        app = getattr(app, 'aq_parent', getattr(app, '__parent__', None))
-        if id(aq_base(app)) in seen:
-            # avoid loops resulting from acquisition-less views
-            # whose __parent__ points to
-            # the context whose aq_parent points to the view
-            raise AttributeError, '__parent__ loop found'
-    if app is None:
-        raise AttributeError, 'No application found'
-    return app
+    for parent in aq_iter(app, error=AttributeError):
+        if IApplication.providedBy(parent):
+            return parent
+    raise AttributeError, 'No application found'
 
 def addUtility(site, interface, klass, name='', findroot=True):
     """

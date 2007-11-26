@@ -259,3 +259,32 @@ object's persistent object id(oid)::
     True
 
     >>> tests.tearDown()
+
+Acquisition Loops
+=================
+
+five.intid detects loops in acquisition chains in both aq_parent and
+__parent__.
+
+Setup a loop::
+
+    >>> import Acquisition
+    >>> class Acq(Acquisition.Acquirer): pass
+    >>> foo = Acq()
+    >>> foo.bar = Acq()
+    >>> foo.__parent__ = foo.bar
+
+Looking for the root on an object with an acquisition loop will raise
+an error::
+
+    >>> from five.intid import site
+    >>> site.get_root(foo.bar)
+    Traceback (most recent call last):
+    ...
+    AttributeError: __parent__ loop found
+
+Looking for the connection on an object with an acquisition loop will
+simply return None::
+
+    >>> from five.intid import keyreference
+    >>> keyreference.connectionOfPersistent(foo.bar)

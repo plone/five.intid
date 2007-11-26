@@ -1,5 +1,4 @@
-from Acquisition import IAcquirer, aq_base, aq_inner, \
-                        ImplicitAcquisitionWrapper, aq_chain
+from Acquisition import aq_base, ImplicitAcquisitionWrapper, aq_chain
 from ZODB.interfaces import IConnection
 from ZPublisher.BaseRequest import RequestContainer
 from zExceptions import NotFound
@@ -9,7 +8,7 @@ from zope.app.component.hooks import getSite
 from zope.interface import implements, implementer
 from zope.app.keyreference.interfaces import IKeyReference, NotYet
 from zope.app.keyreference.persistent import KeyReferenceToPersistent
-from site import get_root
+from site import get_root, aq_iter
 from utils import test_settable
 from interfaces import UnsettableAttributeError
 from zope.app.container.interfaces import IObjectAddedEvent
@@ -18,15 +17,10 @@ from zope.app.container.interfaces import IObjectAddedEvent
 @implementer(IConnection)
 def connectionOfPersistent(obj):
     """ zope2 cxn fetcher for wrapped items """
-    cur = obj
-    if IAcquirer.providedBy(obj) or hasattr(obj, '__parent__'):
-        while getattr(cur, '_p_jar', None) is None:
-            cur = getattr(cur, 'aq_parent', getattr(cur, '__parent__', None))
-            if cur is None:
-                return None
-        return cur._p_jar
-    else:
-        raise TypeError("%s not acquisition wrapped" %obj)
+    for parent in aq_iter(obj):
+        conn = getattr(parent, '_p_jar', None) 
+        if conn is not None:
+            return conn
 
 @adapter(IPersistent, IObjectAddedEvent)
 def add_object_to_connection(ob, event):
