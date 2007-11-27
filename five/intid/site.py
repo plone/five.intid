@@ -23,7 +23,7 @@ class FiveIntIdsInstall(BrowserView):
             self.install()
 
     def install(self):
-        addUtility(self.context, IIntIds, findroot=False)
+        add_intids(self.context, findroot=False)
 
     @property
     def installed(self):
