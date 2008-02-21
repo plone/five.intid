@@ -288,3 +288,35 @@ simply return None::
 
     >>> from five.intid import keyreference
     >>> keyreference.connectionOfPersistent(foo.bar)
+
+FSPythonScripts
+===============
+
+The FSPythonScripts from CMFCore can have pickling problems if the
+five.intid event handlers end up adding an FSPythonScript to a
+connection.  As such they're omitted.
+
+    >>> from zope import interface, component
+    >>> from five.intid import keyreference
+    >>> component.getSiteManager().registerAdapter(
+    ...     factory=keyreference.connectionOfPersistent)
+
+    >>> foo = keyreference.FSPythonScript('foo', __file__)
+    >>> self.app._setObject('foo', foo)
+    'foo'
+
+    >>> keyref = keyreference.KeyReferenceToPersistent(self.app.foo)
+    Traceback (most recent call last):
+    ...
+    UnsettableAttributeError: <FSPythonScript at foo>
+    >>> foo in self.app._p_jar._registered_objects
+    False
+
+Note: I'm not sure whether the real problem here is in five.intid or
+in FSPythonScript.  FSPythonScript implements IPersistent so it seems
+like instances should be addable to connections without error so it
+can be argued that the error is in FSPythonScript.  On the other hand,
+FSPythonScript instances were probably only ever intended to be used
+in DirectoryViews in CMF skins.  As such it could also be argued that
+five.intid is behaving improperly by aggressively trying handle events
+for all objects implementing IPersistent.
