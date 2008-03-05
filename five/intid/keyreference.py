@@ -23,7 +23,7 @@ except:
 def connectionOfPersistent(obj):
     """ zope2 cxn fetcher for wrapped items """
     for parent in aq_iter(obj):
-        conn = getattr(parent, '_p_jar', None) 
+        conn = getattr(parent, '_p_jar', None)
         if conn is not None:
             return conn
 
@@ -87,7 +87,7 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
         if self.path is None:
             return self.object
         try:
-            obj = self.root.restrictedTraverse(self.path)
+            obj = self.root.unrestrictedTraverse(self.path)
         except NotFound:
             return self.object
         chain = aq_chain(obj)
