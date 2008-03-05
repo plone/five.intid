@@ -1,4 +1,4 @@
-from Acquisition import aq_base, ImplicitAcquisitionWrapper, aq_chain
+from Acquisition import aq_base, aq_chain
 from ZODB.interfaces import IConnection
 from ZPublisher.BaseRequest import RequestContainer
 from zExceptions import NotFound
@@ -16,7 +16,9 @@ from zope.app.container.interfaces import IObjectAddedEvent
 try:
     from Products.CMFCore.FSPythonScript import FSPythonScript
 except:
-    class FSPythonScript(object): pass
+    class FSPythonScript(object):
+        pass
+
 
 @adapter(IPersistent)
 @implementer(IConnection)
@@ -26,6 +28,7 @@ def connectionOfPersistent(obj):
         conn = getattr(parent, '_p_jar', None)
         if conn is not None:
             return conn
+
 
 @adapter(IPersistent, IObjectAddedEvent)
 def add_object_to_connection(ob, event):
@@ -96,7 +99,8 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
         if not len(chain) or not isinstance(chain[-1], RequestContainer):
             site = getSite()
             site_chain = aq_chain(site)
-            if len(site_chain) and isinstance(site_chain[-1], RequestContainer):
+            if len(site_chain) and isinstance(site_chain[-1],
+                                              RequestContainer):
                 req = site_chain[-1]
                 new_obj = req
                 # rebuld the chain with the request at the bottom
@@ -116,11 +120,13 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     def __cmp__(self, other):
         if self.key_type_id == other.key_type_id:
             try:
-                other = (IConnection(other.object).db().database_name, other.object._p_oid)
+                other = (IConnection(other.object).db().database_name,
+                         other.object._p_oid)
             except TypeError:
                 other = None
             return cmp(
-                (IConnection(self.object).db().database_name,  self.object._p_oid),
+                (IConnection(self.object).db().database_name,
+                 self.object._p_oid),
                 other,
                 )
 
