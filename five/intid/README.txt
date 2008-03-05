@@ -159,7 +159,7 @@ Renaming an object should not break the rewrapping of the object:
     >>> moved
     <SimpleContent at /test_folder_1_/mycont_new>
 
-Nor shopuld moving it:
+Nor should moving it:
 
     >>> from OFS.Folder import manage_addFolder
     >>> manage_addFolder(self.folder, 'folder2', "folder 2")
@@ -180,7 +180,6 @@ Let's move it back:
 We can create an object without acquisition so we can be able to
 add intid to it :
 
-    
     >>> from five.intid.tests import DemoPersistent
     >>> demo1 = DemoPersistent()
     >>> demo1.__parent__ = self.app
@@ -204,7 +203,7 @@ referencing(another zodb object, a hook for sqlobject, etc)::
 
 object retrieval in intid occurs by calling a key reference. This
 implementation is slightly different than the zope3 due to
-acquistion.
+acquisition.
 
 The factories returned by IKeyReference must persist and this dictates
 being especially careful about references to acquisition wrapped
