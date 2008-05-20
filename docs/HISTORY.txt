@@ -4,6 +4,9 @@ Changelog
 0.2.0 - May 20, 2008
 --------------------
 
+- Cleanup documentation a little bit so it can be used for the pypi page.
+  [wichert]
+
 - Many changes by many people.
   [alecm, hannosch, maurits, mborch, reinout, rockt, witsch]
 
