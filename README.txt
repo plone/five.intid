@@ -1,7 +1,10 @@
-five.intid Package Readme
-=========================
+Introduction
+============
 
-Overview
---------
+This package makes it possible to use `zope.app.intid`_ (and consequentually
+other packages that rely on it such as ``zope.app.keyreference``) in a Zope2
+environment.
 
-Overrides and zope2 classes to allow intid and keyreferences to work in Five
+.. _zope.app.intid: http://pypi.python.org/pypi/zope.app.intid
+
+

@@ -1,24 +1,24 @@
 from setuptools import setup, find_packages
-import sys, os
+import os.path
 
 version = '0.1.6'
 
 setup(name='five.intid',
       version=version,
-      description="Overrides and zope2 classes to allow intid and keyreferences to work in Five",
-      long_description="""\ """,
-      classifiers=[], # Get strings from http://www.python.org/pypi?%3Aaction=list_classifiers
+      description="Zope2 support for zope.app.intid",
+      long_description=open("README.txt").read() + "\n" +
+               open(os.path.join("five", "intid", "README.txt")).read() + "\n" +
+               open(os.path.join("docs", "HISTORY.txt")).read(),
+      classifiers=[
+          "Framework :: Zope2"],
       keywords="'zope2 Five zope3 UID'",
-      author='whit',
+      author='Whit Morris',
       author_email='whit@openplans.org',
-      url='http://openplans.org/projects/five-intid',
       license='ZPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['five'],
       include_package_data=True,
       zip_safe=False,
       install_requires=['setuptools'],
-      entry_points="""
-      # -*- Entry points: -*-
-      """,
       )
+

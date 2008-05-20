@@ -1,9 +1,16 @@
-Changelog for five.intid
+Changelog
+=========
 
-    (name of developer listed in brackets)
+0.2.0 - May 20, 2008
+--------------------
 
-five.intid - 0.1 Unreleased
+- Many changes by many people.
+  [alecm, hannosch, maurits, mborch, reinout, rockt, witsch]
 
-    - Initial package structure.
-      [zopeskel]
+
+0.1.4 - November 11, 2006
+-------------------------
+
+- First public release.
+  [brcwhit]
 

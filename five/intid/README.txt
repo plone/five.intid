@@ -1,9 +1,5 @@
-============
- Five IntId
-============
-
-This is a compatibility layer for zope.app.intid(and consequentually,
-zope.app.keyreferences)
+Usage
+=====
 
 First, let make sure the ofs utility provides the interface::
 
@@ -199,7 +195,7 @@ Key References in Zope2
 
 Key references are hashable objects returned by IKeyReference.  The
 hash produced is a unique identifier for whatever the object is
-referencing(another zodb object, a hook for sqlobject, etc)::
+referencing(another zodb object, a hook for sqlobject, etc).
 
 object retrieval in intid occurs by calling a key reference. This
 implementation is slightly different than the zope3 due to
