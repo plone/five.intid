@@ -284,11 +284,11 @@ simply return None::
     >>> from five.intid import keyreference
     >>> keyreference.connectionOfPersistent(foo.bar)
 
-FSPythonScripts
-===============
+FSObjects
+=========
 
-The FSPythonScripts from CMFCore can have pickling problems if the
-five.intid event handlers end up adding an FSPythonScript to a
+The FSObjects from CMFCore can have pickling problems if the
+five.intid event handlers end up adding an FSObject to a
 connection.  As such they're omitted.
 
     >>> from zope import interface, component
@@ -296,7 +296,8 @@ connection.  As such they're omitted.
     >>> component.getSiteManager().registerAdapter(
     ...     factory=keyreference.connectionOfPersistent)
 
-    >>> foo = keyreference.FSPythonScript('foo', __file__)
+    >>> from Products.CMFCore import FSPythonScript
+    >>> foo = FSPythonScript.FSPythonScript('foo', __file__)
     >>> self.app._setObject('foo', foo)
     'foo'
 
@@ -308,10 +309,10 @@ connection.  As such they're omitted.
     False
 
 Note: I'm not sure whether the real problem here is in five.intid or
-in FSPythonScript.  FSPythonScript implements IPersistent so it seems
+in FSObject.  FSObject implements IPersistent so it seems
 like instances should be addable to connections without error so it
-can be argued that the error is in FSPythonScript.  On the other hand,
-FSPythonScript instances were probably only ever intended to be used
+can be argued that the error is in FSObject.  On the other hand,
+FSObject instances were probably only ever intended to be used
 in DirectoryViews in CMF skins.  As such it could also be argued that
 five.intid is behaving improperly by aggressively trying handle events
 for all objects implementing IPersistent.

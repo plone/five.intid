@@ -14,9 +14,9 @@ from interfaces import UnsettableAttributeError
 from zope.app.container.interfaces import IObjectAddedEvent
 
 try:
-    from Products.CMFCore.FSPythonScript import FSPythonScript
+    from Products.CMFCore.FSObject import FSObject
 except:
-    class FSPythonScript(object):
+    class FSObject(object):
         pass
 
 
@@ -67,7 +67,7 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
             # DirectoryViews do not allow setting of _p_oid
             # will cause transaction errors
             if (not test_settable(self.object, '_p_oid')
-                or isinstance(self.object, FSPythonScript)):
+                or isinstance(self.object, FSObject)):
                 raise UnsettableAttributeError(wrapped_obj)
             connection.add(self.object)
 
