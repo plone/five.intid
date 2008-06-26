@@ -316,3 +316,11 @@ FSObject instances were probably only ever intended to be used
 in DirectoryViews in CMF skins.  As such it could also be argued that
 five.intid is behaving improperly by aggressively trying handle events
 for all objects implementing IPersistent.
+
+There's another related problem with DirectoryView objects that isn't
+covered here.  DirectoryView stores instances of Persistent classes
+(like FSPageTemplate) in a global registry and thus counts on those
+instances never being added to a ZODB connection.  When the five.intid
+event handlers add such objects to a ZODB connection, the retrieval
+from global state could result in an instance from a closed connection
+being de-ghosted raising a ConnectionStateError.
