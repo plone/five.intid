@@ -37,8 +37,9 @@ class IntIds(z3IntIds):
 
     def register(self, ob):
         key = IKeyReference(ob)
-        if key in self.ids:
-            return self.ids[key]
+        res = self.ids.get(key, None)
+        if res is not None:
+            return res
         uid = self._generateId()
         self.refs[uid] = key
         self.ids[key] = uid
