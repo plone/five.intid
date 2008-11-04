@@ -4,6 +4,12 @@ Changelog
 1.0 - UNRELEASED
 ----------------
 
+- Avoid unnecessary adapter lookups in __cmp__ as __cmp__
+  is called rather often and is performance sensitive.
+  Cumulative time now 0.080 vs previous 1.820 for 6000 compares
+  when profiling.
+  [tesdal]
+
 - Avoid redundant __cmp__ calls in BTree traversal.
   [tesdal]
 

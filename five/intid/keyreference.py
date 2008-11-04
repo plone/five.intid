@@ -119,15 +119,5 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
 
     def __cmp__(self, other):
         if self.key_type_id == other.key_type_id:
-            try:
-                other = (IConnection(other.object).db().database_name,
-                         other.object._p_oid)
-            except TypeError:
-                other = None
-            return cmp(
-                (IConnection(self.object).db().database_name,
-                 self.object._p_oid),
-                other,
-                )
-
+            return cmp((self.dbname,self.oid), (other.dbname, other.oid))
         return cmp(self.key_type_id, other.key_type_id)
