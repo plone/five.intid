@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os.path
 
-version = '1.0'
+version = '0.2.1'
 
 setup(name='five.intid',
       version=version,
