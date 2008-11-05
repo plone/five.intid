@@ -4,6 +4,10 @@ Changelog
 1.0 - UNRELEASED
 ----------------
 
+
+0.2.1 - Nov 05, 2008
+--------------------
+
 - Avoid unnecessary adapter lookups in __cmp__ as __cmp__
   is called rather often and is performance sensitive.
   Cumulative time now 0.080 vs previous 1.820 for 6000 compares
