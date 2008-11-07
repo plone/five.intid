@@ -284,43 +284,29 @@ simply return None::
     >>> from five.intid import keyreference
     >>> keyreference.connectionOfPersistent(foo.bar)
 
-FSObjects
-=========
+Unreferenceable
+===============
 
-The FSObjects from CMFCore can have pickling problems if the
-five.intid event handlers end up adding an FSObject to a
-connection.  As such they're omitted.
+Some objects implement IPersistent but are never actually persisted, or
+contain references to such objects. Specifically, CMFCore directory views
+contain FSObjects that are never persisted, and DirectoryViewSurrogates
+that contain references to such objects. Because FSObjects are never actually
+persisted, five.intid's assumption that it can add a 
+
+For such objects, the unreferenceable module provides no-op subcribers and
+adapters to omit such objects from five.intid handling.
 
     >>> from zope import interface, component
-    >>> from five.intid import keyreference
-    >>> component.getSiteManager().registerAdapter(
-    ...     factory=keyreference.connectionOfPersistent)
+    >>> from five.intid import unreferenceable
 
     >>> from Products.CMFCore import FSPythonScript
     >>> foo = FSPythonScript.FSPythonScript('foo', __file__)
     >>> self.app._setObject('foo', foo)
     'foo'
 
-    >>> keyref = keyreference.KeyReferenceToPersistent(self.app.foo)
+    >>> keyref = unreferenceable.KeyReferenceNever(self.app.foo)
     Traceback (most recent call last):
     ...
-    UnsettableAttributeError: <FSPythonScript at foo>
+    NotYet
     >>> foo in self.app._p_jar._registered_objects
     False
-
-Note: I'm not sure whether the real problem here is in five.intid or
-in FSObject.  FSObject implements IPersistent so it seems
-like instances should be addable to connections without error so it
-can be argued that the error is in FSObject.  On the other hand,
-FSObject instances were probably only ever intended to be used
-in DirectoryViews in CMF skins.  As such it could also be argued that
-five.intid is behaving improperly by aggressively trying handle events
-for all objects implementing IPersistent.
-
-There's another related problem with DirectoryView objects that isn't
-covered here.  DirectoryView stores instances of Persistent classes
-(like FSPageTemplate) in a global registry and thus counts on those
-instances never being added to a ZODB connection.  When the five.intid
-event handlers add such objects to a ZODB connection, the retrieval
-from global state could result in an instance from a closed connection
-being de-ghosted raising a ConnectionStateError.

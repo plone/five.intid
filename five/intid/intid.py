@@ -9,13 +9,6 @@ from zope.app.container.interfaces import IObjectAddedEvent, IObjectRemovedEvent
 from zope.app.keyreference.interfaces import IKeyReference, NotYet
 from zope.event import notify
 from zope.interface import implements
-from five.intid.interfaces import UnsettableAttributeError
-try:
-    from Products.CMFCore.interfaces import IDirectoryView
-except ImportError:
-    from zope.interface import Interface
-    class IDirectoryView(Interface):
-        pass
 
 _marker = []
 
@@ -74,17 +67,12 @@ def addIntIdSubscriber(ob, event):
     Registers the object added in all unique id utilities and fires
     an event for the catalogs.
     """
-    # Ignore CMF's IDirectoryView stuff as this shouldn't be persisted
-    if IDirectoryView.providedBy(ob):
-        return
     utilities = tuple(zapi.getAllUtilitiesRegisteredFor(IIntIds))
     if utilities: # assert that there are any utilites
         key = None
         try:
             key = IKeyReference(ob, None)
         except NotYet:
-            pass
-        except UnsettableAttributeError:
             pass
 
         # Register only objects that adapt to key reference
@@ -100,16 +88,12 @@ def removeIntIdSubscriber(ob, event):
     Removes the unique ids registered for the object in all the unique
     id utilities.
     """
-    if IDirectoryView.providedBy(ob):
-        return
     utilities = tuple(zapi.getAllUtilitiesRegisteredFor(IIntIds))
     if utilities:
         key = None
         try:
             key = IKeyReference(ob, None)
         except NotYet: # @@ temporary fix
-            pass
-        except UnsettableAttributeError:
             pass
 
         # Register only objects that adapt to key reference
@@ -129,8 +113,6 @@ def moveIntIdSubscriber(ob, event):
     Updates the stored path for the object in all the unique
     id utilities.
     """
-    if IDirectoryView.providedBy(ob):
-        return
     if IObjectRemovedEvent.providedBy(event) or \
            IObjectAddedEvent.providedBy(event):
         return
@@ -140,8 +122,6 @@ def moveIntIdSubscriber(ob, event):
         try:
             key = IKeyReference(ob, None)
         except NotYet: # @@ temporary fix
-            pass
-        except UnsettableAttributeError:
             pass
 
         # Update objects that adapt to key reference

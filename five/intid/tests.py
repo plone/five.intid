@@ -57,5 +57,4 @@ def test_suite():
         package='five.intid',
         optionflags=optionflags
         )
-    utils = DocTestSuite("five.intid.utils")
-    return unittest.TestSuite((integration, utils))
+    return unittest.TestSuite((integration,))

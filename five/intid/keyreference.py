@@ -9,15 +9,7 @@ from zope.interface import implements, implementer
 from zope.app.keyreference.interfaces import IKeyReference, NotYet
 from zope.app.keyreference.persistent import KeyReferenceToPersistent
 from site import get_root, aq_iter
-from utils import test_settable
-from interfaces import UnsettableAttributeError
 from zope.app.container.interfaces import IObjectAddedEvent
-
-try:
-    from Products.CMFCore.FSObject import FSObject
-except:
-    class FSObject(object):
-        pass
 
 
 @adapter(IPersistent)
@@ -32,7 +24,7 @@ def connectionOfPersistent(obj):
 
 @adapter(IPersistent, IObjectAddedEvent)
 def add_object_to_connection(ob, event):
-    """ a salve for screwy CMF behavior """
+    """Pre-add new objects to their persistence connection"""
     connection = IConnection(ob, None)
     if None is not connection:
         connection.add(aq_base(ob))
@@ -63,14 +55,8 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
         if not getattr(self.object, '_p_oid', None):
             if connection is None:
                 raise NotYet(wrapped_obj)
-
-            # DirectoryViews do not allow setting of _p_oid
-            # will cause transaction errors
-            if (not test_settable(self.object, '_p_oid')
-                or isinstance(self.object, FSObject)):
-                raise UnsettableAttributeError(wrapped_obj)
             connection.add(self.object)
-
+        
         try:
             self.root_oid = get_root(wrapped_obj)._p_oid
         except AttributeError:

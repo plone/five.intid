@@ -9,5 +9,8 @@
 
   <!-- Event Subscribers -->
   <include file="subscriber.zcml" package="five.intid" />
+  
+  <!-- CMFCore directoryview exceptions -->
+  <include file="cmfdirectoryview.zcml" />
 
 </configure>

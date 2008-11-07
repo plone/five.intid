@@ -4,6 +4,14 @@ Changelog
 1.0 - UNRELEASED
 ----------------
 
+- Add unreferenceable implementations of intid event handlers and IKeyReference
+  to deal with IPersistent objects that are never actually persisted, such as
+  the CMFCore directory view objects.
+  [mj]
+
+- Remove the explicit exceptions for CMFCore directory view objects and use
+  subscriber and adapter registrations against unreferenceable instead.
+  [mj]
 
 0.2.1 - Nov 05, 2008
 --------------------
