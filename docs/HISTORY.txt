@@ -4,6 +4,15 @@ Changelog
 1.0 - UNRELEASED
 ----------------
 
+0.4.0 - Mar 17, 2009
+--------------------
+
+- Raise NotYet exception in the default keyreference constructor when the
+  object does not yet have a proper path. This avoids problems of premature
+  key references being created and pointing to the parent of the object or
+  a non-existent object.
+  [optilude]
+
 0.3.0 - Nov 07, 2008
 --------------------
 
