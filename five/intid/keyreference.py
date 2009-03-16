@@ -49,6 +49,12 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
             self.path = '/'.join(wrapped_obj.getPhysicalPath())
         except AttributeError:
             self.path = None
+        
+        # If the path ends with /, it means the object had an empty id.
+        # This means it's not yet added to the container, and so we have
+        # to defer.
+        if self.path is not None and self.path.endswith('/'):
+            raise NotYet(wrapped_obj)
         self.object = aq_base(wrapped_obj)
         connection = IConnection(wrapped_obj, None)
 

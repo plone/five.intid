@@ -310,3 +310,27 @@ adapters to omit such objects from five.intid handling.
     NotYet
     >>> foo in self.app._p_jar._registered_objects
     False
+
+Objects with no id
+==================
+
+It is possible to attempt to get a key reference for an object that has not
+yet been properly added to a container, but would otherwise have a path.
+In this case, we raise the NotYet exception to let the calling code defer
+as necessary, since the key reference would otherwise resolve the wrong
+object (the parent, to be precise) from an incorrect path.
+
+    >>> from zope.app.keyreference.interfaces import IKeyReference
+    >>> from five.intid.keyreference import KeyReferenceToPersistent
+    >>> from zope.component import provideAdapter
+    >>> provideAdapter(KeyReferenceToPersistent)
+
+    >>> from OFS.SimpleItem import SimpleItem
+    >>> item = SimpleItem('').__of__(self.folder)
+    >>> '/'.join(item.getPhysicalPath())
+    '/test_folder_1_/'
+    
+    >>> IKeyReference(item)
+    Traceback (most recent call last):
+    ...
+    NotYet: <SimpleItem at >

@@ -3,7 +3,6 @@
   <include file="subscriber.zcml" />
   <include file="cmfdirectoryview.zcml" />
   <include package="zope.app.keyreference" />
-  <five:localsite class="OFS.Folder.Folder" />
   <subscriber
       handler=".tests.setNotified"
       for="zope.app.intid.interfaces.IIntIdAddedEvent"

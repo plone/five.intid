@@ -13,7 +13,7 @@ from five.intid.lsm import USE_LSM
 from five.intid import site
 
 
-optionflags = doctest.REPORT_ONLY_FIRST_FAILURE | doctest.ELLIPSIS
+optionflags = doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS
 
 class DemoPersistent(Persistent):
     """ Demo persistent object """
