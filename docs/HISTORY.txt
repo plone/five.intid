@@ -1,8 +1,10 @@
 Changelog
 =========
 
-1.0 - UNRELEASED
-----------------
+0.4.1 - Mar 17, 2009
+--------------------
+
+- Fix missing zcml file in prior release
 
 0.4.0 - Mar 17, 2009
 --------------------
