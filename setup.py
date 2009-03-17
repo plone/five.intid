@@ -7,7 +7,7 @@ setup(name='five.intid',
       version=version,
       description="Zope2 support for zope.app.intid",
       long_description=open("README.txt").read() + "\n" +
-               open(os.path.join("five", "intid", "README.txt")).read() + "\n" +
+               open(os.path.join("five", "intid", "README.txt")).read() + "\n\n" +
                open(os.path.join("docs", "HISTORY.txt")).read(),
       classifiers=[
           "Framework :: Zope2"],
