@@ -1,5 +1,5 @@
+from Acquisition import aq_base
 from Products.Five import BrowserView
-from Products.Five.site.localsite import enableLocalSiteHook, disableLocalSiteHook
 from zope.app.intid.interfaces import IIntIds
 from zope.app.component.hooks import setSite, setHooks
 from zope.app.component.interfaces import ISite
@@ -30,8 +30,13 @@ class FiveIntIdsInstall(BrowserView):
         installed = False
         try:
             intids = getUtility(IIntIds)
-            if intids:
-                installed = True
+            if intids is not None:
+                if USE_LSM:
+                    sm = self.context.getSiteManager()
+                    if 'intids' in sm.objectIds():
+                        installed = True
+                else:
+                    installed = True
         except ComponentLookupError, e:
             pass
         return installed
@@ -48,7 +53,7 @@ def get_root(app):
             return parent
     raise AttributeError, 'No application found'
 
-def addUtility(site, interface, klass, name='', findroot=True):
+def addUtility(site, interface, klass, name='', ofs_name='', findroot=True):
     """
     add local utility in zope2
     """
@@ -64,17 +69,36 @@ def addUtility(site, interface, klass, name='', findroot=True):
         initializeSite(app, sethook=False)
 
     sm = app.getSiteManager()
+    obj = None
+    if USE_LSM:
+        # Try to get the utility from OFS directly in case it is
+        # stored, but not registered
+        ofs_name = ofs_name or name
+        obj = getattr(aq_base(sm), ofs_name, None)
     if sm.queryUtility(interface,
                        name=name,
                        default=None) is None:
-
-        if name: obj = klass(name)
-        else: obj = klass()
+        # Register the utility if it is not yet registered
+        if obj is None:
+            if name:
+                obj = klass(name)
+            else:
+                obj = klass()
         if USE_LSM:
             sm.registerUtility(provided=interface, component=obj,
                                name=name)
         else:
             sm.registerUtility(interface, obj, name=name)
+    elif USE_LSM and obj is None:
+        # Get the utility if registered, but not yet stored in the LSM
+        obj = sm.queryUtility(interface, name=name)
+
+    # Make sure we store the utility permanently in the OFS so we don't loose
+    # intids on uninstall
+    if USE_LSM:
+        if ofs_name and ofs_name not in sm.objectIds():
+            sm._setObject(ofs_name, aq_base(obj), set_owner=False,
+                          suppress_events=True)
 
 from intid import IIntIds, OFSIntIds
 from zope.component import getUtility
@@ -84,7 +108,7 @@ def add_intids(site, findroot=False):
         klass = IntIds
     else:
         klass = OFSIntIds
-    addUtility(site, IIntIds, klass, findroot=findroot)
+    addUtility(site, IIntIds, klass, ofs_name='intids', findroot=findroot)
 
 def get_intids(context=None):
     return getUtility(IIntIds, context=context)
