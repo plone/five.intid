@@ -41,12 +41,12 @@
 
   <subscriber
      for="zope.app.intid.interfaces.IIntIdAddedEvent"
-     handler="zope.app.event.objectevent.objectEventNotify"
+     handler="zope.component.event.objectEventNotify"
      />
 
   <subscriber
      for="zope.app.intid.interfaces.IIntIdRemovedEvent" 
-     handler="zope.app.event.objectevent.objectEventNotify"
+     handler="zope.component.event.objectEventNotify"
      />
 
   <includeOverrides file="overrides.zcml" package="five.intid"/>

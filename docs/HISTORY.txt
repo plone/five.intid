@@ -4,6 +4,10 @@ Changelog
 0.4.2 - unreleased
 ------------------
 
+- Use `objectEventNotify` from zope.component.event instead of zope.app.event.
+  The later was deprecated since Zope 2.10.
+  [hannosch]
+
 - Specify package dependencies.
   [hannosch]
 
