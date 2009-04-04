@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.4.2 - unreleased
+------------------
+
+- Specify package dependencies.
+  [hannosch]
+
 0.4.1 - Mar 17, 2009
 --------------------
 
