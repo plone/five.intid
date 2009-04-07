@@ -1,11 +1,8 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:browser="http://namespaces.zope.org/browser"
-	   xmlns:five="http://namespaces.zope.org/five"
-	   >	   
-  
-  <include package="zope.app.keyreference" />
+           xmlns:five="http://namespaces.zope.org/five">
 
-  <five:traversable class="OFS.Application.Application" /> 
+  <include package="zope.app.keyreference" />
 
   <browser:page
       name="index.html"
