@@ -4,6 +4,9 @@ Changelog
 0.4.2 - unreleased
 ------------------
 
+- Install utility in a more permanent manner.
+  [alecm]
+
 - Drop `five:traversable` statement. It was deprecated since Zope 2.10.
   [hannosch]
 
