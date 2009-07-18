@@ -1,8 +1,16 @@
 Changelog
 =========
 
-0.4.2 - unreleased
-------------------
+0.4.3 - Unreleased
+---------------------
+
+- When looking for an object by path, treat an AttributeError the same as a
+  NotFound error. unrestrictedTraverse() raises an AttributeError in certain
+  cases when it can't traverse.
+  [optilude]
+
+0.4.2 - Apr 26 , 2009
+---------------------
 
 - Install utility in a more permanent manner.
   [alecm]

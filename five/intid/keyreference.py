@@ -83,7 +83,7 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
             return self.object
         try:
             obj = self.root.unrestrictedTraverse(self.path)
-        except NotFound:
+        except (NotFound, AttributeError,):
             return self.object
         chain = aq_chain(obj)
         # Try to ensure we have a request at the acquisition root
