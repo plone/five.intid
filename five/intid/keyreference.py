@@ -42,6 +42,9 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     adapts(IPersistent)
 
     key_type_id = 'five.intid.keyreference'
+    # Default dbname where the root is. This is defined here for
+    # backward compatibility with previously created objects.
+    root_dbname = 'main'
 
     def __init__(self, wrapped_obj):
         # make sure our object is wrapped by containment only
@@ -49,7 +52,7 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
             self.path = '/'.join(wrapped_obj.getPhysicalPath())
         except AttributeError:
             self.path = None
-        
+
         # If the path ends with /, it means the object had an empty id.
         # This means it's not yet added to the container, and so we have
         # to defer.
@@ -62,20 +65,26 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
             if connection is None:
                 raise NotYet(wrapped_obj)
             connection.add(self.object)
-        
+
         try:
-            self.root_oid = get_root(wrapped_obj)._p_oid
+            root = get_root(wrapped_obj)
         except AttributeError:
             # If the object is unwrapped we can try to use the Site from the
             # threadlocal as our acquisition context, hopefully it's not
             # something odd.
-            self.root_oid = get_root(getSite())._p_oid
+            root = get_root(getSite())
+        self.root_oid = root._p_oid
+        self.root_dbname = IConnection(root).db().database_name
         self.oid = self.object._p_oid
         self.dbname = connection.db().database_name
 
     @property
     def root(self):
-        return IConnection(self.object)[self.root_oid]
+        # It is possible that the root is not in the same db that the
+        # object. Asking the root object on the wrong db can trigger
+        # an POSKeyError.
+        connection = IConnection(self.object).get_connection(self.root_dbname)
+        return connection[self.root_oid]
 
     @property
     def wrapped_object(self):

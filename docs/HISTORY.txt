@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.4.4 - (unreleased)
+--------------------
+
+- Fix POSKeyError when the root object is not in the same database
+  than the object you are trying to resolve to.
+  [thefunny42]
+
 0.4.3 - July 19, 2009
 ---------------------
 
