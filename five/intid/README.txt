@@ -11,6 +11,7 @@ First, let make sure the ofs utility provides the interface::
     >>> from zope.site.hooks import setSite
     >>> tests.setUp(self.app)
 
+
 Content added before the utility won't be registered(until explicitly
 called to). We'll set some up now for later
 
@@ -97,6 +98,7 @@ these objects are aquisition wrapped on retrieval::
 
     >>> type(intid.getObject(ob_id))
     <type 'ImplicitAcquirerWrapper'>
+
 
 We can even turn an unwrapped object into a wrapped object by
 resolving it from it's intid, also the intid utility should work
@@ -236,6 +238,7 @@ created)::
     <type 'ImplicitAcquirerWrapper'>
 
 
+
 The resolution mechanism tries its best to end up with the current
 request at the end of the acquisition chain, just as it would be
 under noraml circumstances::
@@ -334,5 +337,27 @@ object (the parent, to be precise) from an incorrect path.
     Traceback (most recent call last):
     ...
     NotYet: <SimpleItem at >
+
+
+If the object is placed in a circular containment, IKeyReference(object) should
+also raise an NotYet Error, letting the calling code defer as neccesary.
+This case happend when having a Plone4 site five.intrd enabled
+(five.intid.site.add_intids(site)) and trying to add a portlet via
+@@manage-portlets. plone.portlet.static.static.Assignment seems to have a
+circular path at some time.
+
+Creating items whith a circular containment
+    >>> item_b = SimpleItem().__of__(self.folder)
+    >>> item_b.id = "b"
+    >>> item_c = SimpleItem().__of__(item_b)
+    >>> item_c.id = "c"
+    >>> item_b.__parent__ = item_c
+
+    >>> assert item_b.__parent__.__parent__ == item_b
+
+    >>> IKeyReference(item_c)
+    Traceback (most recent call last):
+    ...
+    NotYet: <SimpleItem at c>
 
     # >>> interact( locals() )

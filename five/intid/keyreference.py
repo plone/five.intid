@@ -47,6 +47,13 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     root_dbname = 'main'
 
     def __init__(self, wrapped_obj):
+
+        # Detect a circular containment / an infinite Loop with aq_iter
+        try:
+            [obj for obj in aq_iter(wrapped_obj, error=RuntimeError)]
+        except RuntimeError:
+            raise NotYet(wrapped_obj)
+
         # make sure our object is wrapped by containment only
         try:
             self.path = '/'.join(wrapped_obj.getPhysicalPath())
