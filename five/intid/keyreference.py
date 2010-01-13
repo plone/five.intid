@@ -4,12 +4,12 @@ from ZPublisher.BaseRequest import RequestContainer
 from zExceptions import NotFound
 from persistent import IPersistent
 from zope.component import adapter, adapts
-from zope.app.component.hooks import getSite
+from zope.site.hooks import getSite
 from zope.interface import implements, implementer
-from zope.app.keyreference.interfaces import IKeyReference, NotYet
-from zope.app.keyreference.persistent import KeyReferenceToPersistent
+from zope.keyreference.interfaces import IKeyReference, NotYet
+from zope.keyreference.persistent import KeyReferenceToPersistent
 from site import get_root, aq_iter
-from zope.app.container.interfaces import IObjectAddedEvent
+from zope.lifecycleevent import IObjectAddedEvent
 
 
 @adapter(IPersistent)
@@ -49,8 +49,10 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     def __init__(self, wrapped_obj):
         # make sure our object is wrapped by containment only
         try:
+            # Detect an infinite Loop with aq_iter
+            [obj for obj in aq_iter(wrapped_obj, error=RuntimeError)]
             self.path = '/'.join(wrapped_obj.getPhysicalPath())
-        except AttributeError:
+        except (AttributeError, RuntimeError):
             self.path = None
 
         # If the path ends with /, it means the object had an empty id.

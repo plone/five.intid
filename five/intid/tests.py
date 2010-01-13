@@ -1,7 +1,9 @@
 import doctest
+from interlude import interact
+
 from zope.app.testing import placelesssetup
 from persistent import Persistent
-from zope.app.component.hooks import setHooks, setSite
+from zope.site.hooks import setHooks, setSite
 
 from Products.Five.tests.testing.simplecontent import (
     SimpleContent,
@@ -39,7 +41,7 @@ def setUp(app):
         from Products.Five.site.metaconfigure import classSiteHook
         from Products.Five.site.localsite import FiveSite
         from zope.interface import classImplements
-        from zope.app.component.interfaces import IPossibleSite
+        from zope.location.interfaces import IPossibleSite
         klass = app.__class__
         classSiteHook(klass, FiveSite)
         classImplements(klass, IPossibleSite)
@@ -48,13 +50,23 @@ def setUp(app):
 def tearDown():
     placelesssetup.tearDown()
 
+
+TESTFILES = [
+    'README.txt',
+    'tracking.txt',
+]
+
 def test_suite():
     import unittest
     from Testing.ZopeTestCase import FunctionalDocFileSuite
     from zope.testing.doctest import DocTestSuite
-    integration = FunctionalDocFileSuite(
-        'README.txt',
-        package='five.intid',
-        optionflags=optionflags
-        )
-    return unittest.TestSuite((integration,))
+    return unittest.TestSuite([
+        FunctionalDocFileSuite(
+            file,
+            package='five.intid',
+            optionflags=optionflags,
+            globs={'interact': interact,},
+        ) for file in TESTFILES
+    ])
+
+#

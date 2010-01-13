@@ -1,12 +1,12 @@
 from Acquisition import aq_base
 from Products.Five import BrowserView
-from zope.app.intid.interfaces import IIntIds
-from zope.app.component.hooks import setSite, setHooks
-from zope.app.component.interfaces import ISite
+from zope.intid.interfaces import IIntIds
+from zope.site.hooks import setSite, setHooks
+from zope.location.interfaces import ISite
 from zope.component.interfaces import ComponentLookupError
 from zope.component import getUtility, getSiteManager
 from OFS.interfaces import IApplication
-from intid import IntIds, OFSIntIds
+from intid import IntIds, IIntIds, OFSIntIds
 from lsm import make_site, USE_LSM
 from utils import aq_iter
 
@@ -100,8 +100,6 @@ def addUtility(site, interface, klass, name='', ofs_name='', findroot=True):
             sm._setObject(ofs_name, aq_base(obj), set_owner=False,
                           suppress_events=True)
 
-from intid import IIntIds, OFSIntIds
-from zope.component import getUtility
 
 def add_intids(site, findroot=False):
     if USE_LSM:

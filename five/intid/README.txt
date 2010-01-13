@@ -334,3 +334,5 @@ object (the parent, to be precise) from an incorrect path.
     Traceback (most recent call last):
     ...
     NotYet: <SimpleItem at >
+
+    # >>> interact( locals() )

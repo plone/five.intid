@@ -8,6 +8,12 @@ Changelog
   than the object you are trying to resolve to.
   [thefunny42]
 
+- Fixed all deprecated imports and updated setup.py
+  [thet]
+
+- Fixed Tests to reflect changed Zope API
+  [thet]
+
 0.4.3 - July 19, 2009
 ---------------------
 
