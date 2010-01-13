@@ -49,10 +49,8 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     def __init__(self, wrapped_obj):
         # make sure our object is wrapped by containment only
         try:
-            # Detect an infinite Loop with aq_iter
-            [obj for obj in aq_iter(wrapped_obj, error=RuntimeError)]
             self.path = '/'.join(wrapped_obj.getPhysicalPath())
-        except (AttributeError, RuntimeError):
+        except AttributeError:
             self.path = None
 
         # If the path ends with /, it means the object had an empty id.
