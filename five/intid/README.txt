@@ -3,12 +3,12 @@ Usage
 
 First, let make sure the ofs utility provides the interface::
 
-    >>> from zope.app.intid.interfaces import IIntIds
+    >>> from zope.intid.interfaces import IIntIds
     >>> from five.intid import site
     >>> import five.intid.tests as tests
     >>> from zope.interface.verify import verifyObject
     >>> from zope.component import getAllUtilitiesRegisteredFor
-    >>> from zope.app.component.hooks import setSite
+    >>> from zope.site.hooks import setSite
     >>> tests.setUp(self.app)
 
 Content added before the utility won't be registered(until explicitly
@@ -43,7 +43,7 @@ And finally, do a remove::
     >>> site.get_intids(self.app)
     Traceback (most recent call last):
     ...
-    ComponentLookupError: (<InterfaceClass zope.app.intid.interfaces.IIntIds>, '')
+    ComponentLookupError: (<InterfaceClass zope.intid.interfaces.IIntIds>, '')
 
 Before we look at intid events, we need to set the traversal
 hook. Once we have done this, when we ask for all registered Intids,
@@ -117,15 +117,15 @@ even if it is unwrapped::
 
 When an object is added or removed, subscribers add it to the intid
 utility, and fire an event is fired
-(zope.app.intid.interfaces.IIntIdAddedEvent,
-zope.app.intid.interfaces.IIntIdRemovedEvent respectively).
+(zope.intid.interfaces.IIntIdAddedEvent,
+zope.intid.interfaces.IIntIdRemovedEvent respectively).
 
 `five.intid` hooks up these events to redispatch as object events. The
 tests hook up a simple subscriber to verify that the intid object
-events are fired (these events are useful for catalogish tasks). 
+events are fired (these events are useful for catalogish tasks).
 
     >>> tests.NOTIFIED[0]
-    '<SimpleContent at mycont2> <...IntIdAddedEvent instance at ...'
+    '<SimpleContent at mycont2> <...IntIdAddedEvent object at ...'
 
 Registering and unregistering objects does not fire these events::
 
@@ -180,7 +180,7 @@ add intid to it :
     >>> demo1 = DemoPersistent()
     >>> demo1.__parent__ = self.app
     >>> from zope.event import notify
-    >>> from zope.app.container.contained import ObjectAddedEvent
+    >>> from zope.container.contained import ObjectAddedEvent
     >>> notify(ObjectAddedEvent(demo1))
     >>> nowrappid = intid.getId(demo1)
     >>> demo1 == intid.getObject(nowrappid)
@@ -218,7 +218,7 @@ and a property to fetch the app(also, not wrapped ie <type 'ImplicitAcquirerWrap
 
     >>> type(ref.object)
     <class 'Products.Five.tests.testing.simplecontent.SimpleContent'>
- 
+
     >>> ref.root
     <Application at >
 
@@ -228,10 +228,10 @@ created)::
 
     >>> ref.wrapped_object == ref()
     True
-    
+
     >>> ref()
     <SimpleContent at /test_folder_1_/mycont2>
-    
+
     >>> type(ref())
     <type 'ImplicitAcquirerWrapper'>
 
@@ -243,7 +243,7 @@ under noraml circumstances::
     >>> ref.wrapped_object.aq_chain[-1]
     <ZPublisher.BaseRequest.RequestContainer object at ...>
 
-    
+
 The hash calculation is a combination of the database name and the
 object's persistent object id(oid)::
 
@@ -291,7 +291,7 @@ Some objects implement IPersistent but are never actually persisted, or
 contain references to such objects. Specifically, CMFCore directory views
 contain FSObjects that are never persisted, and DirectoryViewSurrogates
 that contain references to such objects. Because FSObjects are never actually
-persisted, five.intid's assumption that it can add a 
+persisted, five.intid's assumption that it can add a
 
 For such objects, the unreferenceable module provides no-op subcribers and
 adapters to omit such objects from five.intid handling.
@@ -320,7 +320,7 @@ In this case, we raise the NotYet exception to let the calling code defer
 as necessary, since the key reference would otherwise resolve the wrong
 object (the parent, to be precise) from an incorrect path.
 
-    >>> from zope.app.keyreference.interfaces import IKeyReference
+    >>> from zope.keyreference.interfaces import IKeyReference
     >>> from five.intid.keyreference import KeyReferenceToPersistent
     >>> from zope.component import provideAdapter
     >>> provideAdapter(KeyReferenceToPersistent)
@@ -329,7 +329,7 @@ object (the parent, to be precise) from an incorrect path.
     >>> item = SimpleItem('').__of__(self.folder)
     >>> '/'.join(item.getPhysicalPath())
     '/test_folder_1_/'
-    
+
     >>> IKeyReference(item)
     Traceback (most recent call last):
     ...
