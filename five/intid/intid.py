@@ -1,4 +1,8 @@
-from Globals import InitializeClass
+try:
+    from App.class_init import InitializeClass
+except ImportError:
+    # BBB Zope < 2.12
+    from Globals import InitializeClass
 from persistent import Persistent
 from Acquisition import Explicit
 from zope.app import zapi
