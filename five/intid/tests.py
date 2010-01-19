@@ -53,7 +53,7 @@ def tearDown():
 
 TESTFILES = [
     'README.txt',
-    'tracking.txt',
+    #'tracking.txt',
 ]
 
 def test_suite():
