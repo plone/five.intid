@@ -2,7 +2,7 @@
 # common example are CMFCore directory views and filesystem objects.
 # Register specific handlers that are no-ops to circumvent
 from zope.interface import implements
-from zope.keyreference.interfaces import IKeyReference, NotYet
+from zope.app.keyreference.interfaces import IKeyReference, NotYet
 
 def addIntIdSubscriber(ob, event):
     return

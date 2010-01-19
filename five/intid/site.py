@@ -1,8 +1,8 @@
 from Acquisition import aq_base
 from Products.Five import BrowserView
-from zope.intid.interfaces import IIntIds
-from zope.site.hooks import setSite, setHooks
-from zope.location.interfaces import ISite
+from zope.app.intid.interfaces import IIntIds
+from zope.app.component.hooks import setSite, setHooks
+from zope.app.component.interfaces import ISite
 from zope.component.interfaces import ComponentLookupError
 from zope.component import getUtility, getSiteManager
 from OFS.interfaces import IApplication

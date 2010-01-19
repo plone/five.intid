@@ -3,12 +3,12 @@ Usage
 
 First, let make sure the ofs utility provides the interface::
 
-    >>> from zope.intid.interfaces import IIntIds
+    >>> from zope.app.intid.interfaces import IIntIds
     >>> from five.intid import site
     >>> import five.intid.tests as tests
     >>> from zope.interface.verify import verifyObject
     >>> from zope.component import getAllUtilitiesRegisteredFor
-    >>> from zope.site.hooks import setSite
+    >>> from zope.app.component.hooks import setSite
     >>> tests.setUp(self.app)
 
 
@@ -44,7 +44,7 @@ And finally, do a remove::
     >>> site.get_intids(self.app)
     Traceback (most recent call last):
     ...
-    ComponentLookupError: (<InterfaceClass zope.intid.interfaces.IIntIds>, '')
+    ComponentLookupError: (<InterfaceClass zope.app.intid.interfaces.IIntIds>, '')
 
 Before we look at intid events, we need to set the traversal
 hook. Once we have done this, when we ask for all registered Intids,
@@ -119,8 +119,8 @@ even if it is unwrapped::
 
 When an object is added or removed, subscribers add it to the intid
 utility, and fire an event is fired
-(zope.intid.interfaces.IIntIdAddedEvent,
-zope.intid.interfaces.IIntIdRemovedEvent respectively).
+(zope.app.intid.interfaces.IIntIdAddedEvent,
+zope.app.intid.interfaces.IIntIdRemovedEvent respectively).
 
 `five.intid` hooks up these events to redispatch as object events. The
 tests hook up a simple subscriber to verify that the intid object
@@ -182,7 +182,7 @@ add intid to it :
     >>> demo1 = DemoPersistent()
     >>> demo1.__parent__ = self.app
     >>> from zope.event import notify
-    >>> from zope.container.contained import ObjectAddedEvent
+    >>> from zope.app.container.contained import ObjectAddedEvent
     >>> notify(ObjectAddedEvent(demo1))
     >>> nowrappid = intid.getId(demo1)
     >>> demo1 == intid.getObject(nowrappid)
@@ -323,7 +323,7 @@ In this case, we raise the NotYet exception to let the calling code defer
 as necessary, since the key reference would otherwise resolve the wrong
 object (the parent, to be precise) from an incorrect path.
 
-    >>> from zope.keyreference.interfaces import IKeyReference
+    >>> from zope.app.keyreference.interfaces import IKeyReference
     >>> from five.intid.keyreference import KeyReferenceToPersistent
     >>> from zope.component import provideAdapter
     >>> provideAdapter(KeyReferenceToPersistent)

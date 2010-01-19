@@ -6,11 +6,11 @@ except ImportError:
 from persistent import Persistent
 from Acquisition import Explicit
 from zope.app import zapi
-from zope.intid import IntIds as z3IntIds
-from zope.intid.interfaces import IIntIds
-from zope.intid.interfaces import IntIdAddedEvent, IntIdRemovedEvent
-from zope.lifecycleevent.interfaces import IObjectAddedEvent, IObjectRemovedEvent
-from zope.keyreference.interfaces import IKeyReference, NotYet
+from zope.app.intid import IntIds as z3IntIds
+from zope.app.intid.interfaces import IIntIds
+from zope.app.intid.interfaces import IntIdAddedEvent, IntIdRemovedEvent
+from zope.app.container.interfaces import IObjectAddedEvent, IObjectRemovedEvent
+from zope.app.keyreference.interfaces import IKeyReference, NotYet
 from zope.event import notify
 from zope.interface import implements
 

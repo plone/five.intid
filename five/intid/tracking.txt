@@ -9,7 +9,7 @@ example. First, we'll create a unique Id utility:
   ... Authorization: Basic mgr:mgrpw
   ... Referer: http://localhost:8081/++etc++site/default/@@contents.html
   ...
-  ... type_name=BrowserAdd__zope.intid.IntIds&new_value=""")
+  ... type_name=BrowserAdd__zope.app.intid.IntIds&new_value=""")
   HTTP/1.1 303 See Other
   ...
   Location: http://localhost/++etc++site/default/IntIds/@@registration.html
@@ -28,7 +28,7 @@ example. First, we'll create a unique Id utility:
   ... ------------CedQTrEQIEPbgfYhvcITAhQi2aJdgu3tYfJ0WYQmkpLQTt6OTOpd5GJ
   ... Content-Disposition: form-data; name="field.provided"
   ...
-  ... zope.intid.interfaces.IIntIds
+  ... zope.app.intid.interfaces.IIntIds
   ... ------------CedQTrEQIEPbgfYhvcITAhQi2aJdgu3tYfJ0WYQmkpLQTt6OTOpd5GJ
   ... Content-Disposition: form-data; name="field.provided-empty-marker"
   ...
@@ -68,7 +68,7 @@ Now, we'll add a few folders:
   ... Content-Length: 64
   ... Content-Type: application/x-www-form-urlencoded
   ...
-  ... type_name=BrowserAdd__zope.site.folder.Folder&new_value=f1""")
+  ... type_name=BrowserAdd__zope.app.folder.folder.Folder&new_value=f1""")
   HTTP/1.1 303 See Other
   ...
 
@@ -78,7 +78,7 @@ Now, we'll add a few folders:
   ... Content-Length: 64
   ... Content-Type: application/x-www-form-urlencoded
   ...
-  ... type_name=BrowserAdd__zope.site.folder.Folder&new_value=f1""")
+  ... type_name=BrowserAdd__zope.app.folder.folder.Folder&new_value=f1""")
   HTTP/1.1 303 See Other
   ...
 
@@ -88,7 +88,7 @@ Now, we'll add a few folders:
   ... Content-Length: 64
   ... Content-Type: application/x-www-form-urlencoded
   ...
-  ... type_name=BrowserAdd__zope.site.folder.Folder&new_value=f2""")
+  ... type_name=BrowserAdd__zope.app.folder.folder.Folder&new_value=f2""")
   HTTP/1.1 303 See Other
   ...
 
@@ -98,7 +98,7 @@ Now, we'll add a few folders:
   ... Content-Length: 64
   ... Content-Type: application/x-www-form-urlencoded
   ...
-  ... type_name=BrowserAdd__zope.site.folder.Folder&new_value=f1""")
+  ... type_name=BrowserAdd__zope.app.folder.folder.Folder&new_value=f1""")
   HTTP/1.1 303 See Other
   ...
 

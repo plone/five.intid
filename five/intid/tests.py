@@ -3,7 +3,7 @@ from interlude import interact
 
 from zope.app.testing import placelesssetup
 from persistent import Persistent
-from zope.site.hooks import setHooks, setSite
+from zope.app.component.hooks import setHooks, setSite
 
 from Products.Five.tests.testing.simplecontent import (
     SimpleContent,
@@ -41,7 +41,7 @@ def setUp(app):
         from Products.Five.site.metaconfigure import classSiteHook
         from Products.Five.site.localsite import FiveSite
         from zope.interface import classImplements
-        from zope.location.interfaces import IPossibleSite
+        from zope.app.component.interfaces import IPossibleSite
         klass = app.__class__
         classSiteHook(klass, FiveSite)
         classImplements(klass, IPossibleSite)

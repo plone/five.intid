@@ -7,17 +7,17 @@
   <subscriber
       handler=".unreferenceable.addIntIdSubscriber"
       for="Products.CMFCore.interfaces.IDirectoryView
-           zope.lifecycleevent.interfaces.IObjectAddedEvent"
+           zope.app.container.interfaces.IObjectAddedEvent"
       />
   <subscriber
       handler=".unreferenceable.removeIntIdSubscriber"
       for="Products.CMFCore.interfaces.IDirectoryView
-           zope.lifecycleevent.interfaces.IObjectRemovedEvent"
+           zope.app.container.interfaces.IObjectRemovedEvent"
       />
   <subscriber
       handler=".unreferenceable.moveIntIdSubscriber"
       for="Products.CMFCore.interfaces.IDirectoryView
-           zope.lifecycleevent.interfaces.IObjectMovedEvent"
+           zope.app.container.interfaces.IObjectMovedEvent"
       />
   <adapter
       factory=".unreferenceable.KeyReferenceNever"
@@ -29,17 +29,17 @@
   <subscriber
       handler=".unreferenceable.addIntIdSubscriber"
       for="Products.CMFCore.FSObject.FSObject
-           zope.lifecycleevent.interfaces.IObjectAddedEvent"
+           zope.app.container.interfaces.IObjectAddedEvent"
       />
   <subscriber
       handler=".unreferenceable.removeIntIdSubscriber"
       for="Products.CMFCore.FSObject.FSObject
-           zope.lifecycleevent.interfaces.IObjectRemovedEvent"
+           zope.app.container.interfaces.IObjectRemovedEvent"
       />
   <subscriber
       handler=".unreferenceable.moveIntIdSubscriber"
       for="Products.CMFCore.FSObject.FSObject
-           zope.lifecycleevent.interfaces.IObjectMovedEvent"
+           zope.app.container.interfaces.IObjectMovedEvent"
       />
   <adapter
       factory=".unreferenceable.KeyReferenceNever"

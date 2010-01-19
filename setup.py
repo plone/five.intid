@@ -26,16 +26,16 @@ setup(name='five.intid',
         'zope.component',
         'zope.event',
         'zope.interface',
-        'zope.lifecycleevent',
-        'zope.location',
         ## for Zope<2.12 compatibility
-        'zope.app.container',
+        'zope.app.container', # instead of zope.lifecycleevent
         'zope.app.keyreference',
-        'zope.app.site',
+        'zope.app.component', # instead of zope.site and zope.location
         ## for eggified Zope>=2.12
         # 'zope.container',
         # 'zope.intid',
         # 'zope.keyreference',
+        # 'zope.lifecycleevent',
+        # 'zope.location',
         # 'zope.site',
         ## other
         # 'Acquisition',
