@@ -1,8 +1,15 @@
 Changelog
 =========
 
-0.4.4 - (unreleased)
---------------------
+0.5.0 - February 6, 2010
+--------------------------
+
+- Use only non-deprecated zope imports, five.intid now only supports
+  Zope 2.12+.
+  [alecm]
+
+ 0.4.4 - February 6, 2010
+--------------------------
 
 - Fix POSKeyError when the root object is not in the same database
   than the object you are trying to resolve to.
