@@ -44,7 +44,7 @@ And finally, do a remove::
     >>> site.get_intids(self.app)
     Traceback (most recent call last):
     ...
-    ComponentLookupError: (<InterfaceClass zope.app.intid.interfaces.IIntIds>, '')
+    ComponentLookupError: (<InterfaceClass ....IIntIds>, '')
 
 Before we look at intid events, we need to set the traversal
 hook. Once we have done this, when we ask for all registered Intids,
@@ -360,4 +360,3 @@ Creating items whith a circular containment
     ...
     NotYet: <SimpleItem at c>
 
-    # >>> interact( locals() )

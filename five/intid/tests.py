@@ -1,5 +1,4 @@
 import doctest
-from interlude import interact
 
 from zope.app.testing import placelesssetup
 from persistent import Persistent
@@ -65,7 +64,6 @@ def test_suite():
             file,
             package='five.intid',
             optionflags=optionflags,
-            globs={'interact': interact,},
         ) for file in TESTFILES
     ])
 
