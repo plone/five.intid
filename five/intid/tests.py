@@ -10,7 +10,6 @@ from Products.Five.tests.testing.simplecontent import (
     manage_addSimpleContent,
     )
 from Products.Five import zcml
-from five.intid.lsm import USE_LSM
 from five.intid import site
 
 
@@ -35,15 +34,6 @@ def setUp(app):
     zcml.load_config('meta.zcml', Products.Five)
     zcml.load_config('configure.zcml', Products.Five)
     zcml.load_config('test.zcml', intid)
-    if not USE_LSM:
-        # monkey in our hooks
-        from Products.Five.site.metaconfigure import classSiteHook
-        from Products.Five.site.localsite import FiveSite
-        from zope.interface import classImplements
-        from zope.location.interfaces import IPossibleSite
-        klass = app.__class__
-        classSiteHook(klass, FiveSite)
-        classImplements(klass, IPossibleSite)
     setHooks()
 
 def tearDown():

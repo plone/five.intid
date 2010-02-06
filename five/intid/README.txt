@@ -59,14 +59,10 @@ When we add content, event will be fired to add keyreference for said
 objects the utilities (currently, our content and the utility are
 registered)::
 
-    >>> from five.intid.lsm import USE_LSM
     >>> tests.manage_addSimpleContent(self.folder, 'mycont2', "My Content")
     >>> content2 = self.folder.mycont2
     >>> intid = site.get_intids(self.folder)
-    >>> if USE_LSM:
-    ...     len(intid.items()) == 1
-    ... else:
-    ...     len(intid.items()) == 2
+    >>> len(intid.items()) == 1
     True
 
 Pre-existing content will raise a keyerror if passed to the intid
@@ -79,10 +75,7 @@ utility::
 
 We can call the keyreferences, and get the objects back::
 
-    >>> if USE_LSM:
-    ...     intid.items()[0][1]()
-    ... else:
-    ...     intid.items()[1][1]()
+    >>> intid.items()[0][1]()
     <SimpleContent at /test_folder_1_/mycont2>
 
 we can get an object's `intid` from the utility like so::
