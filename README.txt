@@ -1,9 +1,9 @@
 Introduction
 ============
 
-This package makes it possible to use `zope.app.intid` Browserviews (and
+This package makes it possible to use `zope.intid` Browserviews (and
 consequentually other packages that rely on it such as
-``zope.app.keyreference``) in a Zope2 environment.
+``zope.keyreference``) in a Zope2 environment.
 
-.. _zope.app.intid: http://pypi.python.org/pypi/zope.app.intid
+.. _zope.intid: http://pypi.python.org/pypi/zope.intid
 

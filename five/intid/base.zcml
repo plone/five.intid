@@ -2,11 +2,11 @@
            xmlns:browser="http://namespaces.zope.org/browser"
            xmlns:five="http://namespaces.zope.org/five">
 
-  <include package="zope.app.keyreference" />
+  <include package="zope.keyreference" />
 
   <browser:page
       name="index.html"
-      for="zope.app.intid.interfaces.IIntIds"
+      for="zope.intid.interfaces.IIntIds"
       permission="five.ManageSite"
       class=".browser.IntIdsView"
       template="registrations.pt"
@@ -14,7 +14,7 @@
 
   <browser:page
       name="populate"
-      for="zope.app.intid.interfaces.IIntIds"
+      for="zope.intid.interfaces.IIntIds"
       permission="five.ManageSite"
       class=".browser.IntIdsView"
       attribute="populate"
@@ -37,12 +37,12 @@
      />
 
   <subscriber
-     for="zope.app.intid.interfaces.IIntIdAddedEvent"
+     for="zope.intid.interfaces.IIntIdAddedEvent"
      handler="zope.component.event.objectEventNotify"
      />
 
   <subscriber
-     for="zope.app.intid.interfaces.IIntIdRemovedEvent"
+     for="zope.intid.interfaces.IIntIdRemovedEvent"
      handler="zope.component.event.objectEventNotify"
      />
 

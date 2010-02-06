@@ -9,7 +9,7 @@ example. First, we'll create a unique Id utility:
   ... Authorization: Basic mgr:mgrpw
   ... Referer: http://localhost:8081/++etc++site/default/@@contents.html
   ...
-  ... type_name=BrowserAdd__zope.app.intid.IntIds&new_value=""")
+  ... type_name=BrowserAdd__zope.intid.IntIds&new_value=""")
   HTTP/1.1 303 See Other
   ...
   Location: http://localhost/++etc++site/default/IntIds/@@registration.html
@@ -28,7 +28,7 @@ example. First, we'll create a unique Id utility:
   ... ------------CedQTrEQIEPbgfYhvcITAhQi2aJdgu3tYfJ0WYQmkpLQTt6OTOpd5GJ
   ... Content-Disposition: form-data; name="field.provided"
   ...
-  ... zope.app.intid.interfaces.IIntIds
+  ... zope.intid.interfaces.IIntIds
   ... ------------CedQTrEQIEPbgfYhvcITAhQi2aJdgu3tYfJ0WYQmkpLQTt6OTOpd5GJ
   ... Content-Disposition: form-data; name="field.provided-empty-marker"
   ...

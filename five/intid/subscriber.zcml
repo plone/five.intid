@@ -3,16 +3,16 @@
   <subscriber
      handler=".intid.addIntIdSubscriber"
      for="persistent.IPersistent
-          zope.app.container.interfaces.IObjectAddedEvent"
+          zope.lifecycleevent.interfaces.IObjectAddedEvent"
       />
   <subscriber
       handler=".intid.removeIntIdSubscriber"
       for="persistent.IPersistent
-           zope.app.container.interfaces.IObjectRemovedEvent"
+           zope.lifecycleevent.interfaces.IObjectRemovedEvent"
       />
   <subscriber
       handler=".intid.moveIntIdSubscriber"
       for="OFS.interfaces.ITraversable
-           zope.app.container.interfaces.IObjectMovedEvent"
+           zope.lifecycleevent.interfaces.IObjectMovedEvent"
       />
 </configure>

@@ -1,4 +1,4 @@
-from zope.app.intid.browser import IntIdsView
+from zope.intid.browser import IntIdsView
 from Products.Five import BrowserView
 
 class FiveIntIdsView(IntIdsView, BrowserView):
