@@ -2,25 +2,24 @@ Changelog
 =========
 
 0.5.0 - February 6, 2010
---------------------------
+------------------------
 
 - Use only non-deprecated zope imports, five.intid now only supports
   Zope 2.12+.
   [alecm]
 
- 0.4.4 - February 6, 2010
---------------------------
+0.4.4 - February 6, 2010
+------------------------
 
 - Fix POSKeyError when the root object is not in the same database
   than the object you are trying to resolve to.
   [thefunny42]
 
 - Fixed all deprecated imports and updated setup.py
-  [thet,wichert]
+  [thet, wichert]
 
-- Fixed Tests to reflect changed Zope API
+- Fixed tests to reflect changed Zope API
   [thet]
-
 
 0.4.3 - July 19, 2009
 ---------------------
