@@ -89,8 +89,9 @@ and get an object back like this::
 
 these objects are aquisition wrapped on retrieval::
 
-    >>> type(intid.getObject(ob_id))
-    <type 'ImplicitAcquirerWrapper'>
+    >>> from Acquisition import IAcquirer
+    >>> IAcquirer.providedBy(intid.getObject(ob_id))
+    True
 
 
 We can even turn an unwrapped object into a wrapped object by
@@ -99,8 +100,8 @@ even if it is unwrapped::
 
     >>> from Acquisition import aq_base
     >>> resolved = intid.getObject(intid.getId(aq_base(content2)))
-    >>> type(resolved)
-    <type 'ImplicitAcquirerWrapper'>
+    >>> IAcquirer.providedBy(resolved)
+    True
     >>> unwrapped = aq_base(intid)
     >>> unwrapped.getObject(ob_id) == resolved
     True
@@ -227,8 +228,8 @@ created)::
     >>> ref()
     <SimpleContent at /test_folder_1_/mycont2>
 
-    >>> type(ref())
-    <type 'ImplicitAcquirerWrapper'>
+    >>> IAcquirer.providedBy(ref())
+    True
 
 
 

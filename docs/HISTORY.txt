@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.5.1 - unreleased
+------------------
+
+- Fix tests to pass with the corrected tp_name of ImplicitAcquisitionWrapper
+  in Acquisition 2.13.1.
+  [davisagli]
+
 0.5.0 - February 6, 2010
 ------------------------
 
