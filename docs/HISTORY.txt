@@ -4,6 +4,7 @@ Changelog
 0.5.2 - unreleased
 ------------------
 
+- Fix chameleon template error.
 
 0.5.1 - August 4, 2010
 ----------------------
