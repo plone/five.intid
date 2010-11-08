@@ -5,7 +5,7 @@ except ImportError:
     from Globals import InitializeClass
 from persistent import Persistent
 from Acquisition import Explicit
-from zope.app import zapi
+from zope.component import getAllUtilitiesRegisteredFor
 from zope.intid import IntIds as z3IntIds
 from zope.intid.interfaces import IIntIds
 from zope.intid.interfaces import IntIdAddedEvent, IntIdRemovedEvent
@@ -72,7 +72,7 @@ def addIntIdSubscriber(ob, event):
     Registers the object added in all unique id utilities and fires
     an event for the catalogs.
     """
-    utilities = tuple(zapi.getAllUtilitiesRegisteredFor(IIntIds))
+    utilities = tuple(getAllUtilitiesRegisteredFor(IIntIds))
     if utilities: # assert that there are any utilites
         key = None
         try:
@@ -93,7 +93,7 @@ def removeIntIdSubscriber(ob, event):
     Removes the unique ids registered for the object in all the unique
     id utilities.
     """
-    utilities = tuple(zapi.getAllUtilitiesRegisteredFor(IIntIds))
+    utilities = tuple(getAllUtilitiesRegisteredFor(IIntIds))
     if utilities:
         key = None
         try:
@@ -121,7 +121,7 @@ def moveIntIdSubscriber(ob, event):
     if IObjectRemovedEvent.providedBy(event) or \
            IObjectAddedEvent.providedBy(event):
         return
-    utilities = tuple(zapi.getAllUtilitiesRegisteredFor(IIntIds))
+    utilities = tuple(getAllUtilitiesRegisteredFor(IIntIds))
     if utilities:
         key = None
         try:
