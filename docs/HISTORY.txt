@@ -1,14 +1,15 @@
 Changelog
 =========
 
-0.5.2 - unreleased
-------------------
+0.5.2 - January 22, 2011
+------------------------
 
 - Import getAllUtilitiesRegisteredFor directly from zope.component and
   remove dependency on zope.app.zapi.
   [Arfrever]
 
 - Fix chameleon template error.
+  [robgietema]
 
 0.5.1 - August 4, 2010
 ----------------------
