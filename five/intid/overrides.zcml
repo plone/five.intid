@@ -1,9 +1,0 @@
-<configure xmlns="http://namespaces.zope.org/zope">
-
-  <adapter
-      factory=".keyreference.KeyReferenceToPersistent"
-      trusted="y" />
-
-  <adapter factory=".keyreference.connectionOfPersistent" />
-
-</configure>

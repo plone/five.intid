@@ -3,7 +3,12 @@
            xmlns:five="http://namespaces.zope.org/five">
 
   <include package="zope.keyreference" />
-  <include file="overrides.zcml" />
+
+  <adapter
+     factory=".keyreference.KeyReferenceToPersistent"
+     trusted="y" />
+
+  <adapter factory=".keyreference.connectionOfPersistent" />
 
   <browser:page
      for="OFS.interfaces.IFolder"
