@@ -32,10 +32,4 @@ setup(name='five.intid',
         'five.localsitemanager',
         'Zope2 >= 2.13',
         ],
-      extras_require = dict(
-        test = ['interlude',
-                'zope.testing',
-                'zope.app.testing',
-                ],
-        ),
       )

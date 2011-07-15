@@ -1,7 +1,7 @@
 import doctest
 
 from persistent import Persistent
-from zope.app.testing import placelesssetup
+from Testing.ZopeTestCase import placeless
 from zope.site.hooks import setHooks
 from Zope2.App import zcml
 
@@ -21,7 +21,7 @@ def setNotified(event):
 
 def setUp(app):
     # enable zcml and site hooks
-    placelesssetup.setUp()
+    placeless.setUp()
     import Products.Five
     from five import intid
     zcml.load_config('meta.zcml', Products.Five)
@@ -29,8 +29,9 @@ def setUp(app):
     zcml.load_config('test.zcml', intid)
     setHooks()
 
+
 def tearDown():
-    placelesssetup.tearDown()
+    placeless.tearDown()
 
 
 def test_suite():
