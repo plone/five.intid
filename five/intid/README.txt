@@ -3,6 +3,9 @@ Usage
 
 First, let make sure the ofs utility provides the interface::
 
+    >>> from Products.Five.tests.testing.simplecontent import (
+    ...   manage_addSimpleContent)
+
     >>> from zope.intid.interfaces import IIntIds
     >>> from five.intid import site
     >>> import five.intid.tests as tests
@@ -12,10 +15,10 @@ First, let make sure the ofs utility provides the interface::
     >>> tests.setUp(self.app)
 
 
-Content added before the utility won't be registered(until explicitly
+Content added before the utility won't be registered (until explicitly
 called to). We'll set some up now for later
 
-    >>> tests.manage_addSimpleContent(self.folder, 'mycont1', "My Content")
+    >>> manage_addSimpleContent(self.folder, 'mycont1', "My Content")
     >>> content1 = self.folder.mycont1
 
 `five.intid.site` has convenience functions for adding, get and
@@ -59,7 +62,7 @@ When we add content, event will be fired to add keyreference for said
 objects the utilities (currently, our content and the utility are
 registered)::
 
-    >>> tests.manage_addSimpleContent(self.folder, 'mycont2', "My Content")
+    >>> manage_addSimpleContent(self.folder, 'mycont2', "My Content")
     >>> content2 = self.folder.mycont2
     >>> intid = site.get_intids(self.folder)
     >>> len(intid.items()) == 1
@@ -107,9 +110,6 @@ even if it is unwrapped::
     True
     >>> unwrapped.getId(content2) == ob_id
     True
-
-
-
 
 When an object is added or removed, subscribers add it to the intid
 utility, and fire an event is fired
@@ -194,7 +194,7 @@ hash produced is a unique identifier for whatever the object is
 referencing(another zodb object, a hook for sqlobject, etc).
 
 object retrieval in intid occurs by calling a key reference. This
-implementation is slightly different than the zope3 due to
+implementation is slightly different than the zope.intid one due to
 acquisition.
 
 The factories returned by IKeyReference must persist and this dictates
@@ -235,7 +235,7 @@ created)::
 
 The resolution mechanism tries its best to end up with the current
 request at the end of the acquisition chain, just as it would be
-under noraml circumstances::
+under normal circumstances::
 
     >>> ref.wrapped_object.aq_chain[-1]
     <ZPublisher.BaseRequest.RequestContainer object at ...>

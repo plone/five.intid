@@ -30,6 +30,7 @@ setup(name='five.intid',
         'zope.site',
         'zope.location',
         'five.localsitemanager',
+        'Zope2 >= 2.13',
         ],
       extras_require = dict(
         test = ['interlude',

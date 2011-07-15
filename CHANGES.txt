@@ -4,7 +4,8 @@ Changelog
 1.0 - unreleased
 ----------------
 
-
+- Modernize code, adept to Zope 2.13.
+  [hannosch]
 
 0.5.2 - January 22, 2011
 ------------------------

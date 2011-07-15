@@ -3,6 +3,7 @@
            xmlns:five="http://namespaces.zope.org/five">
 
   <include package="zope.keyreference" />
+  <include file="overrides.zcml" />
 
   <browser:page
       name="index.html"
@@ -45,7 +46,5 @@
      for="zope.intid.interfaces.IIntIdRemovedEvent"
      handler="zope.component.event.objectEventNotify"
      />
-
-  <includeOverrides file="overrides.zcml" package="five.intid"/>
 
 </configure>
