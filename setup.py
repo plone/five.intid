@@ -1,17 +1,17 @@
 from setuptools import setup, find_packages
 import os.path
 
-version = '0.5.2'
+version = '1.0'
 
 setup(name='five.intid',
       version=version,
       description="Zope2 support for zope.intid",
       long_description=open("README.txt").read() + "\n" +
                open(os.path.join("five", "intid", "README.txt")).read() + "\n\n" +
-               open(os.path.join("docs", "HISTORY.txt")).read(),
+               open("CHANGES.txt").read(),
       classifiers=[
           "Framework :: Zope2"],
-      keywords="'zope2 Five zope3 UID'",
+      keywords="'zope2 intid'",
       author='Whit Morris',
       author_email='whit@openplans.org',
       license='ZPL',
@@ -22,7 +22,6 @@ setup(name='five.intid',
       install_requires=[
         'setuptools',
         'zope.intid',
-        'zope.app.intid',
         'zope.component',
         'zope.event',
         'zope.interface',
