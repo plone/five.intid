@@ -1,13 +1,10 @@
-<configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:browser="http://namespaces.zope.org/browser"
-           xmlns:five="http://namespaces.zope.org/five"
-           xmlns:zcml="http://namespaces.zope.org/zcml">
+<configure xmlns="http://namespaces.zope.org/zope">
 
   <!-- All Core Configuration -->
-  <include file="base.zcml" package="five.intid" />
+  <include file="base.zcml" />
 
   <!-- Event Subscribers -->
-  <include file="subscriber.zcml" package="five.intid" />
+  <include file="subscriber.zcml" />
 
   <!-- CMFCore directoryview exceptions -->
   <include file="cmfdirectoryview.zcml" />

@@ -6,22 +6,6 @@
   <include file="overrides.zcml" />
 
   <browser:page
-      name="index.html"
-      for="zope.intid.interfaces.IIntIds"
-      permission="five.ManageSite"
-      class=".browser.IntIdsView"
-      template="registrations.pt"
-     />
-
-  <browser:page
-      name="populate"
-      for="zope.intid.interfaces.IIntIds"
-      permission="five.ManageSite"
-      class=".browser.IntIdsView"
-      attribute="populate"
-     />
-
-  <browser:page
      for="OFS.interfaces.IFolder"
      class=".site.FiveIntIdsInstall"
      permission="five.ManageSite"

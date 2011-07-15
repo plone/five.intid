@@ -4,6 +4,9 @@ Changelog
 1.0 - unreleased
 ----------------
 
+- Remove intid browser views.
+  [hannosch]
+
 - Modernize code, adept to Zope 2.13.
   [hannosch]
 
