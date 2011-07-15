@@ -26,6 +26,7 @@ def setUp(app):
     from five import intid
     zcml.load_config('meta.zcml', Products.Five)
     zcml.load_config('configure.zcml', Products.Five)
+    zcml.load_config('configure.zcml', intid)
     zcml.load_config('test.zcml', intid)
     setHooks()
 

@@ -1,8 +1,5 @@
-<configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:five="http://namespaces.zope.org/five">
-  <include file="subscriber.zcml" />
-  <include file="cmfdirectoryview.zcml" />
-  <include package="zope.keyreference" />
+<configure xmlns="http://namespaces.zope.org/zope">
+
   <subscriber
       handler=".tests.setNotified"
       for="zope.intid.interfaces.IIntIdAddedEvent"
@@ -12,5 +9,4 @@
       for="zope.intid.interfaces.IIntIdRemovedEvent"
       />
 
-  <includeOverrides file="overrides.zcml" package="five.intid"/>
 </configure>
