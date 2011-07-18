@@ -1,14 +1,18 @@
 <configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:browser="http://namespaces.zope.org/browser"
-           xmlns:five="http://namespaces.zope.org/five">
+           xmlns:browser="http://namespaces.zope.org/browser">
 
-  <include package="zope.keyreference" />
+  <exclude package="zope.keyreference" file="configure.zcml" />
 
   <adapter
      factory=".keyreference.KeyReferenceToPersistent"
      trusted="y" />
 
   <adapter factory=".keyreference.connectionOfPersistent" />
+
+  <class class=".keyreference.KeyReferenceToPersistent">
+    <require permission="zope.Public"
+             interface="zope.keyreference.interfaces.IKeyReference" />
+  </class>
 
   <browser:page
      for="OFS.interfaces.IFolder"
