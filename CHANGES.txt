@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.1 - unreleased
+1.0.1 - 2011-11-30
 ------------------
 
 - Ignore 'temporary' objects (in the Plone portal_factory tool).
