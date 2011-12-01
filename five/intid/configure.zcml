@@ -9,7 +9,4 @@
   <!-- CMFCore directoryview exceptions -->
   <include file="cmfdirectoryview.zcml" />
 
-  <!-- CMFPlone factorytool exceptions -->
-  <include file="portalfactory.zcml" />
-
 </configure>

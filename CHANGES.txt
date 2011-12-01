@@ -4,6 +4,9 @@ Changelog
 1.0.2 - unreleased
 ------------------
 
+- Only ignore 'temporary' objects in the ObjectAddedEvent event handler.
+  [mj]
+
 1.0.1 - 2011-11-30
 ------------------
 

@@ -14,6 +14,14 @@ from zope.keyreference.interfaces import IKeyReference, NotYet
 from zope.event import notify
 from zope.interface import implements
 
+try:
+    from Products.CMFCore.utils import getToolByName
+except ImportError:
+    # If not present, returning None suffices
+    def getToolByName(*args, **kw):
+        return None
+
+
 _marker = []
 
 class IntIds(z3IntIds):
@@ -72,6 +80,11 @@ def addIntIdSubscriber(ob, event):
     Registers the object added in all unique id utilities and fires
     an event for the catalogs.
     """
+    factorytool = getToolByName(ob, 'portal_factory', None)
+    if factorytool is not None and factorytool.isTemporary(ob):
+        # Ignore objects marked as temporary in the CMFPlone portal_factory tool
+        return
+
     utilities = tuple(getAllUtilitiesRegisteredFor(IIntIds))
     if utilities: # assert that there are any utilites
         key = None
