@@ -4,6 +4,10 @@ Changelog
 1.0.3 - unreleased
 ------------------
 
+- Make sure the IConnection adapter works for unwrapped persistent
+  objects.
+  [davisagli]
+
 1.0.2 - 2011-12-02
 ------------------
 

@@ -1,4 +1,4 @@
-from Acquisition import aq_base, aq_chain
+from Acquisition import aq_base, aq_chain, IAcquirer
 from ZODB.interfaces import IConnection
 from ZPublisher.BaseRequest import RequestContainer
 from zExceptions import NotFound
@@ -16,6 +16,9 @@ from zope.lifecycleevent.interfaces import IObjectAddedEvent
 @implementer(IConnection)
 def connectionOfPersistent(obj):
     """ zope2 cxn fetcher for wrapped items """
+    if not (IAcquirer.providedBy(obj) or hasattr(obj, '__parent__')):
+        return getattr(obj, '_p_jar', None)
+
     for parent in aq_iter(obj):
         conn = getattr(parent, '_p_jar', None)
         if conn is not None:
