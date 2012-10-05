@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.3 - unreleased
+1.0.3 - 2012-10-05
 ------------------
 
 - Make sure the IConnection adapter works for unwrapped persistent
