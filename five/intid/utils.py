@@ -1,8 +1,12 @@
-from Acquisition import aq_base, aq_inner, IAcquirer
+# -*- coding: utf-8 -*-
+from Acquisition import aq_base
+from Acquisition import aq_inner
+from Acquisition import IAcquirer
+
 
 def aq_iter(obj, error=None):
     if not (IAcquirer.providedBy(obj) or hasattr(obj, '__parent__')):
-        raise TypeError("%s not acquisition wrapped" %obj)
+        raise TypeError("%s not acquisition wrapped" % obj)
 
     # adapted from alecm's 'listen'
     seen = set()
@@ -14,10 +18,6 @@ def aq_iter(obj, error=None):
         seen.add(id(aq_base(cur)))
         cur = getattr(cur, 'aq_parent', getattr(cur, '__parent__', None))
         if id(aq_base(cur)) in seen:
-            # avoid loops resulting from acquisition-less views
-            # whose __parent__ points to
-            # the context whose aq_parent points to the view
             if error is not None:
-                raise error, '__parent__ loop found'
+                raise error('__parent__ loop found')
             break
-

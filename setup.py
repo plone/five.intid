@@ -1,25 +1,33 @@
-from setuptools import setup, find_packages
+# -*- coding: utf-8 -*-
+from setuptools import find_packages
+from setuptools import setup
 import os.path
 
-version = '1.0.3'
+version = '1.1.0'
 
-setup(name='five.intid',
-      version=version,
-      description="Zope2 support for zope.intid",
-      long_description=open("README.txt").read() + "\n" +
-               open(os.path.join("five", "intid", "README.txt")).read() + "\n\n" +
-               open("CHANGES.txt").read(),
-      classifiers=[
-          "Framework :: Zope2"],
-      keywords="'zope2 intid'",
-      author='Whit Morris',
-      author_email='whit@openplans.org',
-      license='ZPL',
-      packages=find_packages(exclude=['ez_setup']),
-      namespace_packages=['five'],
-      include_package_data=True,
-      zip_safe=False,
-      install_requires=[
+longdescripton = open("README.rst").read() + "\n"
+longdescripton += open(os.path.join("five", "intid", "README.rst")).read()
+longdescripton += "\n\n"
+longdescripton += open("CHANGES.rst").read()
+
+setup(
+    name='five.intid',
+    version=version,
+    description="Zope2 support for zope.intid",
+    long_description=longdescripton,
+    classifiers=[
+        "Framework :: Zope2"
+    ],
+    keywords="'zope2 intid'",
+    author='Whit Morris',
+    author_email='whit@openplans.org',
+    license='ZPL',
+    packages=find_packages(exclude=['ez_setup']),
+    namespace_packages=['five'],
+    include_package_data=True,
+    zip_safe=False,
+    install_requires=[
+        'Acquisition>=4.0.1',
         'setuptools',
         'zope.intid',
         'zope.component',
@@ -31,5 +39,5 @@ setup(name='five.intid',
         'zope.location',
         'five.localsitemanager',
         'Zope2 >= 2.13',
-        ],
-      )
+    ],
+)

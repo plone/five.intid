@@ -1,9 +1,10 @@
-import doctest
-
+# -*- coding: utf-8 -*-
 from persistent import Persistent
 from Testing.ZopeTestCase import placeless
 from zope.site.hooks import setHooks
 from Zope2.App import zcml
+
+import doctest
 
 optionflags = doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS
 NOTIFIED = [None]
@@ -40,7 +41,7 @@ def test_suite():
     from Testing.ZopeTestCase import FunctionalDocFileSuite
     return unittest.TestSuite([
         FunctionalDocFileSuite(
-            'README.txt',
+            'README.rst',
             package='five.intid',
             optionflags=optionflags,
         )
