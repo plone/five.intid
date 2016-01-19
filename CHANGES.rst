@@ -11,6 +11,7 @@ Changelog
   acquisition were - prior to the above version - not detected. Know it is
   and adaption just fails with a "Could not adapt" for circulars.
   Any attribute access fails with a verbose RuntimeError.
+  Cleanup also circular containment workarounds.
   [jensens]
 
 1.0.3 - 2012-10-05

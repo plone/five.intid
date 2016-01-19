@@ -17,12 +17,7 @@ def aq_iter(obj, error=None):
         yield cur
         seen.add(id(aq_base(cur)))
         cur = getattr(cur, 'aq_parent', getattr(cur, '__parent__', None))
-        # XXX with newer acquisition this should not be needed
-        # TODO check: remove seen and detection
         if id(aq_base(cur)) in seen:
-            # avoid loops resulting from acquisition-less views
-            # whose __parent__ points to
-            # the context whose aq_parent points to the view
             if error is not None:
                 raise error('__parent__ loop found')
             break
