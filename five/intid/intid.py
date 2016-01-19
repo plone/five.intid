@@ -1,34 +1,34 @@
-try:
-    from App.class_init import InitializeClass
-except ImportError:
-    # BBB Zope < 2.12
-    from Globals import InitializeClass
-from persistent import Persistent
+# -*- coding: utf-8 -*-
 from Acquisition import Explicit
+from App.class_init import InitializeClass
 from zope.component import getAllUtilitiesRegisteredFor
+from zope.event import notify
+from zope.interface import implementer
 from zope.intid import IntIds as z3IntIds
 from zope.intid.interfaces import IIntIds
-from zope.intid.interfaces import IntIdAddedEvent, IntIdRemovedEvent
-from zope.lifecycleevent.interfaces import IObjectAddedEvent, IObjectRemovedEvent
+from zope.intid.interfaces import IntIdAddedEvent
+from zope.intid.interfaces import IntIdRemovedEvent
 from zope.keyreference.interfaces import IKeyReference, NotYet
-from zope.event import notify
-from zope.interface import implements
+import pkg_resources
+
 
 try:
-    from Products.CMFCore.utils import getToolByName
-except ImportError:
+    pkg_resources.get_distribution('Products.CMFCore')
+except pkg_resources.DistributionNotFound:
     # If not present, returning None suffices
     def getToolByName(*args, **kw):
         return None
+else:
+    from Products.CMFCore.utils import getToolByName
 
 
 _marker = []
 
+
+@implementer(IIntIds)
 class IntIds(z3IntIds):
     """ zope2ish intid utility """
-    implements(IIntIds)
-
-    meta_type="IntId Utility"
+    meta_type = "IntId Utility"
 
     def __init__(self, id_=IIntIds.__name__):
         self.id = self.__name__ = id_
@@ -61,16 +61,19 @@ class IntIds(z3IntIds):
 
 InitializeClass(IntIds)
 
+
 # BBB
 class OFSIntIds(IntIds, Explicit):
     """Mixin acquisition for non-lsm sites"""
 
     def manage_fixupOwnershipAfterAdd(self):
         pass
+
     def wl_isLocked(self):
         return False
 
 InitializeClass(OFSIntIds)
+
 
 # @@ these are "sloppy" subscribers that let objects that have not
 # been properly added to the db by
@@ -82,11 +85,12 @@ def addIntIdSubscriber(ob, event):
     """
     factorytool = getToolByName(ob, 'portal_factory', None)
     if factorytool is not None and factorytool.isTemporary(ob):
-        # Ignore objects marked as temporary in the CMFPlone portal_factory tool
+        # Ignore objects marked as temporary in the CMFPlone portal_factory
+        # tool
         return
 
     utilities = tuple(getAllUtilitiesRegisteredFor(IIntIds))
-    if utilities: # assert that there are any utilites
+    if utilities:  # assert that there are any utilites
         key = None
         try:
             key = IKeyReference(ob, None)
@@ -100,6 +104,7 @@ def addIntIdSubscriber(ob, event):
             # Notify the catalogs that this object was added.
             notify(IntIdAddedEvent(ob, event))
 
+
 def removeIntIdSubscriber(ob, event):
     """A subscriber to ObjectRemovedEvent
 
@@ -107,22 +112,21 @@ def removeIntIdSubscriber(ob, event):
     id utilities.
     """
     utilities = tuple(getAllUtilitiesRegisteredFor(IIntIds))
-    if utilities:
-        key = None
-        try:
-            key = IKeyReference(ob, None)
-        except NotYet: # @@ temporary fix
-            pass
+    if not utilities:
+        return
+    key = IKeyReference(ob, None)
 
-        # Register only objects that adapt to key reference
-        if key is not None:
-            # Notify the catalogs that this object is about to be removed.
-            notify(IntIdRemovedEvent(ob, event))
-            for utility in utilities:
-                try:
-                    utility.unregister(key)
-                except KeyError:
-                    pass
+    # Register only objects that adapt to key reference
+    if key is None:
+        return
+
+    # Notify the catalogs that this object is about to be removed.
+    notify(IntIdRemovedEvent(ob, event))
+    for utility in utilities:
+        try:
+            utility.unregister(key)
+        except KeyError:
+            pass
 
 
 def moveIntIdSubscriber(ob, event):
@@ -131,23 +135,20 @@ def moveIntIdSubscriber(ob, event):
     Updates the stored path for the object in all the unique
     id utilities.
     """
-    if IObjectRemovedEvent.providedBy(event) or \
-           IObjectAddedEvent.providedBy(event):
-        return
     utilities = tuple(getAllUtilitiesRegisteredFor(IIntIds))
-    if utilities:
-        key = None
-        try:
-            key = IKeyReference(ob, None)
-        except NotYet: # @@ temporary fix
-            pass
+    if not utilities:
+        return
+    key = IKeyReference(ob, None)
 
-        # Update objects that adapt to key reference
-        if key is not None:
-            for utility in utilities:
-                try:
-                    uid = utility.getId(ob)
-                    utility.refs[uid] = key
-                    utility.ids[key] = uid
-                except KeyError:
-                    pass
+    # Register only objects that adapt to key reference
+    if key is None:
+        return
+
+    # Update objects that adapt to key reference
+    for utility in utilities:
+        try:
+            uid = utility.getId(ob)
+            utility.refs[uid] = key
+            utility.ids[key] = uid
+        except KeyError:
+            pass

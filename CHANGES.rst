@@ -4,6 +4,9 @@ Changelog
 1.1.0 (unreleased)
 ------------------
 
+- Enhancement: follow PEP8 and Plone code conventions
+  [jensens]
+
 - Fix: Make it work with Acquisition>=2.0.1 (and require the version): Circular
   acquisition were - prior to the above version - not detected. Know it is
   and adaption just fails with a "Could not adapt" for circulars.

@@ -1,14 +1,16 @@
+# -*- coding: utf-8 -*-
 from Acquisition import aq_base
-from Products.Five import BrowserView
+from five.intid.intid import IIntIds
+from five.intid.intid import IntIds
+from five.intid.utils import aq_iter
 from five.localsitemanager import make_objectmanager_site
-from zope.intid.interfaces import IIntIds
-from zope.site.hooks import setSite, setHooks
-from zope.location.interfaces import ISite
-from zope.component.interfaces import ComponentLookupError
-from zope.component import getUtility, getSiteManager
 from OFS.interfaces import IApplication
-from intid import IntIds, IIntIds
-from utils import aq_iter
+from Products.Five import BrowserView
+from zope.component import getUtility, getSiteManager
+from zope.component.interfaces import ComponentLookupError
+from zope.location.interfaces import ISite
+from zope.site.hooks import setSite, setHooks
+
 
 class FiveIntIdsInstall(BrowserView):
     @property
@@ -34,21 +36,24 @@ class FiveIntIdsInstall(BrowserView):
                 sm = self.context.getSiteManager()
                 if 'intids' in sm.objectIds():
                     installed = True
-        except ComponentLookupError, e:
+        except ComponentLookupError:
             pass
         return installed
+
 
 def initializeSite(site, sethook=False, **kw):
     make_objectmanager_site(site)
     if sethook:
-         setHooks()
+        setHooks()
     setSite(site)
+
 
 def get_root(app):
     for parent in aq_iter(app, error=AttributeError):
         if IApplication.providedBy(parent):
             return parent
-    raise AttributeError, 'No application found'
+    raise AttributeError('No application found')
+
 
 def addUtility(site, interface, klass, name='', ofs_name='', findroot=True):
     """
@@ -96,8 +101,10 @@ def addUtility(site, interface, klass, name='', ofs_name='', findroot=True):
 def add_intids(site, findroot=False):
     addUtility(site, IIntIds, IntIds, ofs_name='intids', findroot=findroot)
 
+
 def get_intids(context=None):
     return getUtility(IIntIds, context=context)
+
 
 def del_intids(context=None, findroot=False):
     if findroot:

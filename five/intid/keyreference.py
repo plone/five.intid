@@ -1,14 +1,19 @@
-from Acquisition import aq_base, aq_chain, IAcquirer
+# -*- coding: utf-8 -*-
+from Acquisition import aq_base
+from Acquisition import aq_chain
+from Acquisition import IAcquirer
 from ZODB.interfaces import IConnection
 from ZPublisher.BaseRequest import RequestContainer
 from zExceptions import NotFound
 from persistent import IPersistent
-from zope.component import adapter, adapts
+from zope.component import adapter
 from zope.site.hooks import getSite
-from zope.interface import implements, implementer
-from zope.keyreference.interfaces import IKeyReference, NotYet
+from zope.interface import implementer
+from zope.keyreference.interfaces import NotYet
+from zope.keyreference.interfaces import IKeyReference
 from zope.keyreference.persistent import KeyReferenceToPersistent
-from site import get_root, aq_iter
+from five.intid.utils import aq_iter
+from five.intid.site import get_root
 from zope.lifecycleevent.interfaces import IObjectAddedEvent
 
 
@@ -33,6 +38,8 @@ def add_object_to_connection(ob, event):
         connection.add(aq_base(ob))
 
 
+@implementer(IKeyReference)
+@adapter(IPersistent)
 class KeyReferenceToPersistent(KeyReferenceToPersistent):
     """a zope2ish implementation of keyreferences that unwraps objects
     that have Acquisition wrappers
@@ -41,8 +48,6 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
 
     @@ cache IConnection as a property and volative attr?
     """
-    implements(IKeyReference)
-    adapts(IPersistent)
 
     key_type_id = 'five.intid.keyreference'
     # Default dbname where the root is. This is defined here for
@@ -130,5 +135,5 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
 
     def __cmp__(self, other):
         if self.key_type_id == other.key_type_id:
-            return cmp((self.dbname,self.oid), (other.dbname, other.oid))
+            return cmp((self.dbname, self.oid), (other.dbname, other.oid))
         return cmp(self.key_type_id, other.key_type_id)
