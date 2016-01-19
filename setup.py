@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os.path
 
-version = '1.0.3'
+version = '1.1.0'
 
 setup(name='five.intid',
       version=version,
@@ -20,6 +20,7 @@ setup(name='five.intid',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
+        'Acquisition>=4.0.1',
         'setuptools',
         'zope.intid',
         'zope.component',

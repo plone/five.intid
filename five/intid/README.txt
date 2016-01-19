@@ -334,8 +334,10 @@ object (the parent, to be precise) from an incorrect path.
 
 
 If the object is placed in a circular containment, IKeyReference(object) should
-also raise an NotYet Error, letting the calling code defer as neccesary.
-This case happend when having a Plone4 site five.intrd enabled
+not be able to adapt, letting the calling code defer as neccesary.
+Also any object access is defeated and raises a RuntimeError.
+
+This case happend when having a Plone4 site five.intid enabled
 (five.intid.site.add_intids(site)) and trying to add a portlet via
 @@manage-portlets. plone.portlet.static.static.Assignment seems to have a
 circular path at some time.
@@ -349,8 +351,14 @@ Creating items whith a circular containment
 
     >>> assert item_b.__parent__.__parent__ == item_b
 
+    >>> item_b.id
+    Traceback (most recent call last):
+    ...
+    RuntimeError: Recursion detected in acquisition wrapper
+
     >>> IKeyReference(item_c)
     Traceback (most recent call last):
     ...
-    NotYet: <SimpleItem at c>
+    TypeError: ('Could not adapt', <SimpleItem at c>,
+    <InterfaceClass zope.keyreference.interfaces.IKeyReference>)
 
