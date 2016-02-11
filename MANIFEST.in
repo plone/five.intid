@@ -1,0 +1,7 @@
+include *.rst
+
+graft docs
+graft five
+
+global-exclude *.pyc
+global-exclude *.pyo
