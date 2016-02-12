@@ -11,11 +11,11 @@ New:
 
 Fixes:
 
-- Fix: Make it work with Acquisition>=4.0.1 (and require the version): Circular
-  acquisition were - prior to the above version - not detected. Know it is
-  and adaption just fails with a "Could not adapt" for circulars.
-  Any attribute access fails with a verbose RuntimeError.
-  Cleanup also circular containment workarounds.
+- Fix: Make it work with Acquisition>=4.0.1 (and require the version).
+  Circular acquisitions were - prior to the above version - not
+  detected.  Now they are and adaption just fails with a "Could not
+  adapt" for circulars.  Any attribute access fails with a verbose
+  RuntimeError.  Cleanup also circular containment workarounds.
   [jensens]
 
 1.0.3 - 2012-10-05
