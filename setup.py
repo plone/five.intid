@@ -16,7 +16,7 @@ setup(
     description="Zope2 support for zope.intid",
     long_description=longdescripton,
     classifiers=[
-        "Framework :: Zope2"
+        "Framework :: Zope2",
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
     ],
