@@ -17,6 +17,8 @@ def aq_iter(obj, error=None):
         yield cur
         seen.add(id(aq_base(cur)))
         cur = getattr(cur, 'aq_parent', getattr(cur, '__parent__', None))
+        if cur:
+            cur = aq_inner(cur)  # unwrap from Acquisition context
         if id(aq_base(cur)) in seen:
             if error is not None:
                 raise error('__parent__ loop found')
