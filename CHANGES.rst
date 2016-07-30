@@ -10,7 +10,8 @@ New:
 
 Fixes:
 
-- *add item here*
+- Acquisition-unwrap each item in the aq_iter chain, as ``getSite().__parent__`` might return an object aquired from the original context which breaks the parent loop detection.
+  [thet]
 
 
 1.1.0 (2016-02-14)
