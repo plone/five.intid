@@ -14,7 +14,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Prevent errors on ``removeIntIdSubscriber`` when the ``IKeyReference`` adapter
+  raises a ``NotYet``, e.g. because the object does not have a proper path.
+  [ale-rt]
 
 
 1.1.1 (2016-08-19)
