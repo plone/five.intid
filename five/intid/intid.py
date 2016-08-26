@@ -114,7 +114,10 @@ def removeIntIdSubscriber(ob, event):
     utilities = tuple(getAllUtilitiesRegisteredFor(IIntIds))
     if not utilities:
         return
-    key = IKeyReference(ob, None)
+    try:
+        key = IKeyReference(ob, None)
+    except NotYet:
+        key = None
 
     # Register only objects that adapt to key reference
     if key is None:
