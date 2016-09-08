@@ -4,14 +4,6 @@ Changelog
 1.1.2 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Prevent errors on ``removeIntIdSubscriber`` when the ``IKeyReference`` adapter
