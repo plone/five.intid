@@ -74,7 +74,7 @@ utility::
     >>> intid.getId(content1)
     Traceback (most recent call last):
     ...
-    KeyError: <SimpleContent at /test_folder_1_/mycont1>
+    IntIdMissingError: <SimpleContent at /test_folder_1_/mycont1>
 
 We can call the keyreferences, and get the objects back::
 
@@ -137,7 +137,7 @@ Registering and unregistering objects does not fire these events::
     >>> intid.getObject(uid)
     Traceback (most recent call last):
     ...
-    KeyError: ...
+    ObjectMissingError: ...
 
     >>> tests.NOTIFIED[0]
     'No change'

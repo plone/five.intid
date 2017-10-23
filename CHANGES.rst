@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Adapt raised errors to changes in zope.intid
+  [pbauer]
 
 
 1.1.2 (2016-09-09)
