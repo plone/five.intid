@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- Adapt raised errors to changes in zope.intid
+- Adapt raised errors to changes in zope.intid.
+  (This makes the tests incompatible with Zope 2.13.)
   [pbauer]
 
 
