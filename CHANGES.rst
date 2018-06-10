@@ -14,6 +14,8 @@ New features:
 
 Bug fixes:
 
+- Fix doctests in Python 3.
+  [ale-rt]
 - Adapt raised errors to changes in zope.intid.
   (This makes the tests incompatible with Zope 2.13.)
   [pbauer]
