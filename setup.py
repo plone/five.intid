@@ -26,7 +26,7 @@ setup(
     author_email='whit@openplans.org',
     license='ZPL',
     url='https://github.com/plone/five.intid',
-    packages=find_packages(exclude=['ez_setup']),
+    packages=find_packages(),
     namespace_packages=['five'],
     include_package_data=True,
     zip_safe=False,
