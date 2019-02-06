@@ -17,6 +17,7 @@ setup(
     long_description=longdescripton,
     classifiers=[
         "Framework :: Zope2",
+        "Framework :: Zope :: 4",
         "License :: OSI Approved :: Zope Public License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
