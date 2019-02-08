@@ -2,7 +2,7 @@
 from persistent import Persistent
 from Testing.ZopeTestCase import placeless
 from Zope2.App import zcml
-from zope.site.hooks import setHooks
+from zope.component.hooks import setHooks
 
 import doctest
 import re
