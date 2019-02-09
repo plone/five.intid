@@ -14,8 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
-
+- Avoid a deprecation warning.
+  [gforcada]
 
 1.2.0 (2018-11-07)
 ------------------
