@@ -16,6 +16,8 @@ from five.intid.utils import aq_iter
 from five.intid.site import get_root
 from zope.lifecycleevent.interfaces import IObjectAddedEvent
 
+import six
+
 
 @adapter(IPersistent)
 @implementer(IConnection)
@@ -93,6 +95,8 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
         # object. Asking the root object on the wrong db can trigger
         # an POSKeyError.
         connection = IConnection(self.object).get_connection(self.root_dbname)
+        if isinstance(self.root_oid, six.text_type):
+            self.root_oid = self.root_oid.encode('utf8')
         return connection[self.root_oid]
 
     @property
