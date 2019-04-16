@@ -89,14 +89,19 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
         self.oid = self.object._p_oid
         self.dbname = connection.db().database_name
 
+    def __setstate__(self, state):
+        for key in ('root_oid', 'oid'):
+            value = state.get(key)
+            if isinstance(value, six.text_type):
+                state[key] = value.encode('utf-8')
+        self.__dict__.update(state)
+
     @property
     def root(self):
         # It is possible that the root is not in the same db that the
         # object. Asking the root object on the wrong db can trigger
         # an POSKeyError.
         connection = IConnection(self.object).get_connection(self.root_dbname)
-        if isinstance(self.root_oid, six.text_type):
-            self.root_oid = self.root_oid.encode('utf8')
         return connection[self.root_oid]
 
     @property
