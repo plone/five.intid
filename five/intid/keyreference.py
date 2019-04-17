@@ -16,6 +16,8 @@ from five.intid.utils import aq_iter
 from five.intid.site import get_root
 from zope.lifecycleevent.interfaces import IObjectAddedEvent
 
+import six
+
 
 @adapter(IPersistent)
 @implementer(IConnection)
@@ -86,6 +88,13 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
         self.root_dbname = IConnection(root).db().database_name
         self.oid = self.object._p_oid
         self.dbname = connection.db().database_name
+
+    def __setstate__(self, state):
+        for key in ('root_oid', 'oid'):
+            value = state.get(key)
+            if isinstance(value, six.text_type):
+                state[key] = value.encode('utf-8')
+        self.__dict__.update(state)
 
     @property
     def root(self):
