@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+1.2.2 (2019-05-01)
+------------------
+
+Bug fixes:
+
+
+- Fix oid and root_oid that might have been accidentally converted to text when a DB was migrated from py2.
+  [pbauer] (#7)
+
+
 1.2.1 (2019-02-13)
 ------------------
 
