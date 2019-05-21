@@ -132,11 +132,13 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
         return self.wrapped_object
 
     def __hash__(self):
+        # XXX Maybe we should consider to use also other fields for the hash
         return hash((self.dbname,
                      self.object._p_oid,
                      ))
 
     def __cmp__(self, other):
+        # XXX This makes no sense on Python 3
         if self.key_type_id == other.key_type_id:
             return cmp((self.dbname, self.oid), (other.dbname, other.oid))
         return cmp(self.key_type_id, other.key_type_id)

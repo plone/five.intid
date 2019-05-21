@@ -154,6 +154,9 @@ def moveIntIdSubscriber(ob, event):
     for utility in utilities:
         try:
             uid = utility.getId(ob)
+            # XXX this is a temporary workaround
+            utility.refs.pop(uid, None)
+            utility.ids.pop(key, None)
             utility.refs[uid] = key
             utility.ids[key] = uid
         except KeyError:

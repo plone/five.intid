@@ -150,6 +150,8 @@ Renaming an object should not break the rewrapping of the object:
     >>> moved = intid.getObject(ob_id)
     >>> moved
     <SimpleContent at /test_folder_1_/mycont_new>
+    >>> [x.path for x in intid.ids]
+    ['/test_folder_1_/mycont_new']
 
 Nor should moving it:
 
@@ -361,4 +363,3 @@ Creating items whith a circular containment
     ...
     TypeError: ('Could not adapt', <SimpleItem at c>,
     <InterfaceClass zope.keyreference.interfaces.IKeyReference>)
-
