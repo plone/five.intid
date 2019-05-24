@@ -108,9 +108,8 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     def wrapped_object(self):
         if self.path is None:
             return self.object
-        try:
-            obj = self.root.unrestrictedTraverse(self.path)
-        except (NotFound, AttributeError, KeyError):
+        obj = self.root.unrestrictedTraverse(self.path, None)
+        if obj is None:
             return self.object
         chain = aq_chain(obj)
         # Try to ensure we have a request at the acquisition root
