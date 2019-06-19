@@ -1,0 +1,3 @@
+Also catch KeyError when traversing to fix creating relations during Copy&Paste in Zope 4.
+Fixes https://github.com/plone/Products.CMFPlone/issues/2866
+[pbauer]
