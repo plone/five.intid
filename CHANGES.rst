@@ -8,6 +8,18 @@ Changelog
 
 .. towncrier release notes start
 
+1.2.3 (2019-06-19)
+------------------
+
+Bug fixes:
+
+
+- Properly update the persistent objects stored in the initid utility btrees [ale-rt] (#8)
+- Also catch KeyError when traversing to fix creating relations during Copy&Paste in Zope 4.
+  Fixes https://github.com/plone/Products.CMFPlone/issues/2866
+  [pbauer] (#12)
+
+
 1.2.2 (2019-05-01)
 ------------------
 
