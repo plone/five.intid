@@ -4,7 +4,6 @@ from Acquisition import aq_chain
 from Acquisition import IAcquirer
 from ZODB.interfaces import IConnection
 from ZPublisher.BaseRequest import RequestContainer
-from zExceptions import NotFound
 from persistent import IPersistent
 from zope.component import adapter
 from zope.site.hooks import getSite
@@ -38,6 +37,23 @@ def add_object_to_connection(ob, event):
     connection = IConnection(ob, None)
     if None is not connection:
         connection.add(aq_base(ob))
+
+
+def traverse(base, path):
+    """simplified fast unrestricted traverse.
+    base: the app-root to start from
+    path: absolute path from app root as string
+    returns: content at the end or None
+    """
+    current = base
+    for cid in path.split('/'):
+        if not cid:
+            continue
+        try:
+            current = current[cid]
+        except KeyError:
+            return None
+    return current
 
 
 @implementer(IKeyReference)
@@ -108,7 +124,7 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     def wrapped_object(self):
         if self.path is None:
             return self.object
-        obj = self.root.unrestrictedTraverse(self.path, None)
+        obj = traverse(self.root, self.path)
         if obj is None:
             return self.object
         chain = aq_chain(obj)
