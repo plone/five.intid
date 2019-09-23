@@ -1,0 +1,2 @@
+When looking up back-references the lookup using unrestrictedTraverse was way to slow.
+A simplified traverse speeds up the lookup by up 80x. [jensens, 2silver]

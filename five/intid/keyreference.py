@@ -4,7 +4,6 @@ from Acquisition import aq_chain
 from Acquisition import IAcquirer
 from ZODB.interfaces import IConnection
 from ZPublisher.BaseRequest import RequestContainer
-from zExceptions import NotFound
 from persistent import IPersistent
 from zope.component import adapter
 from zope.site.hooks import getSite
@@ -16,7 +15,10 @@ from five.intid.utils import aq_iter
 from five.intid.site import get_root
 from zope.lifecycleevent.interfaces import IObjectAddedEvent
 
+import logging
 import six
+
+logger = logging.getLogger(__name__)
 
 
 @adapter(IPersistent)
@@ -38,6 +40,21 @@ def add_object_to_connection(ob, event):
     connection = IConnection(ob, None)
     if None is not connection:
         connection.add(aq_base(ob))
+
+
+def traverse(base, path):
+    """simplified fast unrestricted traverse.
+    base: the app-root to start from
+    path: absolute path from app root as string
+    returns: content at the end or None
+    raises: KeyError if not traversable this way
+    """
+    current = base
+    for cid in path.split('/'):
+        if not cid:
+            continue
+        current = current[cid]
+    return current
 
 
 @implementer(IKeyReference)
@@ -108,7 +125,14 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     def wrapped_object(self):
         if self.path is None:
             return self.object
-        obj = self.root.unrestrictedTraverse(self.path, None)
+        try:
+            # use simplified fast traverse to get the object, ~80x faster than OFS
+            obj = traverse(self.root, self.path)
+        except KeyError:
+            # be paranoid and fall back to the complex OFS traverse for (hypothetical)
+            # edge cases
+            logger.debug('fall back to OFS traversal for {0}'.format(self.path))
+            obj = self.root.unrestrictedTraverse(self.path, None)
         if obj is None:
             return self.object
         chain = aq_chain(obj)
@@ -117,8 +141,7 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
         if not len(chain) or not isinstance(chain[-1], RequestContainer):
             site = getSite()
             site_chain = aq_chain(site)
-            if len(site_chain) and isinstance(site_chain[-1],
-                                              RequestContainer):
+            if len(site_chain) and isinstance(site_chain[-1], RequestContainer):
                 req = site_chain[-1]
                 new_obj = req
                 # rebuld the chain with the request at the bottom
