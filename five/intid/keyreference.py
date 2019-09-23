@@ -15,7 +15,10 @@ from five.intid.utils import aq_iter
 from five.intid.site import get_root
 from zope.lifecycleevent.interfaces import IObjectAddedEvent
 
+import logging
 import six
+
+logger = logging.getLogger(__name__)
 
 
 @adapter(IPersistent)
@@ -44,15 +47,13 @@ def traverse(base, path):
     base: the app-root to start from
     path: absolute path from app root as string
     returns: content at the end or None
+    raises: KeyError if not traversable this way
     """
     current = base
     for cid in path.split('/'):
         if not cid:
             continue
-        try:
-            current = current[cid]
-        except KeyError:
-            return None
+        current = current[cid]
     return current
 
 
@@ -124,7 +125,14 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     def wrapped_object(self):
         if self.path is None:
             return self.object
-        obj = traverse(self.root, self.path)
+        try:
+            # use simplified fast traverse to get the object, ~80x faster than OFS
+            obj = traverse(self.root, self.path)
+        except KeyError:
+            # be paranoid and fall back to the complex OFS traverse for (hypothetical)
+            # edge cases
+            logger.debug('fall back to OFS traversal for {0}'.format(self.path))
+            obj = self.root.unrestrictedTraverse(self.path, None)
         if obj is None:
             return self.object
         chain = aq_chain(obj)
@@ -133,8 +141,7 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
         if not len(chain) or not isinstance(chain[-1], RequestContainer):
             site = getSite()
             site_chain = aq_chain(site)
-            if len(site_chain) and isinstance(site_chain[-1],
-                                              RequestContainer):
+            if len(site_chain) and isinstance(site_chain[-1], RequestContainer):
                 req = site_chain[-1]
                 new_obj = req
                 # rebuld the chain with the request at the bottom
