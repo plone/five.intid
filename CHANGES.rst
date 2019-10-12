@@ -8,6 +8,19 @@ Changelog
 
 .. towncrier release notes start
 
+1.2.4 (2019-10-12)
+------------------
+
+Bug fixes:
+
+
+- Also catch KeyError when traversing to fix creating relations during Copy&Paste in Zope 4.
+  Fixes https://github.com/plone/Products.CMFPlone/issues/2866
+  [pbauer] (#12)
+- When looking up back-references the lookup using unrestrictedTraverse was way to slow.
+  A simplified traverse speeds up the lookup by up 80x. [jensens, 2silver] (#14)
+
+
 1.2.3 (2019-06-19)
 ------------------
 
