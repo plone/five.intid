@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from Acquisition import Explicit
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from zope.component import getAllUtilitiesRegisteredFor
 from zope.event import notify
 from zope.interface import implementer
