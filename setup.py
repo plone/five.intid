@@ -3,7 +3,7 @@ from setuptools import find_packages
 from setuptools import setup
 import os.path
 
-version = '1.2.5'
+version = '1.2.6.dev0'
 
 longdescripton = open("README.rst").read() + "\n"
 longdescripton += open(os.path.join("five", "intid", "README.rst")).read()
