@@ -1,0 +1,2 @@
+Fix test to work correctky with zope.interface >= 5.1.
+[jensens]

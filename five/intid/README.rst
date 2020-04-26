@@ -358,8 +358,14 @@ Creating items whith a circular containment
     ...
     RuntimeError: Recursion detected in acquisition wrapper
 
-    >>> IKeyReference(item_c)
-    Traceback (most recent call last):
-    ...
-    TypeError: ('Could not adapt', <SimpleItem at c>,
-    <InterfaceClass zope.keyreference.interfaces.IKeyReference>)
+    >>> try:
+    ...     IKeyReference(item_c)
+    ... except RuntimeError as exc:
+    ...     # expected with zope.interface 5.1+:
+    ...     # Recursion detected in acquisition wrapper
+    ...     print("Error")
+    ... except TypeError as exc:
+    ...     # before zope.interface 5.1 it was not able to lets non-AttributeErrors
+    ...     # propagate from descriptors which resultet in a Could Not Adapt TypeError
+    ...     print("Error")
+    Error
