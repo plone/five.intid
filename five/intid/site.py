@@ -7,9 +7,9 @@ from five.localsitemanager import make_objectmanager_site
 from OFS.interfaces import IApplication
 from Products.Five import BrowserView
 from zope.component import getUtility, getSiteManager
-from zope.component.interfaces import ComponentLookupError
+from zope.interface.interfaces import ComponentLookupError
 from zope.location.interfaces import ISite
-from zope.site.hooks import setSite, setHooks
+from zope.component.hooks import setSite, setHooks
 
 
 class FiveIntIdsInstall(BrowserView):

@@ -10,10 +10,11 @@ longdescripton += open(os.path.join("five", "intid", "README.rst")).read()
 longdescripton += "\n\n"
 longdescripton += open("CHANGES.rst").read()
 
+
 setup(
     name='five.intid',
     version=version,
-    description="Zope2 support for zope.intid",
+    description="Zope support for zope.intid",
     long_description=longdescripton,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -24,6 +25,7 @@ setup(
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
     ],
     keywords="'zope2 intid'",
     author='Whit Morris',
@@ -43,9 +45,9 @@ setup(
         'zope.interface',
         'zope.lifecycleevent',
         'zope.keyreference',
-        'zope.site',
         'zope.location',
         'five.localsitemanager',
-        'Zope2 >= 2.13',
+        'Zope2 >= 2.13;python_version=="2.7"',
+        'Zope >= 4;python_version>="3.6"',
     ],
 )

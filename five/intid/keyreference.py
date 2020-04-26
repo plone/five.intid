@@ -6,7 +6,7 @@ from ZODB.interfaces import IConnection
 from ZPublisher.BaseRequest import RequestContainer
 from persistent import IPersistent
 from zope.component import adapter
-from zope.site.hooks import getSite
+from zope.component.hooks import getSite
 from zope.interface import implementer
 from zope.keyreference.interfaces import NotYet
 from zope.keyreference.interfaces import IKeyReference

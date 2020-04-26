@@ -11,7 +11,7 @@ First, let make sure the ofs utility provides the interface::
     >>> import five.intid.tests as tests
     >>> from zope.interface.verify import verifyObject
     >>> from zope.component import getAllUtilitiesRegisteredFor
-    >>> from zope.site.hooks import setSite
+    >>> from zope.component.hooks import setSite
     >>> tests.setUp(self.app)
 
 
