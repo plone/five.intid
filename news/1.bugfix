@@ -1,3 +1,0 @@
-Fix depecration warnings.
-Update ``setup.py`` to depend on ``Zope2`` or ``Zope``, dependening on Python version.
-[jensens]

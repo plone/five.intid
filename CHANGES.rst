@@ -8,6 +8,19 @@ Changelog
 
 .. towncrier release notes start
 
+1.2.6 (2020-05-06)
+------------------
+
+Bug fixes:
+
+
+- Fix depecration warnings.
+  Update ``setup.py`` to depend on ``Zope2`` or ``Zope``, dependening on Python version.
+  [jensens] (#1)
+- Fix test to work correctly with ``zope.interface >= 5.1``.
+  [jensens] (#17)
+
+
 1.2.5 (2020-03-13)
 ------------------
 
