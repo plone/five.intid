@@ -1,2 +1,2 @@
-Fix test to work correctky with zope.interface >= 5.1.
+Fix test to work correctly with ``zope.interface >= 5.1``.
 [jensens]
