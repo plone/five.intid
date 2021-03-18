@@ -63,7 +63,8 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     """a zope2ish implementation of keyreferences that unwraps objects
     that have Acquisition wrappers
 
-    These references compare by _p_oids of the objects they reference.
+    These references compare by _p_oids of the objects they reference
+    and by their paths.
 
     @@ cache IConnection as a property and volative attr?
     """
@@ -154,13 +155,18 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
         return self.wrapped_object
 
     def __hash__(self):
-        # XXX Maybe we should consider to use also other fields for the hash
         return hash((self.dbname,
                      self.object._p_oid,
+                     self.path
                      ))
 
     def __cmp__(self, other):
         # XXX This makes no sense on Python 3
         if self.key_type_id == other.key_type_id:
-            return cmp((self.dbname, self.oid), (other.dbname, other.oid))
+            return cmp((self.dbname, self.oid, self.path), (other.dbname, other.oid, other.path))
         return cmp(self.key_type_id, other.key_type_id)
+
+    def _get_cmp_keys(self, other):
+        if self.key_type_id == other.key_type_id:
+            return (self.dbname, self.oid, self.path), (other.dbname, other.oid, other.path)
+        return self.key_type_id, other.key_type_id

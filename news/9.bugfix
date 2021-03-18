@@ -1,0 +1,4 @@
+Check the path when comparing and hashing a keyreference.
+This makes references more unique, fixing inconsistencies.
+Fixes `issue 9 <https://github.com/plone/five.intid/issues/9>`_.
+[maurits]
