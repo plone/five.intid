@@ -2,6 +2,7 @@
 from Acquisition import aq_base
 from Acquisition import aq_chain
 from Acquisition import IAcquirer
+from ZODB.ConflictResolution import PersistentReference
 from ZODB.interfaces import IConnection
 from ZPublisher.BaseRequest import RequestContainer
 from persistent import IPersistent
@@ -155,10 +156,17 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
         return self.wrapped_object
 
     def __hash__(self):
-        return hash((self.dbname,
-                     self.object._p_oid,
-                     self.path
-                     ))
+        if isinstance(self.object, PersistentReference):
+            # we are doing conflict resolution.
+            database_name = self.object.database_name
+            if database_name is None:
+                # we can't hash
+                raise ValueError('database name unavailable at this time')
+            oid = self.object.oid
+        else:
+            database_name = self.dbname
+            oid = self.object._p_oid
+        return hash((database_name, oid, self.path))
 
     def __cmp__(self, other):
         # XXX This makes no sense on Python 3
@@ -167,6 +175,8 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
         return cmp(self.key_type_id, other.key_type_id)
 
     def _get_cmp_keys(self, other):
-        if self.key_type_id == other.key_type_id:
-            return (self.dbname, self.oid, self.path), (other.dbname, other.oid, other.path)
-        return self.key_type_id, other.key_type_id
+        if self.key_type_id != other.key_type_id:
+            return self.key_type_id, other.key_type_id
+        keys = super(KeyReferenceToPersistent, self)._get_cmp_keys(other)
+        # The original method does not take in to account the path
+        return keys[0] + (self.path,), keys[1] + (self.path,)
