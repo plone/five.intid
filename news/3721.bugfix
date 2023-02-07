@@ -1,0 +1,3 @@
+Move tests.py to a tests folder,
+this way pytest can find them.
+[gforcada]
