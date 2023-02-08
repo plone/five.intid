@@ -143,7 +143,7 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
             if len(site_chain) and isinstance(site_chain[-1], RequestContainer):
                 req = site_chain[-1]
                 new_obj = req
-                # rebuld the chain with the request at the bottom
+                # rebuild the chain with the request at the bottom
                 for item in reversed(chain):
                     new_obj = aq_base(item).__of__(new_obj)
                 obj = new_obj

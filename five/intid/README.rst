@@ -90,7 +90,7 @@ and get an object back like this::
     >>> intid.getObject(ob_id)
     <SimpleContent at /test_folder_1_/mycont2>
 
-these objects are aquisition wrapped on retrieval::
+these objects are acquisition wrapped on retrieval::
 
     >>> from Acquisition import IAcquirer
     >>> IAcquirer.providedBy(intid.getObject(ob_id))
@@ -336,15 +336,15 @@ object (the parent, to be precise) from an incorrect path.
 
 
 If the object is placed in a circular containment, IKeyReference(object) should
-not be able to adapt, letting the calling code defer as neccesary.
+not be able to adapt, letting the calling code defer as necessary.
 Also any object access is defeated and raises a RuntimeError.
 
-This case happend when having a Plone4 site five.intid enabled
+This case happened when having a Plone4 site five.intid enabled
 (five.intid.site.add_intids(site)) and trying to add a portlet via
 @@manage-portlets. plone.portlet.static.static.Assignment seems to have a
 circular path at some time.
 
-Creating items whith a circular containment
+Creating items with a circular containment
     >>> item_b = SimpleItem().__of__(self.folder)
     >>> item_b.id = "b"
     >>> item_c = SimpleItem().__of__(item_b)

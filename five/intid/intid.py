@@ -95,7 +95,7 @@ def addIntIdSubscriber(ob, event):
         return
 
     utilities = tuple(getAllUtilitiesRegisteredFor(IIntIds))
-    if utilities:  # assert that there are any utilites
+    if utilities:  # assert that there are any utilities
         key = None
         try:
             key = IKeyReference(ob, None)
