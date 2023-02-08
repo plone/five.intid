@@ -22,7 +22,7 @@ def moveIntIdSubscriber(ob, event):
 class KeyReferenceNever:
     """A keyreference that is never ready"""
 
-    key_type_id = 'five.intid.cmfexceptions.keyreference'
+    key_type_id = "five.intid.cmfexceptions.keyreference"
 
     def __init__(self, obj):
         raise NotYet()

@@ -13,9 +13,10 @@ NOTIFIED = [None]
 
 
 class DemoPersistent(Persistent):
-    """ Demo persistent object """
-    test = 'test object'
-    __name__ = 'Test Object'
+    """Demo persistent object"""
+
+    test = "test object"
+    __name__ = "Test Object"
 
 
 def setNotified(event):
@@ -25,12 +26,14 @@ def setNotified(event):
 def setUp(app):
     # enable zcml and site hooks
     placeless.setUp()
-    import Products.Five
     from five import intid
-    zcml.load_config('meta.zcml', Products.Five)
-    zcml.load_config('configure.zcml', Products.Five)
-    zcml.load_config('configure.zcml', intid)
-    zcml.load_config('test.zcml', intid)
+
+    import Products.Five
+
+    zcml.load_config("meta.zcml", Products.Five)
+    zcml.load_config("configure.zcml", Products.Five)
+    zcml.load_config("configure.zcml", intid)
+    zcml.load_config("test.zcml", intid)
     setHooks()
 
 
@@ -43,28 +46,32 @@ class Py23DocChecker(doctest.OutputChecker):
         want = re.sub("u'(.*?)'", "'\\1'", want)
         # translate doctest exceptions
         for dotted in (
-            'zope.interface.interfaces.ComponentLookupError',
-            'zope.keyreference.interfaces.NotYet',
-            'zope.intid.interfaces.IntIdMissingError',
-            'zope.intid.interfaces.ObjectMissingError',
+            "zope.interface.interfaces.ComponentLookupError",
+            "zope.keyreference.interfaces.NotYet",
+            "zope.intid.interfaces.IntIdMissingError",
+            "zope.intid.interfaces.ObjectMissingError",
         ):
             if dotted in got:
                 got = re.sub(
                     dotted,
-                    dotted.rpartition('.')[-1],
+                    dotted.rpartition(".")[-1],
                     got,
                 )
         return doctest.OutputChecker.check_output(self, want, got, optionflags)
 
 
 def test_suite():
-    import unittest
     from Testing.ZopeTestCase import FunctionalDocFileSuite
-    return unittest.TestSuite([
-        FunctionalDocFileSuite(
-            'README.rst',
-            package='five.intid',
-            optionflags=optionflags,
-            checker=Py23DocChecker(),
-        )
-    ])
+
+    import unittest
+
+    return unittest.TestSuite(
+        [
+            FunctionalDocFileSuite(
+                "README.rst",
+                package="five.intid",
+                optionflags=optionflags,
+                checker=Py23DocChecker(),
+            )
+        ]
+    )
