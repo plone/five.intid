@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from persistent import Persistent
 from Testing.ZopeTestCase import placeless
 from Zope2.App import zcml
@@ -20,7 +19,7 @@ class DemoPersistent(Persistent):
 
 
 def setNotified(event):
-    NOTIFIED[0] = "%s %s" % (event.object, event)
+    NOTIFIED[0] = f"{event.object} {event}"
 
 
 def setUp(app):
@@ -41,23 +40,20 @@ def tearDown():
 
 class Py23DocChecker(doctest.OutputChecker):
     def check_output(self, want, got, optionflags):
-        if six.PY2:
-            want = re.sub("b'(.*?)'", "'\\1'", want)
-        else:
-            want = re.sub("u'(.*?)'", "'\\1'", want)
-            # translate doctest exceptions
-            for dotted in (
-                'zope.interface.interfaces.ComponentLookupError',
-                'zope.keyreference.interfaces.NotYet',
-                'zope.intid.interfaces.IntIdMissingError',
-                'zope.intid.interfaces.ObjectMissingError',
-            ):
-                if dotted in got:
-                    got = re.sub(
-                        dotted,
-                        dotted.rpartition('.')[-1],
-                        got,
-                    )
+        want = re.sub("u'(.*?)'", "'\\1'", want)
+        # translate doctest exceptions
+        for dotted in (
+            'zope.interface.interfaces.ComponentLookupError',
+            'zope.keyreference.interfaces.NotYet',
+            'zope.intid.interfaces.IntIdMissingError',
+            'zope.intid.interfaces.ObjectMissingError',
+        ):
+            if dotted in got:
+                got = re.sub(
+                    dotted,
+                    dotted.rpartition('.')[-1],
+                    got,
+                )
         return doctest.OutputChecker.check_output(self, want, got, optionflags)
 
 

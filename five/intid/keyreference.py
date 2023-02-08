@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from Acquisition import aq_chain
 from Acquisition import IAcquirer
@@ -109,7 +108,7 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     def __setstate__(self, state):
         for key in ('root_oid', 'oid'):
             value = state.get(key)
-            if isinstance(value, six.text_type):
+            if isinstance(value, str):
                 state[key] = value.encode('utf-8')
         self.__dict__.update(state)
 
@@ -131,7 +130,7 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
         except KeyError:
             # be paranoid and fall back to the complex OFS traverse for (hypothetical)
             # edge cases
-            logger.debug('fall back to OFS traversal for {0}'.format(self.path))
+            logger.debug(f'fall back to OFS traversal for {self.path}')
             obj = self.root.unrestrictedTraverse(self.path, None)
         if obj is None:
             return self.object

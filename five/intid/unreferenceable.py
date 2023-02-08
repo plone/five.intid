@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Sometimes persistent classes are never meant to be persisted. The most
 # common example are CMFCore directory views and filesystem objects.
 # Register specific handlers that are no-ops to circumvent
@@ -20,7 +19,7 @@ def moveIntIdSubscriber(ob, event):
 
 
 @implementer(IKeyReference)
-class KeyReferenceNever(object):
+class KeyReferenceNever:
     """A keyreference that is never ready"""
 
     key_type_id = 'five.intid.cmfexceptions.keyreference'

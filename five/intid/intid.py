@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import Explicit
 from AccessControl.class_init import InitializeClass
 from zope.component import getAllUtilitiesRegisteredFor
@@ -32,7 +31,7 @@ class IntIds(z3IntIds):
 
     def __init__(self, id_=IIntIds.__name__):
         self.id = self.__name__ = id_
-        super(IntIds, self).__init__()
+        super().__init__()
 
     def getId(self, ob=_marker):
         # Compatibility with SimpleItem
