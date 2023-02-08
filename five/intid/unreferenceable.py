@@ -29,8 +29,3 @@ class KeyReferenceNever:
 
     def __call__(self):
         return None
-
-    def __cmp__(self, other):
-        if self.key_type_id == other.key_type_id:
-            return cmp(self, other)
-        return cmp(self.key_type_id, other.key_type_id)

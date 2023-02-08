@@ -5,7 +5,6 @@ from zope.component.hooks import setHooks
 
 import doctest
 import re
-import six
 
 
 optionflags = doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS
