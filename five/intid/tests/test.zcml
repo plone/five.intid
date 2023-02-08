@@ -1,11 +1,11 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
   <subscriber
-      handler=".tests.setNotified"
+      handler=".test_intid.setNotified"
       for="zope.intid.interfaces.IIntIdAddedEvent"
       />
   <subscriber
-      handler=".tests.setNotified"
+      handler=".test_intid.setNotified"
       for="zope.intid.interfaces.IIntIdRemovedEvent"
       />
 

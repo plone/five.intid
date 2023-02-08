@@ -8,7 +8,7 @@ First, let make sure the ofs utility provides the interface::
 
     >>> from zope.intid.interfaces import IIntIds
     >>> from five.intid import site
-    >>> import five.intid.tests as tests
+    >>> import five.intid.tests.test_intid as tests
     >>> from zope.interface.verify import verifyObject
     >>> from zope.component import getAllUtilitiesRegisteredFor
     >>> from zope.component.hooks import setSite
@@ -174,7 +174,7 @@ Let's move it back:
 We can create an object without acquisition so we can be able to
 add intid to it :
 
-    >>> from five.intid.tests import DemoPersistent
+    >>> from five.intid.tests.test_intid import DemoPersistent
     >>> demo1 = DemoPersistent()
     >>> demo1.__parent__ = self.app
     >>> from zope.event import notify
