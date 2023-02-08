@@ -37,6 +37,7 @@ setup(
     namespace_packages=["five"],
     include_package_data=True,
     zip_safe=False,
+    python_requires=">=3.8",
     install_requires=[
         "Acquisition>=4.0.1",
         "setuptools",
