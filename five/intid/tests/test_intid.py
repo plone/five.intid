@@ -28,10 +28,11 @@ def setUp(app):
     placeless.setUp()
     import Products.Five
     from five import intid
+    from five.intid import tests
     zcml.load_config('meta.zcml', Products.Five)
     zcml.load_config('configure.zcml', Products.Five)
     zcml.load_config('configure.zcml', intid)
-    zcml.load_config('test.zcml', intid)
+    zcml.load_config('test.zcml', tests)
     setHooks()
 
 
