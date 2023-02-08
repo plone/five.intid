@@ -1,23 +1,24 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:zcml="http://namespaces.zope.org/zcml"
-    zcml:condition="installed Products.CMFCore">
+    zcml:condition="installed Products.CMFCore"
+    >
 
   <!-- DirectoryViews -->
   <subscriber
-      handler=".unreferenceable.addIntIdSubscriber"
       for="Products.CMFCore.interfaces.IDirectoryView
            zope.lifecycleevent.interfaces.IObjectAddedEvent"
+      handler=".unreferenceable.addIntIdSubscriber"
       />
   <subscriber
-      handler=".unreferenceable.removeIntIdSubscriber"
       for="Products.CMFCore.interfaces.IDirectoryView
            zope.lifecycleevent.interfaces.IObjectRemovedEvent"
+      handler=".unreferenceable.removeIntIdSubscriber"
       />
   <subscriber
-      handler=".unreferenceable.moveIntIdSubscriber"
       for="Products.CMFCore.interfaces.IDirectoryView
            zope.lifecycleevent.interfaces.IObjectMovedEvent"
+      handler=".unreferenceable.moveIntIdSubscriber"
       />
   <adapter
       factory=".unreferenceable.KeyReferenceNever"
@@ -27,19 +28,19 @@
 
   <!-- FSObject -->
   <subscriber
-      handler=".unreferenceable.addIntIdSubscriber"
       for="Products.CMFCore.FSObject.FSObject
            zope.lifecycleevent.interfaces.IObjectAddedEvent"
+      handler=".unreferenceable.addIntIdSubscriber"
       />
   <subscriber
-      handler=".unreferenceable.removeIntIdSubscriber"
       for="Products.CMFCore.FSObject.FSObject
            zope.lifecycleevent.interfaces.IObjectRemovedEvent"
+      handler=".unreferenceable.removeIntIdSubscriber"
       />
   <subscriber
-      handler=".unreferenceable.moveIntIdSubscriber"
       for="Products.CMFCore.FSObject.FSObject
            zope.lifecycleevent.interfaces.IObjectMovedEvent"
+      handler=".unreferenceable.moveIntIdSubscriber"
       />
   <adapter
       factory=".unreferenceable.KeyReferenceNever"

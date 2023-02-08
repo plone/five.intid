@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from five.intid.intid import IIntIds
 from five.intid.intid import IntIds
@@ -6,10 +5,12 @@ from five.intid.utils import aq_iter
 from five.localsitemanager import make_objectmanager_site
 from OFS.interfaces import IApplication
 from Products.Five import BrowserView
-from zope.component import getUtility, getSiteManager
+from zope.component import getSiteManager
+from zope.component import getUtility
+from zope.component.hooks import setHooks
+from zope.component.hooks import setSite
 from zope.interface.interfaces import ComponentLookupError
 from zope.location.interfaces import ISite
-from zope.component.hooks import setSite, setHooks
 
 
 class FiveIntIdsInstall(BrowserView):
@@ -18,9 +19,9 @@ class FiveIntIdsInstall(BrowserView):
         return self._context[0]
 
     def __init__(self, context, request):
-        self._context = context,
+        self._context = (context,)
         self.request = request
-        doinstall = self.request.get('install', None)
+        doinstall = self.request.get("install", None)
         if doinstall:
             self.install()
 
@@ -34,7 +35,7 @@ class FiveIntIdsInstall(BrowserView):
             intids = getUtility(IIntIds)
             if intids is not None:
                 sm = self.context.getSiteManager()
-                if 'intids' in sm.objectIds():
+                if "intids" in sm.objectIds():
                     installed = True
         except ComponentLookupError:
             pass
@@ -52,10 +53,10 @@ def get_root(app):
     for parent in aq_iter(app, error=AttributeError):
         if IApplication.providedBy(parent):
             return parent
-    raise AttributeError('No application found')
+    raise AttributeError("No application found")
 
 
-def addUtility(site, interface, klass, name='', ofs_name='', findroot=True):
+def addUtility(site, interface, klass, name="", ofs_name="", findroot=True):
     """
     add local utility in zope2
     """
@@ -76,17 +77,14 @@ def addUtility(site, interface, klass, name='', ofs_name='', findroot=True):
     # stored, but not registered
     ofs_name = ofs_name or name
     obj = getattr(aq_base(sm), ofs_name, None)
-    if sm.queryUtility(interface,
-                       name=name,
-                       default=None) is None:
+    if sm.queryUtility(interface, name=name, default=None) is None:
         # Register the utility if it is not yet registered
         if obj is None:
             if name:
                 obj = klass(name)
             else:
                 obj = klass()
-        sm.registerUtility(provided=interface, component=obj,
-                           name=name)
+        sm.registerUtility(provided=interface, component=obj, name=name)
     elif obj is None:
         # Get the utility if registered, but not yet stored in the LSM
         obj = sm.queryUtility(interface, name=name)
@@ -94,12 +92,11 @@ def addUtility(site, interface, klass, name='', ofs_name='', findroot=True):
     # Make sure we store the utility permanently in the OFS so we don't loose
     # intids on uninstall
     if ofs_name and ofs_name not in sm.objectIds():
-        sm._setObject(ofs_name, aq_base(obj), set_owner=False,
-                      suppress_events=True)
+        sm._setObject(ofs_name, aq_base(obj), set_owner=False, suppress_events=True)
 
 
 def add_intids(site, findroot=False):
-    addUtility(site, IIntIds, IntIds, ofs_name='intids', findroot=findroot)
+    addUtility(site, IIntIds, IntIds, ofs_name="intids", findroot=findroot)
 
 
 def get_intids(context=None):
@@ -110,5 +107,4 @@ def del_intids(context=None, findroot=False):
     if findroot:
         context = get_root(context)
     utility = get_intids(context)
-    getSiteManager(context).unregisterUtility(component=utility,
-                                              provided=IIntIds)
+    getSiteManager(context).unregisterUtility(component=utility, provided=IIntIds)

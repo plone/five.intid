@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-from Acquisition import Explicit
 from AccessControl.class_init import InitializeClass
+from Acquisition import Explicit
 from zope.component import getAllUtilitiesRegisteredFor
 from zope.event import notify
 from zope.interface import implementer
@@ -8,16 +7,19 @@ from zope.intid import IntIds as z3IntIds
 from zope.intid.interfaces import IIntIds
 from zope.intid.interfaces import IntIdAddedEvent
 from zope.intid.interfaces import IntIdRemovedEvent
-from zope.keyreference.interfaces import IKeyReference, NotYet
+from zope.keyreference.interfaces import IKeyReference
+from zope.keyreference.interfaces import NotYet
+
 import pkg_resources
 
 
 try:
-    pkg_resources.get_distribution('Products.CMFCore')
+    pkg_resources.get_distribution("Products.CMFCore")
 except pkg_resources.DistributionNotFound:
     # If not present, returning None suffices
     def getToolByName(*args, **kw):
         return None
+
 else:
     from Products.CMFCore.utils import getToolByName
 
@@ -27,12 +29,13 @@ _marker = []
 
 @implementer(IIntIds)
 class IntIds(z3IntIds):
-    """ zope2ish intid utility """
+    """zope2ish intid utility"""
+
     meta_type = "IntId Utility"
 
     def __init__(self, id_=IIntIds.__name__):
         self.id = self.__name__ = id_
-        super(IntIds, self).__init__()
+        super().__init__()
 
     def getId(self, ob=_marker):
         # Compatibility with SimpleItem
@@ -59,6 +62,7 @@ class IntIds(z3IntIds):
         del self.refs[uid]
         del self.ids[key]
 
+
 InitializeClass(IntIds)
 
 
@@ -72,6 +76,7 @@ class OFSIntIds(IntIds, Explicit):
     def wl_isLocked(self):
         return False
 
+
 InitializeClass(OFSIntIds)
 
 
@@ -83,14 +88,14 @@ def addIntIdSubscriber(ob, event):
     Registers the object added in all unique id utilities and fires
     an event for the catalogs.
     """
-    factorytool = getToolByName(ob, 'portal_factory', None)
+    factorytool = getToolByName(ob, "portal_factory", None)
     if factorytool is not None and factorytool.isTemporary(ob):
         # Ignore objects marked as temporary in the CMFPlone portal_factory
         # tool
         return
 
     utilities = tuple(getAllUtilitiesRegisteredFor(IIntIds))
-    if utilities:  # assert that there are any utilites
+    if utilities:  # assert that there are any utilities
         key = None
         try:
             key = IKeyReference(ob, None)

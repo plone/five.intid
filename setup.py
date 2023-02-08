@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*-
 from setuptools import find_packages
 from setuptools import setup
+
 import os.path
 
-version = '1.2.7.dev0'
+
+version = "1.2.7.dev0"
 
 longdescripton = open("README.rst").read() + "\n"
 longdescripton += open(os.path.join("five", "intid", "README.rst")).read()
@@ -12,7 +13,7 @@ longdescripton += open("CHANGES.rst").read()
 
 
 setup(
-    name='five.intid',
+    name="five.intid",
     version=version,
     description="Zope support for zope.intid",
     long_description=longdescripton,
@@ -28,26 +29,30 @@ setup(
         "Programming Language :: Python :: 3.8",
     ],
     keywords="'zope2 intid'",
-    author='Whit Morris',
-    author_email='whit@openplans.org',
-    license='ZPL',
-    url='https://github.com/plone/five.intid',
+    author="Whit Morris",
+    author_email="whit@openplans.org",
+    license="ZPL",
+    url="https://github.com/plone/five.intid",
     packages=find_packages(),
-    namespace_packages=['five'],
+    namespace_packages=["five"],
     include_package_data=True,
     zip_safe=False,
+    python_requires=">=3.8",
     install_requires=[
-        'Acquisition>=4.0.1',
-        'setuptools',
-        'zope.intid',
-        'zope.component',
-        'zope.event',
-        'zope.interface',
-        'zope.lifecycleevent',
-        'zope.keyreference',
-        'zope.location',
-        'five.localsitemanager',
-        'Zope2 >= 2.13;python_version=="2.7"',
-        'Zope >= 4;python_version>="3.6"',
+        "AccessControl",
+        "Acquisition>=4.0.1",
+        "Products.CMFCore",
+        "ZODB",
+        "Zope",
+        "five.localsitemanager",
+        "persistent",
+        "setuptools",
+        "zope.intid",
+        "zope.component",
+        "zope.event",
+        "zope.interface",
+        "zope.lifecycleevent",
+        "zope.keyreference",
+        "zope.location",
     ],
 )

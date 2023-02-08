@@ -1,18 +1,18 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
   <subscriber
-     handler=".intid.addIntIdSubscriber"
-     for="persistent.IPersistent
-          zope.lifecycleevent.interfaces.IObjectAddedEvent"
+      for="persistent.IPersistent
+           zope.lifecycleevent.interfaces.IObjectAddedEvent"
+      handler=".intid.addIntIdSubscriber"
       />
   <subscriber
-      handler=".intid.removeIntIdSubscriber"
       for="persistent.IPersistent
            zope.lifecycleevent.interfaces.IObjectRemovedEvent"
+      handler=".intid.removeIntIdSubscriber"
       />
   <subscriber
-      handler=".intid.moveIntIdSubscriber"
       for="OFS.interfaces.ITraversable
            zope.lifecycleevent.interfaces.IObjectMovedEvent"
+      handler=".intid.moveIntIdSubscriber"
       />
 </configure>
