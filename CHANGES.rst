@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+1.2.7 (2023-02-22)
+------------------
+
+Bug fixes:
+
+
+- Add configuration with plone/meta.
+  [gforcada] (#1)
+
+
 1.2.6 (2020-05-06)
 ------------------
 

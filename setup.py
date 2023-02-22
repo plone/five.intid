@@ -4,7 +4,7 @@ from setuptools import setup
 import os.path
 
 
-version = "1.2.7.dev0"
+version = "1.2.7"
 
 longdescripton = open("README.rst").read() + "\n"
 longdescripton += open(os.path.join("five", "intid", "README.rst")).read()
