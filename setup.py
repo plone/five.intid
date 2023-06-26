@@ -1,32 +1,36 @@
+from pathlib import Path
 from setuptools import find_packages
 from setuptools import setup
 
-import os.path
 
+version = "2.0.0.dev0"
 
-version = "1.2.8.dev0"
-
-longdescripton = open("README.rst").read() + "\n"
-longdescripton += open(os.path.join("five", "intid", "README.rst")).read()
-longdescripton += "\n\n"
-longdescripton += open("CHANGES.rst").read()
-
+long_description = (
+    f"{Path('README.rst').read_text()}\n"
+    f"{(Path('five') / 'intid' / 'README.rst').read_text()}\n"
+    f"{Path('CHANGES.rst').read_text()}\n"
+)
 
 setup(
     name="five.intid",
     version=version,
     description="Zope support for zope.intid",
-    long_description=longdescripton,
+    long_description=long_description,
+    long_description_content_type="text/x-rst",
+    # Get more strings from
+    # https://pypi.org/classifiers/
     classifiers=[
         "Development Status :: 5 - Production/Stable",
-        "Framework :: Zope2",
-        "Framework :: Zope :: 4",
+        "Framework :: Plone",
+        "Framework :: Plone :: 6.0",
+        "Framework :: Plone :: Core",
+        "Framework :: Zope :: 5",
         "License :: OSI Approved :: Zope Public License",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
     ],
     keywords="'zope2 intid'",
     author="Whit Morris",
