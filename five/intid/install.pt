@@ -3,14 +3,13 @@
   <body>
     <div tal:condition="view/installed">the intids is installed</div>
     <div>
-      <form
-          method="post"
-          tal:condition="not:view/installed">
-        <input
-            name="install"
-            style="border: 2px solid #F99; background-color: red"
-            type="submit"
-            value="Install intid utility"
+      <form method="post"
+            tal:condition="not:view/installed"
+      >
+        <input name="install"
+               style="border: 2px solid #F99; background-color: red"
+               type="submit"
+               value="Install intid utility"
         />
       </form>
     </div>
