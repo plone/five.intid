@@ -73,7 +73,6 @@ class KeyReferenceToPersistent(KeyReferenceToPersistent):
     root_dbname = "main"
 
     def __init__(self, wrapped_obj):
-
         # make sure our object is wrapped by containment only
         try:
             self.path = "/".join(wrapped_obj.getPhysicalPath())

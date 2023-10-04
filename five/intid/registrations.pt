@@ -1,31 +1,32 @@
-<html
-    i18n:domain="zope"
-    metal:use-macro="context/@@standard_macros/view">
+<html metal:use-macro="context/@@standard_macros/view"
+      i18n:domain="zope"
+>
   <body>
     <div metal:fill-slot="body">
       <div metal:define-macro="body">
         <p i18n:translate="">
-          <span
-              i18n:name="count"
-              tal:replace="view/len"
-          /> objects</p>
-        <table
-            class="listing"
-            i18n:attributes="summary"
-            id="sortable"
-            summary="Content listing"
-            tal:condition="request/testing|nothing">
+          <span tal:replace="view/len"
+                i18n:name="count"
+          ></span>
+          objects</p>
+        <table class="listing"
+               id="sortable"
+               summary="Content listing"
+               tal:condition="request/testing|nothing"
+               i18n:attributes="summary"
+        >
           <tr>
             <th i18n:translate="">ID</th>
             <th i18n:translate="">Object</th>
           </tr>
           <tr tal:repeat="row view/_items">
-            <td tal:content="python:row[0]" />
+            <td tal:content="python:row[0]"></td>
             <td>
-              <a
-                  tal:attributes="href python:row[1]"
-                  tal:content="python:row[1]"
-              />
+              <a tal:content="python:row[1]"
+                 tal:attributes="
+                   href python:row[1];
+                 "
+              ></a>
             </td>
           </tr>
         </table>
