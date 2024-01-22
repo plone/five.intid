@@ -292,7 +292,7 @@ contain FSObjects that are never persisted, and DirectoryViewSurrogates
 that contain references to such objects. Because FSObjects are never actually
 persisted, five.intid's assumption that it can add a
 
-For such objects, the unreferenceable module provides no-op subcribers and
+For such objects, the unreferenceable module provides no-op subscribers and
 adapters to omit such objects from five.intid handling.
 
     >>> from zope import interface, component
