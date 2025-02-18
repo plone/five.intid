@@ -3,7 +3,7 @@ from setuptools import find_namespace_packages
 from setuptools import setup
 
 
-version = "3.0.dev0"
+version = "3.0.0"
 
 long_description = (
     f"{Path('README.rst').read_text()}\n"

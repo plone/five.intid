@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+3.0.0 (2025-02-18)
+------------------
+
+Breaking changes:
+
+
+- Drop support for ``pkg_resources`` namespace and replace it with PEP 420 native namespace. (pep-420)
+
+
 2.0.0 (2023-10-07)
 ------------------
 
