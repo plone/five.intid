@@ -1,5 +1,7 @@
 from AccessControl.class_init import InitializeClass
 from Acquisition import Explicit
+from importlib.metadata import distribution
+from importlib.metadata import PackageNotFoundError
 from zope.component import getAllUtilitiesRegisteredFor
 from zope.event import notify
 from zope.interface import implementer
@@ -10,12 +12,10 @@ from zope.intid.interfaces import IntIdRemovedEvent
 from zope.keyreference.interfaces import IKeyReference
 from zope.keyreference.interfaces import NotYet
 
-import pkg_resources
-
 
 try:
-    pkg_resources.get_distribution("Products.CMFCore")
-except pkg_resources.DistributionNotFound:
+    distribution("Products.CMFCore")
+except PackageNotFoundError:
     # If not present, returning None suffices
     def getToolByName(*args, **kw):
         return None
