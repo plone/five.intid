@@ -1,7 +1,5 @@
 from AccessControl.class_init import InitializeClass
 from Acquisition import Explicit
-from importlib.metadata import distribution
-from importlib.metadata import PackageNotFoundError
 from zope.component import getAllUtilitiesRegisteredFor
 from zope.event import notify
 from zope.interface import implementer
@@ -11,17 +9,6 @@ from zope.intid.interfaces import IntIdAddedEvent
 from zope.intid.interfaces import IntIdRemovedEvent
 from zope.keyreference.interfaces import IKeyReference
 from zope.keyreference.interfaces import NotYet
-
-
-try:
-    distribution("Products.CMFCore")
-except PackageNotFoundError:
-    # If not present, returning None suffices
-    def getToolByName(*args, **kw):
-        return None
-
-else:
-    from Products.CMFCore.utils import getToolByName
 
 
 _marker = []
@@ -88,12 +75,6 @@ def addIntIdSubscriber(ob, event):
     Registers the object added in all unique id utilities and fires
     an event for the catalogs.
     """
-    factorytool = getToolByName(ob, "portal_factory", None)
-    if factorytool is not None and factorytool.isTemporary(ob):
-        # Ignore objects marked as temporary in the CMFPlone portal_factory
-        # tool
-        return
-
     utilities = tuple(getAllUtilitiesRegisteredFor(IIntIds))
     if utilities:  # assert that there are any utilities
         key = None
