@@ -1,0 +1,3 @@
+Remove check for portal_factory tool.
+This was only needed for Archetypes.
+[maurits]
