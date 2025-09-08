@@ -2,7 +2,7 @@ include *.rst
 include pyproject.toml
 
 graft docs
-graft five
+graft src
 
 global-exclude *.pyc
 global-exclude *.pyo
