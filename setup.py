@@ -1,5 +1,4 @@
 from pathlib import Path
-from setuptools import find_namespace_packages
 from setuptools import setup
 
 
@@ -7,7 +6,7 @@ version = "3.0.2.dev0"
 
 long_description = (
     f"{Path('README.rst').read_text()}\n"
-    f"{(Path('five') / 'intid' / 'README.rst').read_text()}\n"
+    f"{(Path('src') / 'five' / 'intid' / 'README.rst').read_text()}\n"
     f"{Path('CHANGES.rst').read_text()}\n"
 )
 
@@ -37,7 +36,6 @@ setup(
     author_email="whit@openplans.org",
     license="ZPL",
     url="https://github.com/plone/five.intid",
-    packages=find_namespace_packages(),
     include_package_data=True,
     zip_safe=False,
     python_requires=">=3.8",
