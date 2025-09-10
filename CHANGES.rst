@@ -8,6 +8,23 @@ Changelog
 
 .. towncrier release notes start
 
+3.0.2 (2025-09-10)
+------------------
+
+Bug fixes:
+
+
+- Remove check for portal_factory tool.
+  This was only needed for Archetypes.
+  [maurits] (#37)
+
+
+Internal:
+
+
+- Move distribution to src layout [gforcada] (#4217)
+
+
 3.0.1 (2025-03-07)
 ------------------
 
