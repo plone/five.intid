@@ -6,7 +6,6 @@ from zope.component.hooks import setHooks
 import doctest
 import re
 
-
 optionflags = doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS
 NOTIFIED = [None]
 

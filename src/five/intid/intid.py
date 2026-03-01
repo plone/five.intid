@@ -10,7 +10,6 @@ from zope.intid.interfaces import IntIdRemovedEvent
 from zope.keyreference.interfaces import IKeyReference
 from zope.keyreference.interfaces import NotYet
 
-
 _marker = []
 
 
