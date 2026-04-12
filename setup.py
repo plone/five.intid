@@ -47,7 +47,6 @@ setup(
         "Zope",
         "five.localsitemanager",
         "persistent",
-        "setuptools",
         "zope.intid",
         "zope.component",
         "zope.event",
