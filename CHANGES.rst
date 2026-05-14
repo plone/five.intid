@@ -8,6 +8,23 @@ Changelog
 
 .. towncrier release notes start
 
+3.1.0 (2026-05-14)
+------------------
+
+New features:
+
+
+- Officially add support for Python 3.12-3.14.
+  Require Python 3.10 minimum, which in practice was already the case, because this version is for Plone 6.2 only.
+
+
+Internal:
+
+
+- Update configuration files.
+  [plone devs]
+
+
 3.0.2 (2025-09-10)
 ------------------
 
